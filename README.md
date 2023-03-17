@@ -12,12 +12,12 @@ Team Project for Software Engineering Laboratory Course (CS29202) 2023
 - It should work with a unique code which was set by the attendance taker and will be announced to
 all the attendees. 
 - Implement should be done both server side and the client side.
-- User Types:
-  1) Who wants to take the attendance
+- **User Types**:
+  1) Who wants to take the attendance   
     a) Generally teacher. Teacher generates a unique code which will be given in class.
-  2) Who gives the attendance
+  2) Who gives the attendance   
     a) Generally students. They enter the code given by the teacher in class to mark their attendance.
-  3) Developer who update the software
+  3) Developer who update the software    
     a) Maintains and creates the classes and other technical issues.
 
 - **Requirements of student:**
