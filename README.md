@@ -57,3 +57,5 @@ Team Project for Software Engineering Laboratory Course (CS29202) 2023
 ---
 
 > Google doc for link and reference -> [link](https://docs.google.com/document/d/1yZWlhtrrhh2Dk3q_OpjmJ9R0n01IHoYPaeoaYwg1zbM/edit?usp=sharing)
+
+> Latex document for SRS -> [link](https://www.overleaf.com/9937867742kctfsgcjkwdd) (Reference taken from PA-1.pdf)
