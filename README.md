@@ -53,3 +53,7 @@ Team Project for Software Engineering Laboratory Course (CS29202) 2023
   1. Any user should have his own login/registration credentials.
   2. Option to login as student or teacher or admin
   3. Three different interfaces should be generated for all the three users for their tasks.
+
+---
+
+> Google doc for link and reference -> [link](https://docs.google.com/document/d/1yZWlhtrrhh2Dk3q_OpjmJ9R0n01IHoYPaeoaYwg1zbM/edit?usp=sharing)
