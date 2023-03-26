@@ -12,11 +12,11 @@ Team Project for Software Engineering Laboratory Course (CS29202) 2023
 
 - Deadline: **27th March 2023**
 
-- Refer to [PA-1.pdf](PA-1.pdf) document for the assignment statement
+- Refer to [this](docs/PA-1.pdf) document for the assignment statement
 - Additional helpful documents:
-  - [IEEE Recommended Practise for SRS](IEEE_Std_830-1998-Recommended_Practice_for_SRS.pdf)
-  - [Class and Use-case diagrams](SRS-diagrams.pdf)
-  - [Sample SRS document](SRSExample-webapp.pdf)
+  - [IEEE Recommended Practise for SRS](docs/IEEE_Std_830-1998-Recommended_Practice_for_SRS.pdf)
+  - [Class and Use-case diagrams](docs/SRS-diagrams.pdf)
+  - [Sample SRS document](docs/SRSExample-webapp.pdf)
 
 # Instructions
 
