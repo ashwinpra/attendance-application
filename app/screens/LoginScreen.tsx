@@ -17,18 +17,6 @@ type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, "Home">;
 };
 
-/*
-//make a full fledged login screen
-export default function LoginScreen({ navigation }: Props) {
-  return (
-    <View>
-      <Text>Login Screen</Text>
-
-    </View>
-  );
-}
-*/
-
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
