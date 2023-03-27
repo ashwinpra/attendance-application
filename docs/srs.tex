@@ -131,7 +131,7 @@ To fully understand the requirements and constraints outlined in this document, 
 To read the document, readers should start with the Overview sections, including the Introduction and Overall Description,
  to gain a high-level understanding of the Attendance Application software and its purpose. From there, readers can move on to the sections 
  that are most pertinent to their specific role or area of responsibility, such as the Other Nonfunctional Requirements section for developers,
-  the External Interface Requirements section for project managers and testers. Finally, readers should review any relevant appendices for additional information.
+  the External Interface Requirements section for project managers and testers. 
 
 \section{Project Scope}
 The Attendance Application software is designed to provide an efficient and reliable way for educational institutions to track student attendance. The system is intended to be used by both students and faculty, with different roles and permissions assigned to each user type.
@@ -178,13 +178,18 @@ related requirements and how they relate, such as a top level data flow diagram
 or object class diagram, is often effective.$>$
 
 \section{User Classes and Characteristics}
-$<$Identify the various user classes that you anticipate will use this product.  
-User classes may be differentiated based on frequency of use, subset of product 
-functions used, technical expertise, security or privilege levels, educational 
-level, or experience. Describe the pertinent characteristics of each user class.  
-Certain requirements may pertain only to certain user classes. Distinguish the 
-most important user classes for this product from those who are less important 
-to satisfy.$>$
+\begin{enumerate}
+    \item \textbf{administrator} $-$ The administrator is responsible for managing the attendance records of students and faculty. The administrator will be able to view attendance records and manage user accounts.
+    \item \textbf{teacher} $-$ The teacher is responsible for creating courses and editing attendance records for students in their courses. The teacher will be able to view attendance records and generate attendance reports.
+    \item \textbf{student} $-$ The student is responsible for marking their own attendance. The student will be able to view their own attendance records and generate attendance reports. 
+\end{enumerate}
+% $<$Identify the various user classes that you anticipate will use this product.  
+% User classes may be differentiated based on frequency of use, subset of product 
+% functions used, technical expertise, security or privilege levels, educational 
+% level, or experience. Describe the pertinent characteristics of each user class.  
+% Certain requirements may pertain only to certain user classes. Distinguish the 
+% most important user classes for this product from those who are less important 
+% to satisfy.$>$
 
 \section{Operating Environment}
 The Attendance Application software will be designed to operate on mobile devices running Android 7.0 and above, as well as iOS 11 and above.
