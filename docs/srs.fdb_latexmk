@@ -1,6 +1,6 @@
 # Fdb version 3
-["pdflatex"] 1679924336 "/home/c12/Documents/attendance-application/docs/srs.tex" "srs.pdf" "srs" 1679924337
-  "/home/c12/Documents/attendance-application/docs/srs.tex" 1679924334 17834 216dfd57b353cdc67ef49a0f36a91691 ""
+["pdflatex"] 1679938054 "/home/c12/Documents/attendance-application/docs/srs.tex" "srs.pdf" "srs" 1679938055
+  "/home/c12/Documents/attendance-application/docs/srs.tex" 1679938054 24116 ea16ab5c1c1888e0d87942b95e00d67e ""
   "/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1650183167 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1650183167 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texmf-dist/fonts/tfm/jknappen/ec/tcrm1095.tfm" 1650183167 1536 02c06700a42be0f5a28664c7273f82e7 ""
@@ -23,6 +23,7 @@
   "/usr/share/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm" 1650183167 1124 6c73e740cf17375f03eec0ee63599741 ""
   "/usr/share/texmf-dist/fonts/tfm/public/cm/cmsy6.tfm" 1650183167 1116 933a60c408fc0a863a92debe84b2d294 ""
   "/usr/share/texmf-dist/fonts/tfm/public/cm/cmsy8.tfm" 1650183167 1120 8b7d695260f3cff42e636090a8002094 ""
+  "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb" 1650183167 34811 78b52f49e893bcba91bd7581cdc144c0 ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb" 1650183167 32080 340ef9bf63678554ee606688e7b5339d ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1650183167 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1650183167 35752 024fb6c41858982481f6968b5fc26508 ""
@@ -183,10 +184,10 @@
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1650183167 39911 2da6c67557ec033436fe5418a70a8a61 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1677577452 4278762 af3ac1370db81a450c1118eabf1fe718 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1677577446 2927663 fd3efab0508e60014722486b6484d429 ""
-  "srs.aux" 1679924337 17898 01676885cd0ab3f716b202bbcf212396 "pdflatex"
+  "srs.aux" 1679938055 23775 c748d66c4193e002a1e71c6be71a8967 "pdflatex"
   "srs.out" 0 -1 0 "pdflatex"
-  "srs.tex" 1679924334 17834 216dfd57b353cdc67ef49a0f36a91691 ""
-  "srs.toc" 1679924337 2988 7ac8c764cce5cbc1b18c7dd100c6fc5f "pdflatex"
+  "srs.tex" 1679938054 24116 ea16ab5c1c1888e0d87942b95e00d67e ""
+  "srs.toc" 1679938055 4163 5fc213eb5cb5860f1035f6ebf8d4a130 "pdflatex"
   (generated)
   "srs.aux"
   "srs.log"

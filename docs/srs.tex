@@ -136,23 +136,6 @@ To read the document, readers should start with the Overview sections, including
 \section{Project Scope}
 The Attendance Application software is designed to provide an efficient and reliable way for educational institutions to track student attendance. The system is intended to be used by both students and faculty, with different roles and permissions assigned to each user type.
 
-The Attendance Application software will include the following features and functionality:
-\begin{multicols}{2}
-    \begin{itemize}
-        \item Student attendance tracking
-        \vspace{-4pt}
-        \item Attendance reports
-        \vspace{-4pt}
-        \item Notification system
-        \vspace{-4pt}
-        \item User authentication and security
-        \vspace{-4pt}
-        \item Proxy Detection
-        \vspace{-4pt}
-        \item Importing and Exporting data
-    \end{itemize}
-\end{multicols}
-
 The Attendance Application software will be designed as a smartphone-based application that can be accessed by both students and faculty using their mobile devices. The system will be developed using industry-standard technologies and will be scalable to accommodate additional users and institutions as needed.
 
 \section{References}
@@ -170,6 +153,23 @@ The Attendance Application software is a new, self-contained product that is bei
 
 
 \section{Product Functions}
+The Attendance Application software will include the following features and functionality:
+\begin{multicols}{2}
+    \begin{itemize}
+        \item Student attendance tracking
+        \vspace{-4pt}
+        \item Attendance reports
+        \vspace{-4pt}
+        \item Notification system
+        \vspace{-4pt}
+        \item User authentication and security
+        \vspace{-4pt}
+        \item Proxy Detection
+        \vspace{-4pt}
+        \item Importing and Exporting data
+    \end{itemize}
+\end{multicols}
+
 $<$Summarize the major functions the product must perform or must let the user 
 perform. Details will be provided in Section 3, so only a high level summary 
 (such as a bullet list) is needed here. Organize the functions to make them 
@@ -187,34 +187,34 @@ most important user classes for this product from those who are less important
 to satisfy.$>$
 
 \section{Operating Environment}
-$<$Describe the environment in which the software will operate, including the 
-hardware platform, operating system and versions, and any other software 
-components or applications with which it must peacefully coexist.$>$
+The Attendance Application software will be designed to operate on mobile devices running Android 7.0 and above, as well as iOS 11 and above.
+
+The software components and applications that need to peacefully coexist with the Attendance Application software are: Web server, Database system, and Network infrastructure
+Overall, the Attendance Application software will operate in a networked environment that requires the peaceful coexistence of multiple software components and applications.
+
 
 \section{Design and Implementation Constraints}
-$<$Describe any items or issues that will limit the options available to the 
-developers. These might include: corporate or regulatory policies; hardware 
-limitations (timing requirements, memory requirements); interfaces to other 
-applications; specific technologies, tools, and databases to be used; parallel 
-operations; language requirements; communications protocols; security 
-considerations; design conventions or programming standards (for example, if the 
-customer’s organization will be responsible for maintaining the delivered 
-software).$>$
+The development of the Attendance Application software is subject to the following constraints:
+\begin{itemize}
+\item Limited time: The development team has a fixed short timeline for completing the
+project.
+\item Learning new frameworks: The development team will need to learn and use new
+frameworks to develop the app. This requires
+additional time and resources to ensure the team has the necessary skills.
+\item Security considerations: The Attendance Application software will handle sensitive data, including student and course information. Security considerations will need to be considered during the design and development phases.
+\end{itemize}
 
 \section{User Documentation}
-$<$List the user documentation components (such as user manuals, on-line help, 
-and tutorials) that will be delivered along with the software. Identify any 
-known user documentation delivery formats or standards.$>$
-\section{Assumptions and Dependencies}
-
-$<$List any assumed factors (as opposed to known facts) that could affect the 
-requirements stated in the SRS. These could include third-party or commercial 
-components that you plan to use, issues around the development or operating 
-environment, or constraints. The project could be affected if these assumptions 
-are incorrect, are not shared, or change. Also identify any dependencies the 
-project has on external factors, such as software components that you intend to 
-reuse from another project, unless they are already documented elsewhere (for 
-example, in the vision and scope document or the project plan).$>$
+The Attendance Application software will be accompanied by a user documentation package that will include the following materials:
+\begin{itemize}
+\item User manual: User manual including step-by-step instructions will be provided to guide users through
+installing and using the software.
+\item Quick reference guide: A quick reference guide will be provided to help users
+perform common tasks, such as taking attendance or generating and exporting reports.
+\item Relevant technology documentation: The user documentation package will also
+include links to relevant technical documentation, such as React Native docu-
+mentation.
+\end{itemize}
 
 
 \chapter{External Interface Requirements}
@@ -264,99 +264,214 @@ prefer to organize this section by use case, mode of operation, user class,
 object class, functional hierarchy, or combinations of these, whatever makes the 
 most logical sense for your product.$>$
 
-\section{System Feature 1}
-$<$Don’t really say “System Feature 1.” State the feature name in just a few 
-words.$>$
+\section{Student Attendance Tracking}
+
 
 \subsection{Description and Priority}
-$<$Provide a short description of the feature and indicate whether it is of 
-High, Medium, or Low priority. You could also include specific priority 
-component ratings, such as benefit, penalty, cost, and risk (each rated on a 
-relative scale from a low of 1 to a high of 9).$>$
+Priority: \textbf{High}
 
+This feature allows teachers and instructors to keep track of student attendance in real-time.
+The feature enables teachers to create and manage courses, and edit attendance for each student.
+Students can also view their attendance record, including their current attendance percentage, the number of days present, absent, and late.
 \subsection{Stimulus/Response Sequences}
 $<$List the sequences of user actions and system responses that stimulate the 
 behavior defined for this feature. These will correspond to the dialog elements 
 associated with use cases.$>$
 
 \subsection{Functional Requirements}
-$<$Itemize the detailed functional requirements associated with this feature.  
-These are the software capabilities that must be present in order for the user 
-to carry out the services provided by the feature, or to execute the use case.  
-Include how the product should respond to anticipated error conditions or 
-invalid inputs. Requirements should be concise, complete, unambiguous, 
-verifiable, and necessary. Use “TBD” as a placeholder to indicate when necessary 
-information is not yet available.$>$
+\begin{itemize}
+    \item REQ-1: The system shall allow teachers to create and manage courses.
+    \item REQ-2: The system shall allow teachers to edit attendance for each student.
+    \item REQ-3: The system shall allow students to enroll in courses set up by teachers. 
+    \item REQ-4: The system shall allow students to mark their attendance within a specified time frame for each course.
+    \item REQ-5: The system shall allow students to view their attendance records.
+\end{itemize}
+% $<$Itemize the detailed functional requirements associated with this feature.  
+% These are the software capabilities that must be present in order for the user 
+% to carry out the services provided by the feature, or to execute the use case.  
+% Include how the product should respond to anticipated error conditions or 
+% invalid inputs. Requirements should be concise, complete, unambiguous, 
+% verifiable, and necessary. Use “TBD” as a placeholder to indicate when necessary 
+% information is not yet available.$>$
 
-$<$Each requirement should be uniquely identified with a sequence number or a 
-meaningful tag of some kind.$>$
+% $<$Each requirement should be uniquely identified with a sequence number or a 
+% meaningful tag of some kind.$>$
 
-REQ-1:	REQ-2:
+% REQ-1:	REQ-2:
 
-\section{System Feature 2 (and so on)}
+\section{User Authentication}
+\subsection{Description and Priority}
+Priority: \textbf{High}
+
+This feature allows users to create an account and log in to the app. The allowed user types are students, teachers, and administrators. 
+Only administrators can accept new user account creation requests.
+\subsection{Stimulus/Response Sequences}
+$<$List the sequences of user actions and system responses that stimulate the 
+behavior defined for this feature. These will correspond to the dialog elements 
+associated with use cases.$>$
+
+\subsection{Functional Requirements}
+\begin{itemize}
+    \item REQ-1: The system shall allow users to create an account in categories of student, teacher, or administrator.
+    \item REQ-2: The system shall allow users to log in to the app using correct credentials.
+    \item REQ-3: The system shall allow only administrators to accept new user account creation requests.
+\end{itemize}
+
+
+\section{Attendance Reports}
+\subsection{Description and Priority}
+Priority: \textbf{Medium}
+
+This feature allows teachers and students to view attendance reports for each course. Teachers can view attendance reports for all students in a course, while students can view their own attendance reports.
+\subsection{Stimulus/Response Sequences}
+$<$List the sequences of user actions and system responses that stimulate the 
+behavior defined for this feature. These will correspond to the dialog elements 
+associated with use cases.$>$
+
+\subsection{Functional Requirements}
+\begin{itemize}
+    \item REQ-1: The system shall create attendance reports for each student in each course.
+    \item REQ-2: The system shall allow teachers to view attendance reports for all students in a course.
+    \item REQ-3: The system shall allow students to view their own attendance reports.
+\end{itemize}
+
+
+\section{Proxy Detection}
+\subsection{Description and Priority}
+Priority: \textbf{Medium}
+
+This feature allows teachers to detect students who are using a proxy to mark their attendance.
+\subsection{Stimulus/Response Sequences}
+$<$List the sequences of user actions and system responses that stimulate the 
+behavior defined for this feature. These will correspond to the dialog elements 
+associated with use cases.$>$
+
+\subsection{Functional Requirements}
+\begin{itemize}
+    \item REQ-1: The system should detect students who are using a proxy to mark their attendance.
+\end{itemize}
+
+\section{Notification System}
+\subsection{Description and Priority}
+Priority: \textbf{Low}
+
+This feature allows teachers to send notifications to students regarding low or irregular attendance to any student in a course.
+\subsection{Stimulus/Response Sequences}
+$<$List the sequences of user actions and system responses that stimulate the 
+behavior defined for this feature. These will correspond to the dialog elements 
+associated with use cases.$>$
+
+\subsection{Functional Requirements}
+\begin{itemize}
+    \item REQ-1: System should be able to notify students.
+\item REQ-2: System should allow teachers to modify and send notifications to students.
+\end{itemize}
+
+\section{Importing and Exporting Data}
+\subsection{Description and Priority}
+Priority: \textbf{Low}
+
+This feature should allow teachers and administrators to import and export data from the system.
+This will allow already existing data to be imported into the system, and data from the system to be exported to other systems.
+\subsection{Stimulus/Response Sequences}
+$<$List the sequences of user actions and system responses that stimulate the 
+behavior defined for this feature. These will correspond to the dialog elements 
+associated with use cases.$>$
+
+\subsection{Functional Requirements}
+\begin{itemize}
+    \item REQ-1: System should work with CSV files to store data.
+    \item REQ-2: System should allow teachers and administrators to import and export data from the system.
+\end{itemize}
 
 
 \chapter{Other Nonfunctional Requirements}
 
-\section{Performance Requirements}
-$<$If there are performance requirements for the product under various 
-circumstances, state them here and explain their rationale, to help the 
-developers understand the intent and make suitable design choices. Specify the 
-timing relationships for real time systems. Make such requirements as specific 
-as possible. You may need to state performance requirements for individual 
-functional requirements or features.$>$
+% \section{Performance Requirements}
+% $<$If there are performance requirements for the product under various 
+% circumstances, state them here and explain their rationale, to help the 
+% developers understand the intent and make suitable design choices. Specify the 
+% timing relationships for real time systems. Make such requirements as specific 
+% as possible. You may need to state performance requirements for individual 
+% functional requirements or features.$>$
 
 \section{Safety Requirements}
-$<$Specify those requirements that are concerned with possible loss, damage, or 
-harm that could result from the use of the product. Define any safeguards or 
-actions that must be taken, as well as actions that must be prevented. Refer to 
-any external policies or regulations that state safety issues that affect the 
-product’s design or use. Define any safety certifications that must be 
-satisfied.$>$
+
+\begin{itemize}
+    \item The system will store sensitive information essential to the functioning of Institutions which will be using it.
+        It is therefore essential to keep backups of everything and to ensure that the data is not lost.
+    \item The system will be used by students and teachers who are not necessarily tech-savvy.
+        It is therefore essential to ensure that the system is easy to use and does not require any special training.
+    \item The system should also be able to handle any errors that may occur.
+    \item The system should expect the proxy detection to not be perfect and should be able to handle false positives.
+
+\end{itemize}
+
+% $<$Specify those requirements that are concerned with possible loss, damage, or 
+% harm that could result from the use of the product. Define any safeguards or 
+% actions that must be taken, as well as actions that must be prevented. Refer to 
+% any external policies or regulations that state safety issues that affect the 
+% product’s design or use. Define any safety certifications that must be 
+% satisfied.$>$
 
 \section{Security Requirements}
-$<$Specify any requirements regarding security or privacy issues surrounding use 
-of the product or protection of the data used or created by the product. Define 
-any user identity authentication requirements. Refer to any external policies or 
-regulations containing security issues that affect the product. Define any 
-security or privacy certifications that must be satisfied.$>$
+\begin{itemize}
+    \item The system will handle sensitive information such as student and teacher details.
+        It is therefore essential to ensure that the system is secure and that the data is not leaked.
+    \item The login feature should not be vulnerable to brute force attacks.
+    \item The import and export feature should not be vulnerable to SQL injection attacks.
+\end{itemize}
+
+% $<$Specify any requirements regarding security or privacy issues surrounding use 
+% of the product or protection of the data used or created by the product. Define 
+% any user identity authentication requirements. Refer to any external policies or 
+% regulations containing security issues that affect the product. Define any 
+% security or privacy certifications that must be satisfied.$>$
 
 \section{Software Quality Attributes}
-$<$Specify any additional quality characteristics for the product that will be 
-important to either the customers or the developers. Some to consider are: 
-adaptability, availability, correctness, flexibility, interoperability, 
-maintainability, portability, reliability, reusability, robustness, testability, 
-and usability. Write these to be specific, quantitative, and verifiable when 
-possible. At the least, clarify the relative preferences for various attributes, 
-such as ease of use over ease of learning.$>$
+The following are the quality attributes that the system should have from highest to lowest priority:
+\begin{itemize}
+    \item The application should not be platform dependent and should be able to run on both Android and IOS devices.
+    \item The system should be easy to use as it will be used by students and teachers who are not necessarily tech-savvy.
+    \item The codebase should be well documented and easy to understand. This will allow for easier maintenance and addition of new features.
+    \item The application should be able to handle any errors that may occur.
+    \item The application should be lightweight and fast to use.
+\end{itemize}
+% $<$Specify any additional quality characteristics for the product that will be 
+% important to either the customers or the developers. Some to consider are: 
+% adaptability, availability, correctness, flexibility, interoperability, 
+% maintainability, portability, reliability, reusability, robustness, testability, 
+% and usability. Write these to be specific, quantitative, and verifiable when 
+% possible. At the least, clarify the relative preferences for various attributes, 
+% such as ease of use over ease of learning.$>$
 
-\section{Business Rules}
-$<$List any operating principles about the product, such as which individuals or 
-roles can perform which functions under specific circumstances. These are not 
-functional requirements in themselves, but they may imply certain functional 
-requirements to enforce the rules.$>$
+% \section{Business Rules}
+% $<$List any operating principles about the product, such as which individuals or 
+% roles can perform which functions under specific circumstances. These are not 
+% functional requirements in themselves, but they may imply certain functional 
+% requirements to enforce the rules.$>$
 
 
-\chapter{Other Requirements}
-$<$Define any other requirements not covered elsewhere in the SRS. This might 
-include database requirements, internationalization requirements, legal 
-requirements, reuse objectives for the project, and so on. Add any new sections 
-that are pertinent to the project.$>$
+% \chapter{Other Requirements}
+% $<$Define any other requirements not covered elsewhere in the SRS. This might 
+% include database requirements, internationalization requirements, legal 
+% requirements, reuse objectives for the project, and so on. Add any new sections 
+% that are pertinent to the project.$>$
 
-\section{Appendix A: Glossary}
-%see https://en.wikibooks.org/wiki/LaTeX/Glossary
-$<$Define all the terms necessary to properly interpret the SRS, including 
-acronyms and abbreviations. You may wish to build a separate glossary that spans 
-multiple projects or the entire organization, and just include terms specific to 
-a single project in each SRS.$>$
+% \section{Appendix A: Glossary}
+% %see https://en.wikibooks.org/wiki/LaTeX/Glossary
+% $<$Define all the terms necessary to properly interpret the SRS, including 
+% acronyms and abbreviations. You may wish to build a separate glossary that spans 
+% multiple projects or the entire organization, and just include terms specific to 
+% a single project in each SRS.$>$
 
-\section{Appendix B: Analysis Models}
-$<$Optionally, include any pertinent analysis models, such as data flow 
-diagrams, class diagrams, state-transition diagrams, or entity-relationship 
-diagrams.$>$
+% \section{Appendix B: Analysis Models}
+% $<$Optionally, include any pertinent analysis models, such as data flow 
+% diagrams, class diagrams, state-transition diagrams, or entity-relationship 
+% diagrams.$>$
 
-\section{Appendix C: To Be Determined List}
-$<$Collect a numbered list of the TBD (to be determined) references that remain 
-in the SRS so they can be tracked to closure.$>$
+% \section{Appendix C: To Be Determined List}
+% $<$Collect a numbered list of the TBD (to be determined) references that remain 
+% in the SRS so they can be tracked to closure.$>$
 
 \end{document}
