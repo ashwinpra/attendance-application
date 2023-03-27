@@ -1,20 +1,20 @@
-import React from 'react';
-import {View,Text} from 'react-native';
-import { NativeStackNavigationProp} from '@react-navigation/native-stack';
+import React from "react";
+import { View, Text } from "react-native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 type RootStackParamList = {
-    Home: undefined, // undefined means that the screen doesn't take any params
-    Login: undefined
-}
+  Home: undefined; // undefined means that the screen doesn't take any params
+  Login: undefined;
+};
 
 type Props = {
-  navigation: NativeStackNavigationProp<RootStackParamList,'Home'>;
-}
+  navigation: NativeStackNavigationProp<RootStackParamList, "Home">;
+};
 
-export default function LoginScreen({navigation}: Props) {
-    return (
-        <View>
-            <Text>Welcome Back!</Text>
-        </View>
-    );
+export default function LoginScreen({ navigation }: Props) {
+  return (
+    <View>
+      <Text>Welcome Back!</Text>
+    </View>
+  );
 }
