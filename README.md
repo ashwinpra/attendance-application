@@ -18,6 +18,14 @@ Team Project for Software Engineering Laboratory Course (CS29202) 2023
   - [Class and Use-case diagrams](docs/SRS-diagrams.pdf)
   - [Sample SRS document](docs/SRSExample-webapp.pdf)
 
+## Assignment 2
+
+- Deadline: **3rd April 2023 11:59PM**
+
+- Refer to [this](docs/PA-2.pdf) document for the assignment statement
+
+- Additional helpful document: [IEEE Test Plan Outline](docs/ieee-829.pdf)
+
 # Instructions
 
 - In this project, an application should be developed which is used to save time in taking attendance.
