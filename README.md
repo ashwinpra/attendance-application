@@ -8,6 +8,12 @@ Team Project for Software Engineering Laboratory Course (CS29202) 2023
 - Yash Sirvi (21CS10083)
 - Ashwin Prasanth (21CS30009)
 
+## TODO: 
+- [ ] Student, Teacher and Admin Homepage 
+- [ ] Student, Teacher and Admin Coursepage 
+- [ ] Attendance taking mechanism 
+- [ ] Backend for authentication and attendance storage
+
 ## Assignment 1
 
 - Deadline: **27th March 2023**
