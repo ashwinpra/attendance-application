@@ -41,85 +41,75 @@ const RegistrationScreen = () => {
     setUserInput("");
   };
 
-  const studentStyles = StyleSheet.create({
-    container: {
-      alignItems: "center",
-      marginTop: 50,
-    },
-    input: {
-      height: 40,
-      margin: 12,
-      borderWidth: 1,
-      padding: 10,
-      width: "80%",
-      textAlign: "center",
-    },
-    button: {
-      alignItems: "center",
-      backgroundColor: "#DDDDDD",
-      padding: 10,
-      marginTop: 10,
-    },
-  });
-
-  const teacherStyles = StyleSheet.create({
-    container: {
-      alignItems: "center",
-      marginTop: 50,
-    },
-    input: {
-      height: 40,
-      margin: 12,
-      borderWidth: 1,
-      padding: 10,
-      width: "80%",
-      textAlign: "center",
-    },
-    button: {
-      alignItems: "center",
-      backgroundColor: "#DDDDDD",
-      padding: 10,
-      marginTop: 10,
-    },
-  });
-
-  const switchButtonStyles = StyleSheet.create({
-    button: {
-      alignItems: "center",
-      backgroundColor: "#DDDDDD",
-      padding: 10,
-      marginTop: 20,
-    },
-  });
-
   return (
-    <View>
-      <View
-        style={isStudent ? studentStyles.container : teacherStyles.container}
-      >
-        <Text>{isStudent ? "Enter Roll no." : "Enter Enrollment ID"}</Text>
-        <TextInput
-          style={isStudent ? studentStyles.input : teacherStyles.input}
-          onChangeText={handleUserInput}
-          value={userInput}
-          placeholder={isStudent ? "eg. 19CS10001" : "eg. 123456789012"}
-          keyboardType={isStudent ? "default" : "number-pad"}
-        />
-        <TouchableOpacity
-          style={isStudent ? studentStyles.button : teacherStyles.button}
-          onPress={handleVerification}
-        >
-          <Text>Sent verification message</Text>
-        </TouchableOpacity>
-      </View>
+    <View style={Styles.container}>
+      <Text style={Styles.title}>
+        {isStudent ? "Enter Roll no." : "Enter Enrollment ID"}
+      </Text>
+      <TextInput
+        style={Styles.input}
+        onChangeText={handleUserInput}
+        value={userInput}
+        placeholder={isStudent ? "eg. 19CS10001" : "eg. 123456789012"}
+        keyboardType={isStudent ? "default" : "number-pad"}
+      />
+      <TouchableOpacity style={Styles.button} onPress={handleVerification}>
+        <Text>Sent verification message</Text>
+      </TouchableOpacity>
       <TouchableOpacity
         style={switchButtonStyles.button}
         onPress={handleSwitchUserType}
       >
-        <Text>Switch to {isStudent ? "teacher" : "student"}</Text>
+        <Text style={switchButtonStyles.buttonText}>
+          Switch to {isStudent ? "teacher" : "student"}
+        </Text>
       </TouchableOpacity>
     </View>
   );
 };
 
 export default RegistrationScreen;
+
+const Styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#fff",
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    width: "80%",
+    textAlign: "center",
+    borderColor: "#ccc",
+  },
+  button: {
+    alignItems: "center",
+    backgroundColor: "#DDDDDD",
+    padding: 10,
+    marginTop: 10,
+  },
+});
+
+const switchButtonStyles = StyleSheet.create({
+  button: {
+    backgroundColor: "#008CBA",
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginTop: 20,
+    alignSelf: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 15,
+    fontWeight: "bold",
+  },
+});
