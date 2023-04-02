@@ -54,7 +54,7 @@ const RegistrationScreen = () => {
         keyboardType={isStudent ? "default" : "number-pad"}
       />
       <TouchableOpacity style={Styles.button} onPress={handleVerification}>
-        <Text>Sent verification message</Text>
+        <Text>Send verification message</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={switchButtonStyles.button}
