@@ -5,12 +5,11 @@ interface Course {
   id: number;
   title: string;
   code: string;
-  professor: string;
 }
 
-interface Student {
+interface Teacher {
   name: string;
-  rollno: string;
+  enrollmentID: string;
   profileImage: string;
 }
 
@@ -19,25 +18,22 @@ const coursesData: Course[] = [
     id: 1,
     title: 'React Native Course',
     code: 'CS 100',
-    professor: 'Prof 1',
   },
   {
     id: 2,
     title: 'Web Development Course',
     code: 'CS 200',
-    professor: 'Prof 2',
   },
   {
     id: 3,
     title: 'Data Science Course',
     code: 'CS 300',
-    professor: 'Prof 3',
   },
 ];
 
-const studentData: Student = {
+const teacherData: Teacher = {
   name: 'John Doe',
-  rollno: '21CS10001',
+  enrollmentID: '123456789',
   profileImage: './profile-picture.jpg',
 };
 
@@ -55,7 +51,6 @@ const CourseCard = ({ course, isCurrentCourse, onPress }: CourseCardProps) => {
     <TouchableOpacity style={cardStyle} onPress={onPress}>
       <View style={styles.courseCardContent}>
         <Text style={styles.courseCardTitle}>{course.title}</Text>
-        <Text style={styles.courseCardProfessor}>{course.professor}</Text>
         <Text style={styles.courseCardCode}>{course.code}</Text>
       </View>
     </TouchableOpacity>
@@ -65,7 +60,7 @@ const CourseCard = ({ course, isCurrentCourse, onPress }: CourseCardProps) => {
 
 const StudentHomePage: React.FC = () => {
   const [courses, setCourses] = useState<Course[]>(coursesData);
-  const [student, setStudent] = useState<Student>(studentData);
+  const [teacher, setTeacher] = useState<Teacher>(teacherData);
 
   const currentCourseId = 1; // change this to get the current course id
 
@@ -85,14 +80,14 @@ const StudentHomePage: React.FC = () => {
     <View style={styles.container}>
     {/* Header */}
     <View style={styles.userContainer}>
-    {student.profileImage ? (
-        <Image source={{ uri: student.profileImage }} style={styles.profileImage} />
+    {teacher.profileImage ? (
+        <Image source={{ uri: user.profileImage }} style={styles.profileImage} />
       ) : (
         <Image source={require('../assets/default-user.png')} style={styles.profileImage} />
       )}
       <View style={styles.userInfoContainer}>
-        <Text style={styles.userName}>Welcome back, {student.name}!</Text>
-        <Text style={styles.userInfo}>{student.rollno}</Text>
+        <Text style={styles.userName}>Welcome back, {teacher.name}!</Text>
+        <Text style={styles.userInfo}>{teacher.enrollmentID}</Text>
       </View>
       <View style={styles.settingsButton}>
   <TouchableOpacity onPress={() => handleSettingsPress()}>

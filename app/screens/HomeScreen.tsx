@@ -17,7 +17,7 @@ export default function HomeScreen({navigation}: Props) {
     return (
         // make a container for the login page
         <View style={styles.background}>
-            <Text style={styles.welcomeText}>Welcome Back!</Text>
+            <Text style={styles.welcomeText}>Welcome!</Text>
 
             {/* Add buttons for student, teacher and admin login */}
             {/* They should redirect to corresponding login page on click */}
@@ -48,16 +48,16 @@ const styles = StyleSheet.create({
 
     background: {
       flex: 1,
-      backgroundColor: '#28282B',
+      backgroundColor: 'white',
       alignItems: 'center',
       justifyContent: 'center'
     },
 
     welcomeText: {
-        color: '#F5F5F5',
+        color: 'black',
         fontSize: 30,
         fontWeight: 'bold',
-        marginBottom: 50,
+        marginBottom: 15,
     },
 
     loginButton: {
