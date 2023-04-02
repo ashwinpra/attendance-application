@@ -74,19 +74,19 @@
 \tableofcontents
 
 
-\chapter*{Revision History}
+% \chapter*{Revision History}
 
-\begin{center}
-    \begin{tabular}{|c|c|c|c|}
-        \hline
-	    Name & Date & Reason For Changes & Version\\
-        \hline
-	    21 & 22 & 23 & 24\\
-        \hline
-	    31 & 32 & 33 & 34\\
-        \hline
-    \end{tabular}
-\end{center}
+% \begin{center}
+%     \begin{tabular}{|c|c|c|c|}
+%         \hline
+% 	    Name & Date & Reason For Changes & Version\\
+%         \hline
+% 	    21 & 22 & 23 & 24\\
+%         \hline
+% 	    31 & 32 & 33 & 34\\
+%         \hline
+%     \end{tabular}
+% \end{center}
 
 \chapter{Introduction}
 
@@ -170,12 +170,12 @@ The Attendance Application software will include the following features and func
     \end{itemize}
 \end{multicols}
 
-$<$Summarize the major functions the product must perform or must let the user 
-perform. Details will be provided in Section 3, so only a high level summary 
-(such as a bullet list) is needed here. Organize the functions to make them 
-understandable to any reader of the SRS. A picture of the major groups of 
-related requirements and how they relate, such as a top level data flow diagram 
-or object class diagram, is often effective.$>$
+% $<$Summarize the major functions the product must perform or must let the user 
+% perform. Details will be provided in Section 3, so only a high level summary 
+% (such as a bullet list) is needed here. Organize the functions to make them 
+% understandable to any reader of the SRS. A picture of the major groups of 
+% related requirements and how they relate, such as a top level data flow diagram 
+% or object class diagram, is often effective.$>$
 
 \section{User Classes and Characteristics}
 \begin{enumerate}
@@ -199,6 +199,11 @@ Overall, the Attendance Application software will operate in a networked environ
 
 
 \section{Design and Implementation Constraints}
+\subsection{Use-Case Diagram}
+\includegraphics[width=\linewidth]{use-case.png}
+\subsection{Class Diagram}
+\includegraphics[width=\linewidth]{"class diagram.png"}
+\subsection{Constraints}
 The development of the Attendance Application software is subject to the following constraints:
 \begin{itemize}
 \item Limited time: The development team has a fixed short timeline for completing the
@@ -225,41 +230,51 @@ mentation.
 \chapter{External Interface Requirements}
 
 \section{User Interfaces}
-$<$Describe the logical characteristics of each interface between the software 
-product and the users. This may include sample screen images, any GUI standards 
-or product family style guides that are to be followed, screen layout 
-constraints, standard buttons and functions (e.g., help) that will appear on 
-every screen, keyboard shortcuts, error message display standards, and so on.  
-Define the software components for which a user interface is needed. Details of 
-the user interface design should be documented in a separate user interface 
-specification.$>$
+\subsection{Home Page} 
+It gives 3 options for login - for student, teacher or design
+It also gives an additional option for new users to register 
 
-\section{Hardware Interfaces}
-$<$Describe the logical and physical characteristics of each interface between 
-the software product and the hardware components of the system. This may include 
-the supported device types, the nature of the data and control interactions 
-between the software and the hardware, and communication protocols to be 
-used.$>$
+\subsection{Login/Register Page}
+In this page, Login/Registration is done by taking relevant input from user (E-mail ID, Password, and some additional information in case of Registration). 
+Moreover, it will show an option of "Forgot Password" in Login 
+
+\subsection{Student Home Page}
+This will show an option at the top to give attendance, if a course is going on currently and attendance period is active. 
+ Below that, a list of the student's currently enrolled course would be visible. 
+On clicking on a certain course, it gives them a record of their attendance in that course. 
+
+\subsection{Teacher Home Page}
+This will show an option to take attendance, if a class is going on, and an option to close attendance period if it is currently open.
+Below it is a list of the Teacher's current courses. On clicking on any of them, it gives the Teacher a student-wise record of attendance along with overall statistics. 
+
+\subsection{Admin Home Page}
+This will show the admin a list of courses, and an option to edit or add courses at the top. On clicking of any of the courses, they get an option to modify teacher, add/remove student and modify student attendance.
+% $<$Describe the logical characteristics of each interface between the software 
+% product and the users. This may include sample screen images, any GUI standards 
+% or product family style guides that are to be followed, screen layout 
+% constraints, standard buttons and functions (e.g., help) that will appear on 
+% every screen, keyboard shortcuts, error message display standards, and so on.  
+% Define the software components for which a user interface is needed. Details of 
+% the user interface design should be documented in a separate user interface 
+% specification.$>$
+
+% \section{Hardware Interfaces}
+% $<$Describe the logical and physical characteristics of each interface between 
+% the software product and the hardware components of the system. This may include 
+% the supported device types, the nature of the data and control interactions 
+% between the software and the hardware, and communication protocols to be 
+% used.$>$
 
 \section{Software Interfaces}
-$<$Describe the connections between this product and other specific software 
-components (name and version), including databases, operating systems, tools, 
-libraries, and integrated commercial components. Identify the data items or 
-messages coming into the system and going out and describe the purpose of each.  
-Describe the services needed and the nature of communications. Refer to 
-documents that describe detailed application programming interface protocols.  
-Identify data that will be shared across software components. If the data 
-sharing mechanism must be implemented in a specific way (for example, use of a 
-global data area in a multitasking operating system), specify this as an 
-implementation constraint.$>$
+The system will be made to function on both Android and iOS. Both the student and the teacher are supposed to use smartphones with location-sharing capabilities via GPRS. This will aid in the proxy detection during attendance.
 
-\section{Communications Interfaces}
-$<$Describe the requirements associated with any communications functions 
-required by this product, including e-mail, web browser, network server 
-communications protocols, electronic forms, and so on. Define any pertinent 
-message formatting. Identify any communication standards that will be used, such 
-as FTP or HTTP. Specify any communication security or encryption issues, data 
-transfer rates, and synchronization mechanisms.$>$
+% \section{Communications Interfaces}
+% $<$Describe the requirements associated with any communications functions 
+% required by this product, including e-mail, web browser, network server 
+% communications protocols, electronic forms, and so on. Define any pertinent 
+% message formatting. Identify any communication standards that will be used, such 
+% as FTP or HTTP. Specify any communication security or encryption issues, data 
+% transfer rates, and synchronization mechanisms.$>$
 
 
 \chapter{System Features}
@@ -278,10 +293,10 @@ Priority: \textbf{High}
 This feature allows teachers and instructors to keep track of student attendance in real-time.
 The feature enables teachers to create and manage courses, and edit attendance for each student.
 Students can also view their attendance record, including their current attendance percentage, the number of days present, absent, and late.
-\subsection{Stimulus/Response Sequences}
-$<$List the sequences of user actions and system responses that stimulate the 
-behavior defined for this feature. These will correspond to the dialog elements 
-associated with use cases.$>$
+% \subsection{Stimulus/Response Sequences}
+% $<$List the sequences of user actions and system responses that stimulate the 
+% behavior defined for this feature. These will correspond to the dialog elements 
+% associated with use cases.$>$
 
 \subsection{Functional Requirements}
 \begin{itemize}
@@ -310,10 +325,10 @@ Priority: \textbf{High}
 
 This feature allows users to create an account and log in to the app. The allowed user types are students, teachers, and administrators. 
 Only administrators can accept new user account creation requests.
-\subsection{Stimulus/Response Sequences}
-$<$List the sequences of user actions and system responses that stimulate the 
-behavior defined for this feature. These will correspond to the dialog elements 
-associated with use cases.$>$
+% \subsection{Stimulus/Response Sequences}
+% $<$List the sequences of user actions and system responses that stimulate the 
+% behavior defined for this feature. These will correspond to the dialog elements 
+% associated with use cases.$>$
 
 \subsection{Functional Requirements}
 \begin{itemize}
@@ -328,10 +343,10 @@ associated with use cases.$>$
 Priority: \textbf{Medium}
 
 This feature allows teachers and students to view attendance reports for each course. Teachers can view attendance reports for all students in a course, while students can view their own attendance reports.
-\subsection{Stimulus/Response Sequences}
-$<$List the sequences of user actions and system responses that stimulate the 
-behavior defined for this feature. These will correspond to the dialog elements 
-associated with use cases.$>$
+% \subsection{Stimulus/Response Sequences}
+% $<$List the sequences of user actions and system responses that stimulate the 
+% behavior defined for this feature. These will correspond to the dialog elements 
+% associated with use cases.$>$
 
 \subsection{Functional Requirements}
 \begin{itemize}
@@ -346,10 +361,10 @@ associated with use cases.$>$
 Priority: \textbf{Medium}
 
 This feature allows teachers to detect students who are using a proxy to mark their attendance.
-\subsection{Stimulus/Response Sequences}
-$<$List the sequences of user actions and system responses that stimulate the 
-behavior defined for this feature. These will correspond to the dialog elements 
-associated with use cases.$>$
+% \subsection{Stimulus/Response Sequences}
+% $<$List the sequences of user actions and system responses that stimulate the 
+% behavior defined for this feature. These will correspond to the dialog elements 
+% associated with use cases.$>$
 
 \subsection{Functional Requirements}
 \begin{itemize}
@@ -361,10 +376,10 @@ associated with use cases.$>$
 Priority: \textbf{Low}
 
 This feature allows teachers to send notifications to students regarding low or irregular attendance to any student in a course.
-\subsection{Stimulus/Response Sequences}
-$<$List the sequences of user actions and system responses that stimulate the 
-behavior defined for this feature. These will correspond to the dialog elements 
-associated with use cases.$>$
+% \subsection{Stimulus/Response Sequences}
+% $<$List the sequences of user actions and system responses that stimulate the 
+% behavior defined for this feature. These will correspond to the dialog elements 
+% associated with use cases.$>$
 
 \subsection{Functional Requirements}
 \begin{itemize}
@@ -378,10 +393,10 @@ Priority: \textbf{Low}
 
 This feature should allow teachers and administrators to import and export data from the system.
 This will allow already existing data to be imported into the system, and data from the system to be exported to other systems.
-\subsection{Stimulus/Response Sequences}
-$<$List the sequences of user actions and system responses that stimulate the 
-behavior defined for this feature. These will correspond to the dialog elements 
-associated with use cases.$>$
+% \subsection{Stimulus/Response Sequences}
+% $<$List the sequences of user actions and system responses that stimulate the 
+% behavior defined for this feature. These will correspond to the dialog elements 
+% associated with use cases.$>$
 
 \subsection{Functional Requirements}
 \begin{itemize}
