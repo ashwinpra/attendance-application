@@ -39,7 +39,7 @@ const StackOptions = {
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="THome">
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="SHome" component={StudentHome} />
         <Stack.Screen name="THome" component={TeacherHome} />
         <Stack.Screen

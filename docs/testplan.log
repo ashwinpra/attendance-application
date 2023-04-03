@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.10.14)  3 APR 2023 20:14
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.10.14)  3 APR 2023 23:09
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -776,47 +776,72 @@ Class scrreprt Warning: \float@addtolists detected!
 
 chapter 2.
 chapter 3.
-chapter 4.
-[3]
-chapter 5.
-chapter 6.
-[4]
-chapter 7.
 
-Underfull \hbox (badness 10000) in paragraph at lines 127--129
+Underfull \hbox (badness 10000) in paragraph at lines 90--91
 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 92--93
+
+ []
+
+[3]
+chapter 4.
+chapter 5.
+[4]
+chapter 6.
 [5]
+chapter 7.
+
+Underfull \hbox (badness 10000) in paragraph at lines 133--135
+
+ []
+
 chapter 8.
 chapter 9.
-chapter 10.
 [6]
+chapter 10.
 chapter 11.
 chapter 12.
-
-Overfull \hbox (13.35991pt too wide) in paragraph at lines 164--179
+[7]
+Overfull \hbox (13.35991pt too wide) in paragraph at lines 170--185
  [] 
  []
 
 chapter 13.
-[7] [8] (./testplan.aux)
+
+Underfull \hbox (badness 10000) in paragraph at lines 188--189
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 196--197
+
+ []
+
+[8]
+chapter 14.
+[9] (./testplan.aux)
 Package rerunfilecheck Info: File `testplan.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 26972 strings out of 478268
- 518957 string characters out of 5846346
- 928401 words of memory out of 5000000
- 44707 multiletter control sequences out of 15000+600000
- 478012 words of font info for 58 fonts, out of 8000000 for 9000
+ 26977 strings out of 478268
+ 519008 string characters out of 5846346
+ 927401 words of memory out of 5000000
+ 44709 multiletter control sequences out of 15000+600000
+ 478311 words of font info for 59 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 110i,10n,106p,10687b,407s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 110i,10n,106p,10687b,449s stack positions out of 10000i,1000n,20000p,200000b,200000s
+
+pdfTeX warning (dest): name{section.13.1} has been referenced but does not exist, replaced by a fixed one
+
 {/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb>
-Output written on testplan.pdf (8 pages, 90518 bytes).
+Output written on testplan.pdf (9 pages, 95883 bytes).
 PDF statistics:
- 170 PDF objects out of 1000 (max. 8388607)
- 148 compressed objects within 2 object streams
- 28 named destinations out of 1000 (max. 500000)
- 157 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 180 PDF objects out of 1000 (max. 8388607)
+ 157 compressed objects within 2 object streams
+ 31 named destinations out of 1000 (max. 500000)
+ 165 words of extra memory for PDF output out of 10000 (max. 10000000)
 
