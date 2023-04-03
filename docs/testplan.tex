@@ -80,6 +80,9 @@
 
 \pagebreak
 
+\chapter{Test Plan Identifier}
+RS-MTP01.1
+
 \chapter{References}
 None Identified.
 
@@ -110,27 +113,29 @@ The following is a list of the areas to be focused on during testing of the appl
 \section{Testing Levels}
 The testing for the Attendance will consist of Unit, System/Integration (combined) and Acceptance test levels. It is hoped that there will be at least one full time independent test person for system/integration testing. However, with the budget constraints and time line established; most testing will be done by the test manager with the development teams participation.
 
-
 \begin{itemize}
-    \item UNIT Testing will be done by the developers and will be approved by them as a team. All unit test information will also be provided to the tester.
-    \item SYSTEM/INTEGRATION Testing will be performed by the test manager and development team with assistance. No specific test tools are required for this project. Programs will enter into System/Integration test after all critical defects have been corrected. A program may have up to two Major defects as long as they do not impede testing of the program (I.E. there is a work around for the error).
+    \item \textbf{UNIT} Testing will be done by the developers and will be approved by them as a team. All unit test information will also be provided to the tester.
+    \item \textbf{SYSTEM/INTEGRATION} Testing will be performed by the test manager and development team with assistance. No specific test tools are required for this project. Programs will enter into System/Integration test after all critical defects have been corrected. A program may have up to two Major defects as long as they do not impede testing of the program (I.E. there is a work around for the error).
     \item ACCEPTANCE Testing will be performed by the actual end users with the assistance of the test manager and developers. They will be informed of the acceptance test cases beforehand. Programs will enter into Acceptance test after all critical and major defects have been corrected. A program may have one major defect as long as it does not impede testing of the program (I.E. there is a work around for the error). Prior to final completion of acceptance testing all open critical and major defects MUST be corrected.
 \end{itemize}
-
 \section{Defect Reporting}
 The defects obtained during Unit Testing would be reported by the development team, along with it's origin, severity, solution and time taken to solve the defect. \\
 In other testing phases, apart from the above information, those defects that were located at higher levels but should have been caught at lower levels of testing would be especially reported.
 
-
 \chapter{Item Pass/Fail Criteria}
-The test process will be completed once the initial set of data has been collected of the students and teachers enrolled in the institution . The administration staff is responsible for ensuring that every piece of data about students and teachers is correct and updated. Once this is done, the application is considered live. New data must be collected every semester, while current data must be updated based on requests. Once a new batch of data is collected and verified, it will also be added to the database.
+The test process will be completed once the initial set of data has been collected of the students and teachers enrolled in the institution . The administration staff is responsible for ensuring that every piece of data about students and teachers is correct and updated. Once this is done, the application is considered live. \\\\
+New data must be collected every semester, while current data must be updated based on requests. Once a new batch of data is collected and verified, it will also be added to the database.
 
 \chapter{Suspension Criteria and Resumption Requirements}
+\section{Non-responsive email}
+If the email sent after registration is not received, the developer team will work to rectify it. In the meantime, the interface can be checked
+\section{Failure of proxy detection}
+If the proxy detection facility is not working, the proxy prevention can be tested or even be skipped, depending on the testing team
 
 \chapter{Test Deliverables}
 \begin{itemize}
     \item Acceptance test plan
-    \item System Integration test plan
+    \item System/Integration test plan
     \item Unit test plans
     \item Test cases document
 \end{itemize}
@@ -153,7 +158,7 @@ In order to provide complete and proper testing, the following areas need to be 
 
 \chapter{Responsibilities}
 \begin{center}
-\begin{tabular}{|c c c c|} 
+\begin{tabular}{|c | c | c | c|} 
  \hline
    & Dev Team & Test Team & Client \\ [0.5ex] 
  \hline
