@@ -87,12 +87,12 @@ RS-MTP01.1
 None Identified.
 
 \chapter{Introduction}
-This Master Test Plan outlines the testing approach for the Attendance Application, a software tool intended to be used by educational institutions, businesses, and organizations to track the attendance of students, employees, or
-members.\\
-For a more detailed understanding of the Attendance Application's functionality, please refer to the accompanying Software Requirements Specification document.
+This Master Test Plan is a comprehensive document that outlines the testing approach for the Attendance Application, a software tool specifically designed to track attendance for various types of organizations such as educational institutions, businesses, and other organizations. The primary objective of this software tool is to provide an accurate and efficient attendance tracking system that saves time, reduces errors, and minimizes the need for manual attendance management.\\
+To get a more detailed understanding of the Attendance Application's functionality, please refer to the application's Software Requirements Specification (SRS) document.\\
+By referring to the SRS document, you can gain a clear understanding of the goals and objectives of the Attendance Application, which will inform the development of the test cases and testing approach. This Master Test Plan will then outline the specific steps and procedures that will be followed to ensure that the software is thoroughly tested and meets the requirements and expectations of the end-users.
 
 \chapter{Software Risk Issues}
-Even though our implementation severely reduces the chance of students giving fake attendances (proxies), it is still not completely safe from proxies,  and proxies may to inaccurate attendance records and ultimately affect the credibility of the application. Therefore, the risk of proxies taking place should be considered in the testing process to ensure that the application can detect and prevent such instances as much as possible.
+Although our attendance application has measures in place to reduce the chances of fake attendances, there is still a possibility that proxies may occur. This could result in inaccurate attendance records and affect the application's credibility. Therefore, it's important to consider the risk of proxies during testing to ensure the application can detect and prevent them as much as possible. This may involve targeted testing methods and replicating real-world scenarios to mitigate the risk. Any proxy-related issues should be documented and communicated to the development team to resolve them effectively.
 
 \chapter{Features to be Tested}
 The following is a list of the areas to be focused on during testing of the application, along with their levels of risk, with H standing for High Risk, M standing for Medium Risk, and L standing for Low Risk 
@@ -119,8 +119,9 @@ The testing for the Attendance will consist of Unit, System/Integration (combine
     \item \textbf{ACCEPTANCE} Testing will be performed by the actual end users with the assistance of the test manager and developers. They will be informed of the acceptance test cases beforehand. Programs will enter into Acceptance test after all critical and major defects have been corrected. A program may have one major defect as long as it does not impede testing of the program (I.E. there is a work around for the error). Prior to final completion of acceptance testing all open critical and major defects MUST be corrected.
 \end{itemize}
 \section{Defect Reporting}
-The defects obtained during Unit Testing would be reported by the development team, along with it's origin, severity, solution and time taken to solve the defect. \\
-In other testing phases, apart from the above information, those defects that were located at higher levels but should have been caught at lower levels of testing would be especially reported.
+During the Unit Testing phase, the development team would be responsible for identifying and reporting any defects in the codebase. The defects would be thoroughly documented and reported, including their origin, severity, proposed solutions, and the estimated time needed to resolve the issue. This information would be shared with the testing team and the project manager for further analysis and resolution.\\
+In subsequent testing phases, such as System/Integration and Acceptance testing, the focus would be on identifying any defects that were not detected during Unit Testing or that originated from the interactions between different modules or components of the software. In these cases, special attention would be given to defects that should have been caught during Unit Testing but were not, as these defects could potentially be more severe or difficult to resolve at higher testing levels.\\ 
+Overall, the goal of the testing process is to ensure that the application meets the required quality standards and is free from any critical defects that could impact the user experience or the integrity of the attendance data.
 
 \chapter{Item Pass/Fail Criteria}
 The test process will be completed once the initial set of data has been collected of the students and teachers enrolled in the institution . The administration staff is responsible for ensuring that every piece of data about students and teachers is correct and updated. Once this is done, the application is considered live. \\\\
@@ -143,6 +144,8 @@ If the proxy detection facility is not working, the proxy prevention can be test
 \chapter{Environmental Needs}
 The following elements are required to support the overall testing effort at all levels within the application:
 \begin{itemize}
+    \item Access to the attendance database
+    \item Access to the actual attendance (to gauge the effectiveness of proxy detection)
     \item Access to testing data set 
     \item Access to the nightly backup/recovery process
 \end{itemize}
