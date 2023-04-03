@@ -88,6 +88,9 @@ This Master Test Plan outlines the testing approach for the Attendance Applicati
 members.\\
 For a more detailed understanding of the Attendance Application's functionality, please refer to the accompanying Software Requirements Specification document.
 
+\chapter{Software Risk Issues}
+Even though our implementation severely reduces the chance of students giving fake attendances (proxies), it is still not completely safe from proxies,  and proxies may to inaccurate attendance records and ultimately affect the credibility of the application. Therefore, the risk of proxies taking place should be considered in the testing process to ensure that the application can detect and prevent such instances as much as possible.
+
 \chapter{Features to be Tested}
 The following is a list of the areas to be focused on during testing of the application, along with their levels of risk, with H standing for High Risk, M standing for Medium Risk, and L standing for Low Risk 
 \begin{itemize}
@@ -105,11 +108,13 @@ The following is a list of the areas to be focused on during testing of the appl
 \chapter{Approach}
 
 \section{Testing Levels}
+The testing for the Attendance will consist of Unit, System/Integration (combined) and Acceptance test levels. It is hoped that there will be at least one full time independent test person for system/integration testing. However, with the budget constraints and time line established; most testing will be done by the test manager with the development teams participation.
 
-\subsection{Functional Requirements}
+
 \begin{itemize}
-    \item REQ-1: System should work with CSV files to store data.
-    \item REQ-2: System should allow teachers and administrators to import and export data from the system.
+    \item UNIT Testing will be done by the developers and will be approved by them as a team. All unit test information will also be provided to the tester.
+    \item SYSTEM/INTEGRATION Testing will be performed by the test manager and development team with assistance. No specific test tools are required for this project. Programs will enter into System/Integration test after all critical defects have been corrected. A program may have up to two Major defects as long as they do not impede testing of the program (I.E. there is a work around for the error).
+    \item ACCEPTANCE Testing will be performed by the actual end users with the assistance of the test manager and developers. They will be informed of the acceptance test cases beforehand. Programs will enter into Acceptance test after all critical and major defects have been corrected. A program may have one major defect as long as it does not impede testing of the program (I.E. there is a work around for the error). Prior to final completion of acceptance testing all open critical and major defects MUST be corrected.
 \end{itemize}
 
 
