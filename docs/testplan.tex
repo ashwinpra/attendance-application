@@ -1,0 +1,169 @@
+%Copyright 2014 Jean-Philippe Eisenbarth
+%This program is free software: you can 
+%redistribute it and/or modify it under the terms of the GNU General Public 
+%License as published by the Free Software Foundation, either version 3 of the 
+%License, or (at your option) any later version.
+%This program is distributed in the hope that it will be useful,but WITHOUT ANY 
+%WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+%PARTICULAR PURPOSE. See the GNU General Public License for more details.
+%You should have received a copy of the GNU General Public License along with 
+%this program.  If not, see <http://www.gnu.org/licenses/>.
+
+%Based on the code of Yiannis Lazarides
+%http://tex.stackexchange.com/questions/42602/software-requirements-specification-with-latex
+%http://tex.stackexchange.com/users/963/yiannis-lazarides
+%Also based on the template of Karl E. Wiegers
+%http://www.se.rit.edu/~emad/teaching/slides/srs_template_sep14.pdf
+%http://karlwiegers.com
+\documentclass{scrreprt}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{underscore}
+\usepackage{multicol}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{standalone}
+\usepackage[bookmarks=true]{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\scr@startchapter}{\if@openright\cleardoublepage\else\clearpage\fi}{}{}{}
+\makeatother
+
+\hypersetup{
+    bookmarks=false,    % show bookmarks bar?
+    pdftitle={Test Plan Document},    % title
+    pdfauthor={Jean-Philippe Eisenbarth},                     % author
+    pdfsubject={TeX and LaTeX},                        % subject of the document
+    pdfkeywords={TeX, LaTeX, graphics, images}, % list of keywords
+    colorlinks=true,       % false: boxed links; true: colored links
+    linkcolor=blue,       % color of internal links
+    citecolor=black,       % color of links to bibliography
+    filecolor=black,        % color of file links
+    urlcolor=purple,        % color of external links
+    linktoc=page            % only page is linked
+}%
+\def\myversion{1.0 }
+\date{}
+%\title{%
+
+%}
+\usepackage{hyperref}
+\begin{document}
+
+\begin{flushright}
+    \rule{16cm}{5pt}\vskip1cm
+    \begin{bfseries}
+        \Huge{TEST PLAN DOCUMENT}\\
+        \vspace{1cm}
+        for\\
+        \vspace{1cm}
+        Attendance Application\\
+        \vspace{1cm}
+        \LARGE{Version \myversion approved}\\
+        \vspace{0cm}
+        \begin{align*}
+        \text{Prepared by: } \;\;\;\; 
+         &\text{Sanskar Mittal} &\text{21CS10057}\\
+         &\text{Yash Sirvi} &\text{21CS10083}\\
+         &\text{Ashwin Prasanth} &\text{21CS30009}\\
+        \end{align*}
+        \vspace{1.9cm}
+        Indian Institute of Technology Kharagpur\\
+        \vspace{1.9cm}
+        \today\\
+    \end{bfseries}
+\end{flushright}
+
+\tableofcontents
+
+\pagebreak
+
+\chapter{References}
+None Identified.
+
+\chapter{Introduction}
+This Master Test Plan outlines the testing approach for the Attendance Application, a software tool intended to be used by educational institutions, businesses, and organizations to track the attendance of students, employees, or
+members.\\
+For a more detailed understanding of the Attendance Application's functionality, please refer to the accompanying Software Requirements Specification document.
+
+\chapter{Features to be Tested}
+The following is a list of the areas to be focused on during testing of the application, along with their levels of risk, with H standing for High Risk, M standing for Medium Risk, and L standing for Low Risk 
+\begin{itemize}
+\item New User Registration (M)
+\item Existing User Login (M)
+\item Attendance-giving Feature for Student (H)
+\item Attendance-taking Feature for Teacher (H)
+\item Detection of fake attendances (proxies) (L)
+\item Viewing of Detailed Attendance Report for Teacher and Student (L)
+\item Notification Alert on Low Attendance for Teacher and Student (L)
+\item Ability of Admin to modify Course Details (L)
+\item Importing/Exporting Attendance Data (L)
+\end{itemize}
+
+\chapter{Approach}
+
+\section{Testing Levels}
+
+\subsection{Functional Requirements}
+\begin{itemize}
+    \item REQ-1: System should work with CSV files to store data.
+    \item REQ-2: System should allow teachers and administrators to import and export data from the system.
+\end{itemize}
+
+
+\chapter{Item Pass/Fail Criteria}
+The test process will be completed once the initial set of data has been collected of the students and teachers enrolled in the institution . The administration staff is responsible for ensuring that every piece of data about students and teachers is correct and updated. Once this is done, the application is considered live. New data must be collected every semester, while current data must be updated based on requests. Once a new batch of data is collected and verified, it will also be added to the database.
+
+\chapter{Suspension Criteria and Resumption Requirements}
+
+\chapter{Test Deliverables}
+\begin{itemize}
+    \item Acceptance test plan
+    \item System\Integration test plan
+    \item Unit test plans
+    \item Test cases document
+\end{itemize}
+
+\chapter{Environmental Needs}
+The following elements are required to support the overall testing effort at all levels within the application:
+\begin{itemize}
+    \item Access to testing data set 
+    \item Access to the nightly backup/recovery process
+\end{itemize}
+
+\chapter{Staff and Training Needs}
+It is preferred that there will be at least one (1) full time tester assigned to the project for the system/integration and acceptance testing phases of the project. This will require assignment of a person at the beginning of the project to participate in reviews, etc. If a separate test person is not available, the project manager/test manager will assume this role.
+In order to provide complete and proper testing, the following areas need to be addressed in terms of training:
+\begin{itemize}
+    \item The developers and testers(s) will need to be trained on the basic understanding of OOPS along with knowledge of the software used such as React and MongoDB
+    \item The staff administration will require training on handling csv files which will have student and teachers’ data
+    \item The admin must be trained on handling the student data and the application’s admin interface
+\end{itemize}
+
+\chapter{Responsibilities}
+\begin{center}
+\begin{tabular}{|c c c c|} 
+ \hline
+   & Dev Team & Test Team & Client \\ [0.5ex] 
+ \hline
+ Acceptance test Documentation \& Execution  &  & x & x \\ 
+ \hline
+ System/Integration test Documentation \& Execution & x & x &  \\
+ \hline
+ Unit test Documentation \& Execution & x & x &  \\
+ \hline
+ System Design Reviews & x & x & x \\
+ \hline
+ Test Procedures \& Rules & x & x &  \\ [1ex] 
+ \hline
+\end{tabular}
+\end{center}
+
+\chapter{Planning Risks and Contingencies}
+\section{Delay in Data Collection}
+If data is not collected or verified within the given timeframe, it will result in a delay in updating the application. During this period, manual attendance will be necessary and will need to be uploaded to the database after verification.
+If the cause of the delay is due to understaffing, current staff members may be required to work overtime as hiring and training temporary staff is not feasible within the given time frame.
+
+\end{document}
