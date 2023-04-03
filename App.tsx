@@ -25,16 +25,16 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const StackOptions = {
   // options to be passed to the  navigator
   headerStyle: {
-    backgroundColor: "#FFD166",
+    backgroundColor: "#008CBA",
   },
-  headerTintColor: "#000",
+  headerTintColor: "#fff",
   headerTitleStyle: {
     fontWeight: "bold",
+    fontSize: 25,
   },
-  title: "Attendance Application",
+  headerTitle: "Attendance Application",
   headerTitleAlign: "center",
 };
-
 
 export default function App() {
   return (
