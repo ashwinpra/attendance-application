@@ -1,3 +1,4 @@
+/// <reference path="./globals.d.ts" />
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
 
