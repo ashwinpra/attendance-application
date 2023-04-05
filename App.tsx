@@ -5,20 +5,13 @@ import { ThemeProvider, Button, createTheme } from "@rneui/themed";
 import HomeScreen from "./app/screens/HomeScreen";
 import LoginScreen from "./app/screens/LoginScreen";
 import RegistrationScreen from "./app/screens/RegistrationScreen";
-import StudentHome from "./app/screens/StudentHome";
-import TeacherHome from "./app/screens/TeacherHome";
+import StudentHome from "./app/screens/homepages/StudentHome";
+import TeacherHome from "./app/screens/homepages/TeacherHome";
+import AdminHome from "./app/screens/homepages/AdminHome";
 import Courses from "./app/screens/Courses";
 import Settings from "./app/screens/Settings";
+import { RootStackParamList } from "./app/components/types";
 
-type RootStackParamList = {
-  Home: undefined; // undefined means that the screen doesn't take any params
-  SHome: undefined; // undefined means that the screen
-  THome: undefined;
-  Login: undefined;
-  Register: undefined;
-  Courses: undefined;
-  Settings: undefined;
-};
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -39,9 +32,10 @@ const StackOptions = {
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="AHome">
         <Stack.Screen name="SHome" component={StudentHome} />
         <Stack.Screen name="THome" component={TeacherHome} />
+        <Stack.Screen name="AHome" component={AdminHome} />
         <Stack.Screen
           name="Home"
           component={HomeScreen}

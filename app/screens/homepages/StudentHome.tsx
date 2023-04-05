@@ -1,41 +1,37 @@
-/// <reference path="./globals.d.ts" />
+/// <reference path="../globals.d.ts" />
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { useNavigation } from "@react-navigation/native";
+import { NavigationProp } from "@react-navigation/native";
+import { RootStackParamList } from "../../components/types";
 
-interface Course {
-  id: number;
-  title: string;
-  code: string;
-  professor: string;
-}
+type Props = {
+  navigation: NavigationProp<RootStackParamList, "SHome">;
+};
 
-interface Student {
-  name: string;
-  rollno: string;
-  profileImage: string;
-}
-
+// this will be fetched from the backend
 const coursesData: Course[] = [
   {
     id: 1,
     title: 'React Native Course',
     code: 'CS 100',
-    professor: 'Prof 1',
+    teacher: 'Prof 1',
   },
   {
     id: 2,
     title: 'Web Development Course',
     code: 'CS 200',
-    professor: 'Prof 2',
+    teacher: 'Prof 2',
   },
   {
     id: 3,
     title: 'Data Science Course',
     code: 'CS 300',
-    professor: 'Prof 3',
+    teacher: 'Prof 3',
   },
 ];
 
+// this will be fetched from the backend
 const studentData: Student = {
   name: 'John Doe',
   rollno: '21CS10001',
@@ -56,7 +52,7 @@ const CourseCard = ({ course, isCurrentCourse, onPress }: CourseCardProps) => {
     <TouchableOpacity style={cardStyle} onPress={onPress}>
       <View style={styles.courseCardContent}>
         <Text style={styles.courseCardTitle}>{course.title}</Text>
-        <Text style={styles.courseCardProfessor}>{course.professor}</Text>
+        <Text style={styles.courseCardProfessor}>{course.teacher}</Text>
         <Text style={styles.courseCardCode}>{course.code}</Text>
       </View>
     </TouchableOpacity>
@@ -64,7 +60,7 @@ const CourseCard = ({ course, isCurrentCourse, onPress }: CourseCardProps) => {
 };
 
 
-const StudentHomePage: React.FC = () => {
+const StudentHome: React.FC<Props> = ({navigation}) => {
   const [courses, setCourses] = useState<Course[]>(coursesData);
   const [student, setStudent] = useState<Student>(studentData);
 
@@ -74,7 +70,7 @@ const StudentHomePage: React.FC = () => {
   const otherCourses = courses.filter((course) => course.id !== currentCourseId);
 
   const handleSettingsPress = () => {
-    // Code to handle settings logic
+    navigation.navigate("Settings");
   };
 
   const handleCoursePress = (course: Course, isCurrentCourse: boolean) => {
@@ -89,7 +85,7 @@ const StudentHomePage: React.FC = () => {
     {student.profileImage ? (
         <Image source={{ uri: student.profileImage }} style={styles.profileImage} />
       ) : (
-        <Image source={require('../assets/default-user.png')} style={styles.profileImage} />
+        <Image source={require('../../assets/default-user.png')} style={styles.profileImage} />
       )}
       <View style={styles.userInfoContainer}>
         <Text style={styles.userName}>Welcome back, {student.name}!</Text>
@@ -97,7 +93,7 @@ const StudentHomePage: React.FC = () => {
       </View>
       <View style={styles.settingsButton}>
   <TouchableOpacity onPress={() => handleSettingsPress()}>
-    <Image source={require("../assets/setting.png")} style={styles.settingsIcon} />
+    <Image source={require("../../assets/setting.png")} style={styles.settingsIcon} />
   </TouchableOpacity>
     </View>
   </View>
@@ -252,4 +248,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StudentHomePage;
+export default StudentHome;
