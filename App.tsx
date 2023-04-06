@@ -19,7 +19,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const setStackOptions = (title: string) => {
   return {
-    // options to be passed to the  navigator
+    // options to be passed to the navigator
     headerStyle: {
       backgroundColor: "#1e88e5",
     },
@@ -36,7 +36,7 @@ const setStackOptions = (title: string) => {
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="AHome">
+      <Stack.Navigator initialRouteName="THome">
         <Stack.Screen name="SHome" component={StudentHome} options={setStackOptions("Home")}/>
         <Stack.Screen name="THome" component={TeacherHome} options={setStackOptions("Home")}/>
         <Stack.Screen name="AHome" component={AdminHome} options={setStackOptions("Home")}/>

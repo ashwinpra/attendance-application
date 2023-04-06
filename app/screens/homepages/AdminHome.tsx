@@ -1,7 +1,6 @@
 /// <reference path="../../globals.d.ts" />
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
-import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../components/types";
 
@@ -16,18 +15,21 @@ const allCoursesData: Course[] = [
     title: 'React Native Course',
     code: 'CS 100',
     teacher: 'Prof 1',
+    attendancePeriod: true,
   },
   {
     id: 2,
     title: 'Web Development Course',
     code: 'CS 200',
     teacher: 'Prof 2',
+    attendancePeriod: true,
   },
   {
     id: 3,
     title: 'Data Science Course',
     code: 'CS 300',
     teacher: 'Prof 3',
+    attendancePeriod: true,
   },
 ];
 
@@ -68,7 +70,7 @@ const AdminHome: React.FC<Props> = ({navigation}) => {
   };
 
   const handleCoursePress = (course: Course) => {
-    // Code to handle course press logic
+    navigation.navigate("ACourse", {course: course});
   };
 
   return (

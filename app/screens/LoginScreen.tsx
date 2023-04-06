@@ -7,11 +7,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../components/types";
 
-type RootStackParamList = {
-  Home: undefined; // undefined means that the screen doesn't take any params
-  Login: undefined;
-};
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, "Home">;

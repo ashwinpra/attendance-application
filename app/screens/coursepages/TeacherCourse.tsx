@@ -1,32 +1,63 @@
 /// <reference path="../../globals.d.ts" />
-import React from 'react';
+import React,{useState} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../components/types";
-
+import SizedBox from '../../components/SizedBox';
 type Props = {
-    route: RouteProp<RootStackParamList, "SCourse">;
-    navigation: NavigationProp<RootStackParamList, "SCourse">;
+    route: RouteProp<RootStackParamList, "TCourse">;
+    navigation: NavigationProp<RootStackParamList, "TCourse">;
 };
   
 const TeacherCourse: React.FC<Props> = ({route,navigation}) => {
 
-  const handleTakeAttendance = () => {
-    // logic to take attendance
-  }
+	const [attendanceCode, setAttendanceCode] = useState('');
 
-  const renderAttendanceButton = () => {
-    if (!route.params.isCurrentCourse) {
-      return <Text style={styles.attendancePeriodInactive}>Course not ongoing</Text>;
-    }
+	const handleTakeAttendance = () => {
+	  // Generate a random attendance code
+	  const code = Math.random().toString(36).substring(7);
+	  // Set the attendance code state
+	  setAttendanceCode(code);
+	};
 
-    return (
-      <TouchableOpacity style={styles.attendanceButton} onPress={handleTakeAttendance}>
-        <Text style={styles.attendanceButtonText}>Take Attendance</Text>
-      </TouchableOpacity>
-    );
-  };
+	const handleEndAttendance = () => {
+		setAttendanceCode('');
+	};
+
+	const handleRegenerateAttendanceCode = () => {
+		// Generate a random attendance code
+		handleTakeAttendance();
+	};
+
+	const renderAttendanceButton = () => {
+		if (!route.params.isCurrentCourse) {
+		  return <Text style={styles.attendancePeriodInactive}>Course not ongoing</Text>;
+		}
+	
+		if (attendanceCode) {
+			return (
+				<View style={styles.attendanceContainer}>
+				  <Text style={styles.attendanceCode}>{attendanceCode}</Text>
+					<SizedBox height={10} />
+				  <TouchableOpacity style={styles.otherButton} onPress={handleEndAttendance}>
+					<Text style={styles.attendanceButtonText}>End Attendance</Text>
+				  </TouchableOpacity>
+				  <TouchableOpacity style={styles.otherButton} onPress={handleRegenerateAttendanceCode}>
+					<Text style={styles.attendanceButtonText}>Regenerate Code</Text>
+				  </TouchableOpacity>
+				</View>
+			  );
+		}
+	
+		return (
+			<View style={styles.attendanceContainer}>
+		  <TouchableOpacity style={styles.attendanceButton} onPress={handleTakeAttendance}>
+			<Text style={styles.attendanceButtonText}>Take Attendance</Text>
+		  </TouchableOpacity>
+		</View>
+		);
+	  };
 
   return (
     <View style={styles.container}>
@@ -43,6 +74,86 @@ const TeacherCourse: React.FC<Props> = ({route,navigation}) => {
   );
 };
 
-
-
 export default TeacherCourse;
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#fff',
+      paddingHorizontal: 20,
+      paddingVertical: 10,
+    },
+    header: {
+      borderRadius: 10,
+      padding: 10,
+      marginBottom: 20,
+    },
+    courseName: {
+      color: 'black',
+      textAlign: 'center',
+      fontSize: 30,
+      fontWeight: 'bold',
+      marginBottom: 5,
+    },
+    courseCode: {
+      color: 'gray',
+      textAlign: 'center',
+      fontSize: 24,
+      marginBottom: 5,
+    },
+    courseTeacher: {
+      color: 'gray',
+      textAlign: 'center',
+      fontSize: 20,
+    },
+	attendanceContainer: {
+		alignItems: 'center',
+		paddingVertical: 20,
+	  },
+	otherButton: {
+		backgroundColor: '#1e88e5',
+		borderRadius: 5,
+		padding: 10,
+		alignSelf: 'center',
+		marginTop: 10,
+	},			
+    attendanceButton: {
+      backgroundColor: '#1e88e5',
+      borderRadius: 5,
+      padding: 20,
+      alignSelf: 'center',
+    },
+    attendanceButtonText: {
+      color: '#FFF',
+      fontSize: 24,
+    },
+    attendancePeriodInactive: {
+      fontSize: 16,
+      color: '#666',
+      alignSelf: 'center',
+    },
+
+    attendanceCode: {
+		fontSize: 24,
+		fontWeight: 'bold',
+		textAlign: 'center',
+		backgroundColor: '#f2f2f2',
+		// paddingVertical: 10,
+		// paddingHorizontal: 20,
+		padding: 10,
+		borderRadius: 5,
+		marginTop: 20,
+	  },
+    attendanceRecord: {
+      backgroundColor: '#FFF',
+      borderRadius: 10,
+      paddingTop: 50,
+	  paddingBottom: 20,
+    },
+    sectionTitle: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 20,
+      alignSelf: 'center'
+    },
+  });
