@@ -1,31 +1,29 @@
 /// <reference path="../../globals.d.ts" />
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useNavigation } from "@react-navigation/native";
+import { RouteProp } from '@react-navigation/native';
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../components/types";
 
 type Props = {
+    route: RouteProp<RootStackParamList, "SCourse">;
     navigation: NavigationProp<RootStackParamList, "SCourse">;
 };
   
+const TeacherCourse: React.FC<Props> = ({route,navigation}) => {
 
-type CourseProps = {
-  course: Course;
-  isCurrentCourse: boolean;
-  attendancePeriod: boolean;
-};
+  const handleTakeAttendance = () => {
+    // logic to take attendance
+  }
 
-const CoursePage = ({ course, isCurrentCourse, attendancePeriod }: CourseProps) => {
-    
   const renderAttendanceButton = () => {
-    if (!isCurrentCourse || !attendancePeriod) {
-      return <Text style={styles.attendancePeriodInactive}>Attendance period inactive</Text>;
+    if (!route.params.isCurrentCourse) {
+      return <Text style={styles.attendancePeriodInactive}>Course not ongoing</Text>;
     }
 
     return (
-      <TouchableOpacity style={styles.attendanceButton}>
-        <Text style={styles.attendanceButtonText}>Give Attendance</Text>
+      <TouchableOpacity style={styles.attendanceButton} onPress={handleTakeAttendance}>
+        <Text style={styles.attendanceButtonText}>Take Attendance</Text>
       </TouchableOpacity>
     );
   };
@@ -33,70 +31,18 @@ const CoursePage = ({ course, isCurrentCourse, attendancePeriod }: CourseProps) 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.courseName}>{course.title}</Text>
-        <Text style={styles.courseCode}>{course.code}</Text>
-        <Text style={styles.courseTeacher}>Teacher: {course.teacher}</Text>
-        {renderAttendanceButton()}
+        <Text style={styles.courseName}>{route.params.course.title}</Text>
+        <Text style={styles.courseCode}>{route.params.course.code}</Text>
       </View>
+      {renderAttendanceButton()}
       <View style={styles.attendanceRecord}>
-        {/* Display attendance record here */}
+        <Text style={styles.sectionTitle}>Attendance Record</Text>
+        {/* Attendance record goes here */}
       </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFF',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  header: {
-    backgroundColor: '#6C5B7B',
-    borderRadius: 10,
-    padding: 10,
-    marginBottom: 10,
-  },
-  courseName: {
-    color: '#FFF',
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 5,
-  },
-  courseCode: {
-    color: '#FFF',
-    fontSize: 18,
-    fontStyle: 'italic',
-    marginBottom: 5,
-  },
-  courseTeacher: {
-    color: '#FFF',
-    fontSize: 18,
-    marginBottom: 5,
-  },
-  attendanceButton: {
-    backgroundColor: '#FF6F61',
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    alignSelf: 'flex-end',
-  },
-  attendanceButtonText: {
-    color: '#FFF',
-    fontSize: 16,
-  },
-  attendancePeriodInactive: {
-    fontSize: 16,
-    color: '#666',
-    alignSelf: 'flex-end',
-  },
-  attendanceRecord: {
-    flex: 1,
-    backgroundColor: '#FFF',
-    borderRadius: 10,
-    padding: 10,
-  },
-});
 
-export default CoursePage;
+
+export default TeacherCourse;

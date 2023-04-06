@@ -72,7 +72,7 @@ const TeacherHome: React.FC<Props> = ({navigation}) => {
   };
 
   const handleCoursePress = (course: Course, isCurrentCourse: boolean) => {
-    // TODO: navigate to the course page
+    navigation.navigate("TCourse", { course: course, isCurrentCourse: isCurrentCourse });
   };
 
   return (

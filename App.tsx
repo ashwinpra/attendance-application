@@ -36,7 +36,7 @@ const setStackOptions = (title: string) => {
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="SHome">
+      <Stack.Navigator initialRouteName="AHome">
         <Stack.Screen name="SHome" component={StudentHome} options={setStackOptions("Home")}/>
         <Stack.Screen name="THome" component={TeacherHome} options={setStackOptions("Home")}/>
         <Stack.Screen name="AHome" component={AdminHome} options={setStackOptions("Home")}/>
@@ -47,7 +47,8 @@ export default function App() {
         />
         {/* Change title of this later */}
         <Stack.Screen name="SCourse" component={StudentCourse} options={setStackOptions("Course")}/>
-        
+        <Stack.Screen name="TCourse" component={TeacherCourse} options={setStackOptions("Course")}/>
+        <Stack.Screen name="ACourse" component={AdminCourse} options={setStackOptions("Course")}/>
         <Stack.Screen name="Login" component={LoginScreen} options={setStackOptions("Login")}/>
         <Stack.Screen name="Register" component={RegistrationScreen} options={setStackOptions("Register")}/>
         <Stack.Screen name="Settings" component={Settings} options={setStackOptions("Settings")}/>

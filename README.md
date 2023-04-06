@@ -9,11 +9,9 @@ Team Project for Software Engineering Laboratory Course (CS29202) 2023
 - Ashwin Prasanth (21CS30009)
 
 ## TODO: 
-- [x] Student, Teacher and Admin Homepage 
+- [ ] Admin pages
 - [ ] Logic for enrollment of student in course
 - [ ] Attendance period activation
-- [ ] Add an "edit" button in homepage of admin
-- [ ] Student, Teacher and Admin Coursepage 
 - [ ] Attendance taking mechanism 
 - [ ] Backend for getting courses of student and teacher
 - [ ] Backend for getting student attendance record
