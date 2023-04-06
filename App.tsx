@@ -1,6 +1,9 @@
 /// <reference path="app/globals.d.ts" />
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import attendanceReducer from './app/store/attendanceSlice';
 import React from "react";
 import HomeScreen from "./app/screens/HomeScreen";
 import LoginScreen from "./app/screens/LoginScreen";
@@ -14,6 +17,11 @@ import AdminCourse from "./app/screens/coursepages/AdminCourse";
 import Settings from "./app/screens/Settings";
 import { RootStackParamList } from "./app/components/types";
 
+const store = configureStore({
+  reducer: {
+    attendance: attendanceReducer,
+  },
+});
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -35,6 +43,7 @@ const setStackOptions = (title: string) => {
 
 export default function App() {
   return (
+      <Provider store={store}>
     <NavigationContainer>
       <Stack.Navigator initialRouteName="THome">
         <Stack.Screen name="SHome" component={StudentHome} options={setStackOptions("Home")}/>
@@ -54,5 +63,6 @@ export default function App() {
         <Stack.Screen name="Settings" component={Settings} options={setStackOptions("Settings")}/>
       </Stack.Navigator>
     </NavigationContainer>
+    </Provider>
   );
 }

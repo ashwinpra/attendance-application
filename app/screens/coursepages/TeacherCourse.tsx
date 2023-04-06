@@ -2,33 +2,45 @@
 import React,{useState} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
+import { useEffect } from 'react';
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../components/types";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import SizedBox from '../../components/SizedBox';
+import { useSelector, useDispatch } from 'react-redux';
+import { setAttendanceCode, clearAttendanceCode, setAttendancePeriodActive} from '../../store/attendanceSlice';
+
+
 type Props = {
     route: RouteProp<RootStackParamList, "TCourse">;
     navigation: NavigationProp<RootStackParamList, "TCourse">;
 };
   
 const TeacherCourse: React.FC<Props> = ({route,navigation}) => {
-
-	const [attendanceCode, setAttendanceCode] = useState('');
+	const dispatch = useDispatch();
+	const attendanceCode = useSelector((state) => state.attendanceCode);
+	const attendancePeriodActive = useSelector((state) => state.attendancePeriodActive);
 
 	const handleTakeAttendance = () => {
-	  // Generate a random attendance code
-	  const code = Math.random().toString(36).substring(7);
-	  // Set the attendance code state
-	  setAttendanceCode(code);
-	};
+		// generate a new attendance code
+		const newCode = Math.random().toString(36).substr(2, 6);
+		// store the code in the Redux store
+		dispatch(setAttendanceCode(newCode));
+		// set the attendance period to active
+		dispatch(setAttendancePeriodActive(true));
+
+		console.log('Attendance code: ' + newCode)
+		// obtain it from the dispatch and print
+		console.log('Attendance code from store: ' + attendanceCode);
+	  };
 
 	const handleEndAttendance = () => {
-		setAttendanceCode('');
-	};
-
-	const handleRegenerateAttendanceCode = () => {
-		// Generate a random attendance code
-		handleTakeAttendance();
-	};
+		dispatch(setAttendanceCode(''));
+	  }
+	
+	const handleRegenerateCode = () => {
+		dispatch(setAttendanceCode(Math.random().toString(36).substring(2, 8).toUpperCase()));
+	}
 
 	const renderAttendanceButton = () => {
 		if (!route.params.isCurrentCourse) {
@@ -36,26 +48,23 @@ const TeacherCourse: React.FC<Props> = ({route,navigation}) => {
 		}
 	
 		if (attendanceCode) {
-			return (
-				<View style={styles.attendanceContainer}>
-				  <Text style={styles.attendanceCode}>{attendanceCode}</Text>
-					<SizedBox height={10} />
-				  <TouchableOpacity style={styles.otherButton} onPress={handleEndAttendance}>
-					<Text style={styles.attendanceButtonText}>End Attendance</Text>
-				  </TouchableOpacity>
-				  <TouchableOpacity style={styles.otherButton} onPress={handleRegenerateAttendanceCode}>
-					<Text style={styles.attendanceButtonText}>Regenerate Code</Text>
-				  </TouchableOpacity>
-				</View>
-			  );
+		  return (
+			<View style={styles.attendanceContainer}>
+			  <Text style={styles.attendanceCode}>{attendanceCode}</Text>
+			  <TouchableOpacity style={styles.attendanceButton} onPress={handleRegenerateCode}>
+				<Text style={styles.attendanceButtonText}>Regenerate Code</Text>
+			  </TouchableOpacity>
+			  <TouchableOpacity style={styles.attendanceButton} onPress={handleEndAttendance}>
+				<Text style={styles.attendanceButtonText}>End Attendance</Text>
+			  </TouchableOpacity>
+			</View>
+		  );
 		}
 	
 		return (
-			<View style={styles.attendanceContainer}>
 		  <TouchableOpacity style={styles.attendanceButton} onPress={handleTakeAttendance}>
 			<Text style={styles.attendanceButtonText}>Take Attendance</Text>
 		  </TouchableOpacity>
-		</View>
 		);
 	  };
 
@@ -132,7 +141,6 @@ const styles = StyleSheet.create({
       color: '#666',
       alignSelf: 'center',
     },
-
     attendanceCode: {
 		fontSize: 24,
 		fontWeight: 'bold',

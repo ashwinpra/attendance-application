@@ -10,6 +10,7 @@ Team Project for Software Engineering Laboratory Course (CS29202) 2023
 
 ## TODO: 
 - [ ] Admin pages
+- [ ] Change current course based on time!
 - [ ] Logic for enrollment of student in course
 - [ ] Attendance period activation
 - [ ] Attendance taking & giving mechanism 
