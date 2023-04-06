@@ -11,11 +11,14 @@ Team Project for Software Engineering Laboratory Course (CS29202) 2023
 ## TODO: 
 - [x] Student, Teacher and Admin Homepage 
 - [ ] Logic for enrollment of student in course
+- [ ] Attendance period activation
 - [ ] Add an "edit" button in homepage of admin
 - [ ] Student, Teacher and Admin Coursepage 
 - [ ] Attendance taking mechanism 
 - [ ] Backend for getting courses of student and teacher
-- [ ] Backend for authentication and attendance storage
+- [ ] Backend for getting student attendance record
+- [ ] Display attendance record
+- [ ] Backend for authentication
 
 ## Assignment 1
 

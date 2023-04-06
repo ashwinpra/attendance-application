@@ -1,4 +1,4 @@
-/// <reference path="../globals.d.ts" />
+/// <reference path="../../globals.d.ts" />
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
@@ -61,6 +61,7 @@ const CourseCard = ({ course, isCurrentCourse, onPress }: CourseCardProps) => {
 
 
 const StudentHome: React.FC<Props> = ({navigation}) => {
+  
   const [courses, setCourses] = useState<Course[]>(coursesData);
   const [student, setStudent] = useState<Student>(studentData);
 
@@ -73,8 +74,12 @@ const StudentHome: React.FC<Props> = ({navigation}) => {
     navigation.navigate("Settings");
   };
 
-  const handleCoursePress = (course: Course, isCurrentCourse: boolean) => {
-    // Code to handle course press logic
+  const handleCoursePress = (course: Course, isCurrentCourse: boolean, attendancePeriod: boolean) => {
+    navigation.navigate("SCourse", 
+      {course: course,
+      isCurrentCourse: isCurrentCourse, 
+      attendancePeriod: attendancePeriod
+    });
   };
 
   return (
@@ -104,7 +109,7 @@ const StudentHome: React.FC<Props> = ({navigation}) => {
         <View style={styles.currentCourse}>
         <Text style={styles.sectionTitle}>Current Course</Text>
         {currentCourse ? (
-            <CourseCard course={currentCourse} onPress={() => handleCoursePress(currentCourse,true)} isCurrentCourse={true} />
+            <CourseCard course={currentCourse} onPress={() => handleCoursePress(currentCourse,true,true)} isCurrentCourse={true} />
         ) : (
           <Text style={styles.noCourseText}>No current course</Text>
         )}
@@ -115,7 +120,7 @@ const StudentHome: React.FC<Props> = ({navigation}) => {
         <Text style={styles.sectionTitle}>Other Courses</Text>
         {otherCourses.length > 0 ? (
           otherCourses.map((course) => (
-              <CourseCard course={course} onPress={() => handleCoursePress(course,false)} isCurrentCourse={false} />
+              <CourseCard course={course} onPress={() => handleCoursePress(course,false,true)} isCurrentCourse={false} />
           ))
         ) : (
           <Text style={styles.noCourseText}>No courses available</Text>

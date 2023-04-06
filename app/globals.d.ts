@@ -21,3 +21,5 @@ interface Teacher extends User {
 interface Admin extends User {
     adminID: string;
 }
+
+// const primaryColor = '#1e88e5';

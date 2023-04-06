@@ -3,6 +3,7 @@ export type RootStackParamList = {
     SHome: undefined;
     THome: undefined;
     AHome: undefined;
+    SCourse: ;
     Login: undefined;
     Register: undefined;
     Courses: undefined;
