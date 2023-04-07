@@ -9,9 +9,9 @@ Team Project for Software Engineering Laboratory Course (CS29202) 2023
 - Ashwin Prasanth (21CS30009)
 
 ## TODO: 
-- [ ] Logic for enrollment of student in course - this would be easier after backend integration
-- [ ] Proxy checking - check distance
-- [ ] Display attendance record - this would be easier after backend integration
+- [ ] Logic for enrollment of student in course - easier after backend integration
+- [ ] Proxy checking - check distance - easier after backend integration
+- [ ] Display attendance record - easier after backend integration
 - [ ] Store attendance code in backend
 - [ ] Backend for getting courses of student and teacher
 - [ ] Backend for getting student attendance record
