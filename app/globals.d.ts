@@ -29,5 +29,10 @@ interface Admin extends User {
     adminID: string;
 }
 
+interface attendanceRecord {
+    date: string;
+    status: string;
+}
+
 // const primaryColor = '#1e88e5';
 

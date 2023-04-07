@@ -8,8 +8,6 @@ import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-
-
 type Props = {
 	route: RouteProp<RootStackParamList, "SCourse">;
 	navigation: NavigationProp<RootStackParamList, "SCourse">;
@@ -86,6 +84,7 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 			<View style={styles.attendanceRecord}>
 				<Text style={styles.sectionTitle}>Attendance Record</Text>
 				{/* Attendance record goes here */}
+				4
 			</View>
 		</View>
 	);
