@@ -19,7 +19,7 @@ const Settings: React.FC<Props> = ({ navigation }) => {
   const handleLogout = () => {
     // TODO: Implement logout functionality
     console.log('Logging out');
-    navigation.popToTop();
+    navigation.navigate("Home");
   };
 
   return (
