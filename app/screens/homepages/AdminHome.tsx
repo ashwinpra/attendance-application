@@ -16,75 +16,10 @@ type Props = {
   navigation: NavigationProp<RootStackParamList, "AHome">;
 };
 
-<<<<<<< HEAD
-//TODO: this will be fetched from the backend
-const allCoursesData: Course[] = [
-  {
-    id: 1,
-    title: 'React Native Course',
-    code: 'CS 100',
-    teacher: 'Prof 1',
-    timing: [
-      {
-        day: 0,
-        startTime: "14:00",
-        endTime: "16:00"
-      },
-      {
-        day: 2,
-        startTime: "14:00",
-        endTime: "16:00"
-      }
-    ]
-  },
-  {
-    id: 2,
-    title: 'Web Development Course',
-    code: 'CS 200',
-    teacher: 'Prof 2',
-    timing: [
-      {
-        day: 1,
-        startTime: "14:00",
-        endTime: "16:00"
-      },
-      {
-        day: 3,
-        startTime: "14:00",
-        endTime: "16:00"
-      }
-    ]
-  },
-  {
-    id: 3,
-    title: 'Data Science Course',
-    code: 'CS 300',
-    teacher: 'Prof 3',
-    timing: [
-      {
-        day: 6,
-        startTime: "14:00",
-        endTime: "16:00"
-      },
-      {
-        day: 5,
-        startTime: "14:00",
-        endTime: "16:00"
-      }
-    ]
-  },
-];
-
-// this will be fetched from the backend
-const adminData: Admin = {
-  name: 'John Doe',
-  adminID: '123',
-=======
 type Course = {
   id: number;
   title: string;
   code: string;
->>>>>>> ashwin
 };
 
 type Student = {
@@ -186,36 +121,9 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-<<<<<<< HEAD
-    {/* Header */}
-    <View style={styles.userContainer}>
-      <View style={styles.userInfoContainer}>
-        <Text style={styles.userName}>Welcome back, {admin.name}!</Text>
-        <Text style={styles.userInfo}>{admin.adminID}</Text>
-      </View>
-      <View style={styles.settingsButton}>
-  <TouchableOpacity onPress={() => handleSettingsPress()}>
-    <Image source={require("../../assets/setting.png")} style={styles.settingsIcon} />
-  </TouchableOpacity>
-    </View>
-  </View>
-
-  {/* Courses */}
-  <View style={styles.coursesSection}>
-        <View style={styles.otherCourses}>
-        <Text style={styles.sectionTitle}>All Courses</Text>
-        {allCoursesData.length > 0 ? (
-          allCoursesData.map((course) => (
-              <CourseCard course={course} onPress={() => handleCoursePress(course)}/>
-          ))
-        ) : (
-          <Text style={styles.noCourseText}>No courses available</Text>
-        )}
-=======
       <View style={styles.header}>
         <View style={styles.userInfoContainer}>
           <Text style={styles.userName}>Welcome back, Admin!</Text>
->>>>>>> ashwin
         </View>
         <View style={styles.settingsButton}>
           <TouchableOpacity onPress={() => handleSettingsPress()}>
@@ -331,12 +239,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   userInfoContainer: {
-<<<<<<< HEAD
-    flex: 1,
-    marginLeft: 10,
-=======
     //flex: 1,
->>>>>>> ashwin
     marginRight: 10,
   },
   userName: {
