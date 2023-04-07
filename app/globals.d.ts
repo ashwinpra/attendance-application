@@ -8,13 +8,13 @@ interface Course {
         startTime: string;
         endTime: string;
       }[];
+    enrollmentCode: string
   }
 
   // sunday - 0 , monday - 1 and so on
   
 interface User {
     name: string;
-    profileImage: string;
 }
 
 interface Student extends User {

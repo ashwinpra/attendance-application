@@ -7,6 +7,7 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "@react-navigation/native";
@@ -32,9 +33,10 @@ const coursesData: Course[] = [
       {
         day: 2,
         startTime: "14:00",
-        endTime: "16:00",
-      },
+        endTime: "16:00"
+      }
     ],
+    enrollmentCode: "RNC100"
   },
   {
     id: 2,
@@ -50,9 +52,10 @@ const coursesData: Course[] = [
       {
         day: 3,
         startTime: "14:00",
-        endTime: "16:00",
-      },
-    ],
+        endTime: "16:00"
+      }
+    ], 
+    enrollmentCode: "WDC200"
   },
   {
     id: 3,
@@ -68,17 +71,55 @@ const coursesData: Course[] = [
       {
         day: 5,
         startTime: "14:00",
-        endTime: "16:00",
-      },
+        endTime: "16:00"
+      }
     ],
+    enrollmentCode: "DSC300"
+  },
+  {
+    id: 4,
+    title: 'Machine Learning Course',
+    code: 'CS 500',
+    teacher: 'Prof 4',
+    timing: [
+      {
+        day: 1,
+        startTime: "17:00",
+        endTime: "19:00"
+      },
+      {
+        day: 3,
+        startTime: "17:00",
+        endTime: "19:00"
+      }
+    ],
+    enrollmentCode: "MLC500"
+  },
+  {
+    id: 5,
+    title: 'Deep Learning Course',
+    code: 'CS 600',
+    teacher: 'Prof 4',
+    timing: [
+      {
+        day: 1,
+        startTime: "17:00",
+        endTime: "19:00"
+      },
+      {
+        day: 3,
+        startTime: "17:00",
+        endTime: "19:00"
+      }
+    ],
+    enrollmentCode: "DLC600"
   },
 ];
 
 //TODO: this will be fetched from the backend
 const teacherData: Teacher = {
-  name: "John Doe",
-  enrollmentID: "123456789",
-  profileImage: "./profile-picture.jpg",
+  name: 'John Doe',
+  enrollmentID: '123456789',
 };
 
 interface CourseCardProps {
@@ -149,35 +190,16 @@ const TeacherHome: React.FC<Props> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.userContainer}>
-        {teacher.profileImage ? (
-          <Image
-            source={{ uri: teacher.profileImage }}
-            style={styles.profileImage}
-          />
-        ) : (
-          <Image
-            source={require("../../assets/default-user.png")}
-            style={styles.profileImage}
-          />
-        )}
-        <View style={styles.userInfoContainer}>
-          <Text style={styles.userName}>Welcome back, {teacher.name}!</Text>
-          <Text style={styles.userInfo}>{teacher.enrollmentID}</Text>
-        </View>
-        <View style={styles.settingsButton}>
-          <TouchableOpacity onPress={() => handleSettingsPress()}>
-            <Image
-              source={require("../../assets/setting.png")}
-              style={styles.settingsIcon}
-            />
-          </TouchableOpacity>
-        </View>
+    {/* Header */}
+    <View style={styles.userContainer}>
+      <View style={styles.userInfoContainer}>
+        <Text style={styles.userName}>Welcome back, {teacher.name}!</Text>
+        <Text style={styles.userInfo}>{teacher.enrollmentID}</Text>
       </View>
 
-      {/* Courses */}
-      <View style={styles.coursesSection}>
+  {/* Courses */}
+  <ScrollView>
+  <View style={styles.coursesSection}>
         {/* Current course */}
         <View style={styles.currentCourse}>
           <Text style={styles.sectionTitle}>Current Course</Text>
@@ -207,8 +229,10 @@ const TeacherHome: React.FC<Props> = ({ navigation }) => {
             <Text style={styles.noCourseText}>No courses available</Text>
           )}
         </View>
-      </View>
-    </View>
+    </View> 
+    </ScrollView>
+  </View>
+  </View>
   );
 };
 
@@ -231,6 +255,7 @@ const styles = StyleSheet.create({
   },
   userInfoContainer: {
     flex: 1,
+    marginLeft: 10,
     marginRight: 10,
   },
   userName: {
