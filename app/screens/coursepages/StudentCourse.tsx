@@ -1,7 +1,6 @@
 /// <reference path="../../globals.d.ts" />
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert} from 'react-native';
-import { useRoute } from '@react-navigation/native';
 import { RouteProp } from '@react-navigation/native';
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../components/types";
@@ -36,7 +35,8 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 			// TODO: update attendance in DB
 
 		  	Alert.alert('Attendance granted', 'You have been marked present');
-			  await AsyncStorage.setItem('attendanceMarked', 'true');
+			await AsyncStorage.setItem('attendanceMarked', 'true');
+			setAttendanceMarked(true)
 		} else {
 		  // Code is incorrect, show error
 		  Alert.alert('Incorrect code', 'Please try again');

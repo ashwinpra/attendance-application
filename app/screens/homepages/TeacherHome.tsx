@@ -9,28 +9,65 @@ type Props = {
     navigation: NavigationProp<RootStackParamList, "THome">;
 };
 
-// this will be fetched from the backend
+//TODO: this will be fetched from the backend
 const coursesData: Course[] = [
   {
     id: 1,
     title: 'React Native Course',
     code: 'CS 100',
     teacher: 'Prof 1',
+    timing: [
+      {
+        day: 0,
+        startTime: "14:00",
+        endTime: "16:00"
+      },
+      {
+        day: 2,
+        startTime: "14:00",
+        endTime: "16:00"
+      }
+    ]
   },
   {
     id: 2,
     title: 'Web Development Course',
     code: 'CS 200',
     teacher: 'Prof 2',
+    timing: [
+      {
+        day: 1,
+        startTime: "14:00",
+        endTime: "16:00"
+      },
+      {
+        day: 3,
+        startTime: "14:00",
+        endTime: "16:00"
+      }
+    ]
   },
   {
     id: 3,
     title: 'Data Science Course',
     code: 'CS 300',
     teacher: 'Prof 3',
+    timing: [
+      {
+        day: 6,
+        startTime: "14:00",
+        endTime: "16:00"
+      },
+      {
+        day: 5,
+        startTime: "14:00",
+        endTime: "16:00"
+      }
+    ]
   },
 ];
 
+//TODO: this will be fetched from the backend
 const teacherData: Teacher = {
   name: 'John Doe',
   enrollmentID: '123456789',
@@ -41,6 +78,31 @@ interface CourseCardProps {
   course: Course;
   isCurrentCourse: boolean;
   onPress: () => void;
+}
+
+function getCurrentCourse(courses: Course[]): Course | undefined {
+  const currentDate = new Date();
+  console.log(currentDate.getDay())
+  for (const course of courses) {
+    if (course.timing && course.timing.length > 0) {
+      for (const timing of course.timing) {
+        if (timing.day === currentDate.getDay()) {
+          const [startHours, startMinutes] = timing.startTime.split(':').map(Number);
+          const [endHours, endMinutes] = timing.endTime.split(':').map(Number);
+          const startTime = new Date();
+          startTime.setHours(startHours);
+          startTime.setMinutes(startMinutes);
+          const endTime = new Date();
+          endTime.setHours(endHours);
+          endTime.setMinutes(endMinutes);
+          if (currentDate >= startTime && currentDate <= endTime) {
+            return course;
+          }
+        }
+      }
+    }
+  }
+  return undefined
 }
 
 const CourseCard = ({ course, isCurrentCourse, onPress }: CourseCardProps) => {
@@ -62,10 +124,8 @@ const TeacherHome: React.FC<Props> = ({navigation}) => {
   const [courses, setCourses] = useState<Course[]>(coursesData);
   const [teacher, setTeacher] = useState<Teacher>(teacherData);
 
-  const currentCourseId = 1; // change this to get the current course id
-
-  const currentCourse = courses.filter((course) => course.id === currentCourseId)[0];
-  const otherCourses = courses.filter((course) => course.id !== currentCourseId);
+  const currentCourse = getCurrentCourse(courses);
+  const otherCourses = courses.filter((course) => course !== currentCourse);
 
   const handleSettingsPress = () => {
     navigation.navigate("Settings");

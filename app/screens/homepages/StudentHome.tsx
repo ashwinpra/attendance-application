@@ -9,29 +9,92 @@ type Props = {
   navigation: NavigationProp<RootStackParamList, "SHome">;
 };
 
-// this will be fetched from the backend
+//TODO: this will be fetched from the backend
 const coursesData: Course[] = [
   {
     id: 1,
     title: 'React Native Course',
     code: 'CS 100',
     teacher: 'Prof 1',
+    timing: [
+      {
+        day: 0,
+        startTime: "14:00",
+        endTime: "16:00"
+      },
+      {
+        day: 2,
+        startTime: "14:00",
+        endTime: "16:00"
+      }
+    ]
   },
   {
     id: 2,
     title: 'Web Development Course',
     code: 'CS 200',
     teacher: 'Prof 2',
+    timing: [
+      {
+        day: 1,
+        startTime: "14:00",
+        endTime: "16:00"
+      },
+      {
+        day: 3,
+        startTime: "14:00",
+        endTime: "16:00"
+      }
+    ]
   },
   {
     id: 3,
     title: 'Data Science Course',
     code: 'CS 300',
     teacher: 'Prof 3',
+    timing: [
+      {
+        day: 6,
+        startTime: "14:00",
+        endTime: "16:00"
+      },
+      {
+        day: 5,
+        startTime: "14:00",
+        endTime: "16:00"
+      }
+    ]
   },
 ];
 
-// this will be fetched from the backend
+
+
+function getCurrentCourse(courses: Course[]): Course | undefined {
+  const currentDate = new Date();
+  console.log(currentDate.getDay())
+  for (const course of courses) {
+    if (course.timing && course.timing.length > 0) {
+      for (const timing of course.timing) {
+        if (timing.day === currentDate.getDay()) {
+          const [startHours, startMinutes] = timing.startTime.split(':').map(Number);
+          const [endHours, endMinutes] = timing.endTime.split(':').map(Number);
+          const startTime = new Date();
+          startTime.setHours(startHours);
+          startTime.setMinutes(startMinutes);
+          const endTime = new Date();
+          endTime.setHours(endHours);
+          endTime.setMinutes(endMinutes);
+          if (currentDate >= startTime && currentDate <= endTime) {
+            return course;
+          }
+        }
+      }
+    }
+  }
+  return undefined
+}
+
+//TODO: this will be fetched from the backend
 const studentData: Student = {
   name: 'John Doe',
   rollno: '21CS10001',
@@ -65,20 +128,17 @@ const StudentHome: React.FC<Props> = ({navigation}) => {
   const [courses, setCourses] = useState<Course[]>(coursesData);
   const [student, setStudent] = useState<Student>(studentData);
 
-  const currentCourseId = 1; // change this to get the current course id
-
-  const currentCourse = courses.filter((course) => course.id === currentCourseId)[0];
-  const otherCourses = courses.filter((course) => course.id !== currentCourseId);
+  const currentCourse = getCurrentCourse(courses)
+  const otherCourses = courses.filter((course) => course !== currentCourse);
 
   const handleSettingsPress = () => {
     navigation.navigate("Settings");
   };
 
-  const handleCoursePress = (course: Course, isCurrentCourse: boolean, attendancePeriod: boolean) => {
+  const handleCoursePress = (course: Course, isCurrentCourse: boolean) => {
     navigation.navigate("SCourse", 
       {course: course,
       isCurrentCourse: isCurrentCourse, 
-      attendancePeriod: attendancePeriod
     });
   };
 
@@ -109,7 +169,7 @@ const StudentHome: React.FC<Props> = ({navigation}) => {
         <View style={styles.currentCourse}>
         <Text style={styles.sectionTitle}>Current Course</Text>
         {currentCourse ? (
-            <CourseCard course={currentCourse} onPress={() => handleCoursePress(currentCourse,true,true)} isCurrentCourse={true} />
+            <CourseCard course={currentCourse} onPress={() => handleCoursePress(currentCourse,true)} isCurrentCourse={true} />
         ) : (
           <Text style={styles.noCourseText}>No current course</Text>
         )}
@@ -120,7 +180,7 @@ const StudentHome: React.FC<Props> = ({navigation}) => {
         <Text style={styles.sectionTitle}>Other Courses</Text>
         {otherCourses.length > 0 ? (
           otherCourses.map((course) => (
-              <CourseCard course={course} onPress={() => handleCoursePress(course,false,true)} isCurrentCourse={false} />
+              <CourseCard course={course} onPress={() => handleCoursePress(course,false)} isCurrentCourse={false} />
           ))
         ) : (
           <Text style={styles.noCourseText}>No courses available</Text>
@@ -250,6 +310,7 @@ const styles = StyleSheet.create({
   noCourseText: {
     fontSize: 16,
     fontStyle: 'italic',
+    textAlign: 'center',
   },
 });
 

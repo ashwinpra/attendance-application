@@ -4,6 +4,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Provider } from 'react-redux';
 import store from './app/store/store';
 import React from "react";
+import { useState, useEffect } from "react";
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { Alert } from "react-native";
 import HomeScreen from "./app/screens/HomeScreen";
 import LoginScreen from "./app/screens/LoginScreen";
 import RegistrationScreen from "./app/screens/RegistrationScreen";
@@ -15,6 +18,10 @@ import TeacherCourse from "./app/screens/coursepages/TeacherCourse";
 import AdminCourse from "./app/screens/coursepages/AdminCourse";
 import Settings from "./app/screens/Settings";
 import { RootStackParamList } from "./app/components/types";
+import * as Location from 'expo-location'
+import { LocationObject } from "expo-location";
+
+
 
 
 
@@ -36,7 +43,12 @@ const setStackOptions = (title: string) => {
   };
 }
 
+
+
+
+
 export default function App() {
+
   return (
       <Provider store={store}>
     <NavigationContainer>

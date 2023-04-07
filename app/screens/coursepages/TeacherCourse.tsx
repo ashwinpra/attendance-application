@@ -7,19 +7,19 @@ import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../components/types";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SizedBox from '../../components/SizedBox';
-import Geolocation from 'react-native-geolocation-service';
+// import Geolocation from '@react-native-community/geolocation';
 
-Geolocation.getCurrentPosition(
-	position => {
-	  const latitude = position.coords.latitude;
-	  const longitude = position.coords.longitude;
-	  console.log('Current location:', latitude, longitude);
-	},
-	error => {
-	  console.log(error.code, error.message);
-	},
-	{enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
-  );
+// Geolocation.getCurrentPosition(
+// 	position => {
+// 	  const latitude = position.coords.latitude;
+// 	  const longitude = position.coords.longitude;
+// 	  console.log('Current location:', latitude, longitude);
+// 	},
+// 	error => {
+// 	  console.log(error.code, error.message);
+// 	},
+// 	{enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+//   );
 
 type Props = {
     route: RouteProp<RootStackParamList, "TCourse">;

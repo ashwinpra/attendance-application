@@ -8,28 +8,25 @@ type Props = {
     navigation: NavigationProp<RootStackParamList, "AHome">;
 };
 
-// this will be fetched from the backend
+//TODO: this will be fetched from the backend
 const allCoursesData: Course[] = [
   {
     id: 1,
     title: 'React Native Course',
     code: 'CS 100',
     teacher: 'Prof 1',
-    attendancePeriod: true,
   },
   {
     id: 2,
     title: 'Web Development Course',
     code: 'CS 200',
     teacher: 'Prof 2',
-    attendancePeriod: true,
   },
   {
     id: 3,
     title: 'Data Science Course',
     code: 'CS 300',
     teacher: 'Prof 3',
-    attendancePeriod: true,
   },
 ];
 

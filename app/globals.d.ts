@@ -3,8 +3,14 @@ interface Course {
     title: string;
     code: string;
     teacher: string;
-    attendancePeriod: boolean;
+    timing: {
+        day: number;
+        startTime: string;
+        endTime: string;
+      }[];
   }
+
+  // sunday - 0 , monday - 1 and so on
   
 interface User {
     name: string;

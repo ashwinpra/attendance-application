@@ -8,7 +8,6 @@ export type RootStackParamList = {
 	SCourse: {
 		course: Course,
 		isCurrentCourse: boolean
-		attendancePeriod: boolean
 	};
 	TCourse: {
 		course: Course,
