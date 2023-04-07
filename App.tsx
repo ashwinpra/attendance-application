@@ -62,12 +62,36 @@ export default function App() {
           options={setStackOptions("Attendance Application")}
         />
         {/* Change title of this later */}
-        <Stack.Screen name="SCourse" component={StudentCourse} options={setStackOptions("Course")}/>
-        <Stack.Screen name="TCourse" component={TeacherCourse} options={setStackOptions("Course")}/>
-        <Stack.Screen name="ACourse" component={AdminCourse} options={setStackOptions("Course")}/>
-        <Stack.Screen name="Login" component={LoginScreen} options={setStackOptions("Login")}/>
-        <Stack.Screen name="Register" component={RegistrationScreen} options={setStackOptions("Register")}/>
-        <Stack.Screen name="Settings" component={Settings} options={setStackOptions("Settings")}/>
+        <Stack.Screen
+          name="SCourse"
+          component={StudentCourse}
+          options={setStackOptions("Course")}
+        />
+        <Stack.Screen
+          name="TCourse"
+          component={TeacherCourse}
+          options={setStackOptions("Course")}
+        />
+        <Stack.Screen
+          name="ACourse"
+          component={AdminCourse}
+          options={setStackOptions("Course")}
+        />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={setStackOptions("Login")}
+        />
+        <Stack.Screen
+          name="Register"
+          component={RegistrationScreen}
+          options={setStackOptions("Register")}
+        />
+        <Stack.Screen
+          name="Settings"
+          component={Settings}
+          options={setStackOptions("Settings")}
+        />
       </Stack.Navigator>
     </NavigationContainer>
     </Provider>

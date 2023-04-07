@@ -37,6 +37,10 @@ Team Project for Software Engineering Laboratory Course (CS29202) 2023
 
 - Additional helpful document: [IEEE Test Plan Outline](docs/ieee-829.pdf)
 
+## Final Submission
+
+- Presentation and Final Date: 09 April 2023 - 4:15-4:30pm
+
 # Instructions
 
 - In this project, an application should be developed which is used to save time in taking attendance.
