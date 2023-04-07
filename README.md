@@ -8,17 +8,15 @@ Team Project for Software Engineering Laboratory Course (CS29202) 2023
 - Yash Sirvi (21CS10083)
 - Ashwin Prasanth (21CS30009)
 
-## TODO:
-
-- [x] Admin pages
-- [ ] Logic for enrollment of student in course
-- [ ] Fix image locations
-- [ ] Proxy checking - **major issue with location**
-- [ ] Display attendance record
+## TODO: 
+- [ ] Logic for enrollment of student in course - easier after backend integration
+- [ ] Proxy checking - check distance - easier after backend integration
+- [ ] Display attendance record - easier after backend integration
 - [ ] Store attendance code in backend
 - [ ] Backend for getting courses of student and teacher
 - [ ] Backend for getting student attendance record
 - [ ] Backend for authentication
+- [ ] Clean up code!
 
 ## Assignment 1
 
