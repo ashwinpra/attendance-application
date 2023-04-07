@@ -9,7 +9,7 @@ type Props = {
 };
 
 //TODO: this will be fetched from the backend
-const coursesData: Course[] = [
+const allCoursesData: Course[] = [
   {
     id: 1,
     title: 'React Native Course',
@@ -70,7 +70,6 @@ const coursesData: Course[] = [
 const adminData: Admin = {
   name: 'John Doe',
   adminID: '123',
-  profileImage: './profile-picture.jpg',
 };
 
 interface CourseCardProps {
@@ -111,11 +110,6 @@ const AdminHome: React.FC<Props> = ({navigation}) => {
     <View style={styles.container}>
     {/* Header */}
     <View style={styles.userContainer}>
-    {admin.profileImage ? (
-        <Image source={{ uri: admin.profileImage }} style={styles.profileImage} />
-      ) : (
-        <Image source={require('../../assets/default-user.png')} style={styles.profileImage} />
-      )}
       <View style={styles.userInfoContainer}>
         <Text style={styles.userName}>Welcome back, {admin.name}!</Text>
         <Text style={styles.userInfo}>{admin.adminID}</Text>
@@ -163,6 +157,7 @@ const styles = StyleSheet.create({
   },
   userInfoContainer: {
     flex: 1,
+    marginLeft: 10,
     marginRight: 10,
   },
   userName: {

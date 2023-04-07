@@ -71,7 +71,6 @@ const coursesData: Course[] = [
 const teacherData: Teacher = {
   name: 'John Doe',
   enrollmentID: '123456789',
-  profileImage: './profile-picture.jpg',
 };
 
 interface CourseCardProps {
@@ -140,11 +139,6 @@ const TeacherHome: React.FC<Props> = ({navigation}) => {
     <View style={styles.container}>
     {/* Header */}
     <View style={styles.userContainer}>
-    {teacher.profileImage ? (
-        <Image source={{ uri: teacher.profileImage }} style={styles.profileImage} />
-      ) : (
-        <Image source={require('../../assets/default-user.png')} style={styles.profileImage} />
-      )}
       <View style={styles.userInfoContainer}>
         <Text style={styles.userName}>Welcome back, {teacher.name}!</Text>
         <Text style={styles.userInfo}>{teacher.enrollmentID}</Text>
@@ -157,6 +151,7 @@ const TeacherHome: React.FC<Props> = ({navigation}) => {
   </View>
 
   {/* Courses */}
+  <ScrollView>
   <View style={styles.coursesSection}>
         {/* Current course */}
         <View style={styles.currentCourse}>
@@ -180,6 +175,7 @@ const TeacherHome: React.FC<Props> = ({navigation}) => {
         )}
         </View>
     </View> 
+    </ScrollView>
   </View>
   );
 };
@@ -203,6 +199,7 @@ const styles = StyleSheet.create({
   },
   userInfoContainer: {
     flex: 1,
+    marginLeft: 10,
     marginRight: 10,
   },
   userName: {

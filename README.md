@@ -10,14 +10,14 @@ Team Project for Software Engineering Laboratory Course (CS29202) 2023
 
 ## TODO: 
 - [ ] Admin pages
-- [ ] Logic for enrollment of student in course
-- [ ] Fix image locations 
+- [ ] Logic for enrollment of student in course - this would be easier after backend integration
 - [ ] Proxy checking - **major issue with location**
-- [ ] Display attendance record 
+- [ ] Display attendance record - this would be easier after backend integration
 - [ ] Store attendance code in backend
 - [ ] Backend for getting courses of student and teacher
 - [ ] Backend for getting student attendance record
 - [ ] Backend for authentication
+- [ ] Clean up code!
 
 ## Assignment 1
 
