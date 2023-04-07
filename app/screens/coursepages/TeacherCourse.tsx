@@ -8,65 +8,68 @@ import { RootStackParamList } from "../../components/types";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SizedBox from '../../components/SizedBox';
 import { useSelector, useDispatch } from 'react-redux';
-import { setAttendanceCode, clearAttendanceCode, setAttendancePeriodActive} from '../../store/attendanceSlice';
+import { RootState } from '../../store/store';
+import { generateAttendanceCodeAction, endAttendanceAction, regenerateCodeAction} from '../../store/attendanceSlice';
+
+
 
 
 type Props = {
     route: RouteProp<RootStackParamList, "TCourse">;
     navigation: NavigationProp<RootStackParamList, "TCourse">;
 };
-  
+
 const TeacherCourse: React.FC<Props> = ({route,navigation}) => {
+	const attendanceCode = useSelector((state: RootState) => state.attendance.code);
+	const attendancePeriod = useSelector((state: RootState) => state.attendance.isActive);
+
 	const dispatch = useDispatch();
-	const attendanceCode = useSelector((state) => state.attendanceCode);
-	const attendancePeriodActive = useSelector((state) => state.attendancePeriodActive);
 
-	const handleTakeAttendance = () => {
-		// generate a new attendance code
-		const newCode = Math.random().toString(36).substr(2, 6);
-		// store the code in the Redux store
-		dispatch(setAttendanceCode(newCode));
-		// set the attendance period to active
-		dispatch(setAttendancePeriodActive(true));
+	const handleGenerateAttendanceCode = () => {
+		dispatch(generateAttendanceCodeAction());
+	};
 
-		console.log('Attendance code: ' + newCode)
-		// obtain it from the dispatch and print
-		console.log('Attendance code from store: ' + attendanceCode);
-	  };
+	const generateAttendanceCode = () => {
+		const code = Math.random().toString(36).substr(2, 6);
+		return code;
+	  }
 
 	const handleEndAttendance = () => {
-		dispatch(setAttendanceCode(''));
-	  }
+		dispatch(endAttendanceAction());
+	};
 	
 	const handleRegenerateCode = () => {
-		dispatch(setAttendanceCode(Math.random().toString(36).substring(2, 8).toUpperCase()));
-	}
+		dispatch(regenerateCodeAction());
+	};
+
+
 
 	const renderAttendanceButton = () => {
 		if (!route.params.isCurrentCourse) {
-		  return <Text style={styles.attendancePeriodInactive}>Course not ongoing</Text>;
+			return <Text style={styles.attendancePeriodInactive}>Course not ongoing</Text>;
 		}
 	
 		if (attendanceCode) {
-		  return (
-			<View style={styles.attendanceContainer}>
-			  <Text style={styles.attendanceCode}>{attendanceCode}</Text>
-			  <TouchableOpacity style={styles.attendanceButton} onPress={handleRegenerateCode}>
-				<Text style={styles.attendanceButtonText}>Regenerate Code</Text>
-			  </TouchableOpacity>
-			  <TouchableOpacity style={styles.attendanceButton} onPress={handleEndAttendance}>
-				<Text style={styles.attendanceButtonText}>End Attendance</Text>
-			  </TouchableOpacity>
-			</View>
-		  );
+			return (
+				<View style={styles.attendanceContainer}>
+					<Text style={styles.attendanceCode}>{attendanceCode}</Text>
+					<TouchableOpacity style={styles.attendanceButton} onPress={handleRegenerateCode}>
+						<Text style={styles.attendanceButtonText}>Regenerate Code</Text>
+					</TouchableOpacity>
+					<TouchableOpacity style={styles.attendanceButton} onPress={handleEndAttendance}>
+						<Text style={styles.attendanceButtonText}>End Attendance</Text>
+					</TouchableOpacity>
+				</View>
+			);
 		}
 	
 		return (
-		  <TouchableOpacity style={styles.attendanceButton} onPress={handleTakeAttendance}>
-			<Text style={styles.attendanceButtonText}>Take Attendance</Text>
-		  </TouchableOpacity>
+			<TouchableOpacity style={styles.attendanceButton} onPress={handleGenerateAttendanceCode}>
+				<Text style={styles.attendanceButtonText}>Take Attendance</Text>
+			</TouchableOpacity>
 		);
-	  };
+	};
+	
 
   return (
     <View style={styles.container}>
