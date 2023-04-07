@@ -6,7 +6,7 @@ import {
   View,
   Image,
   TouchableOpacity,
-  TextInput,
+  ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "@react-navigation/native";
@@ -78,7 +78,6 @@ const coursesData: Course[] = [
 const teacherData: Teacher = {
   name: "John Doe",
   enrollmentID: "123456789",
-  profileImage: "./profile-picture.jpg",
 };
 
 interface CourseCardProps {
@@ -151,7 +150,6 @@ const TeacherHome: React.FC<Props> = ({ navigation }) => {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.userContainer}>
-        
         <View style={styles.userInfoContainer}>
           <Text style={styles.userName}>Welcome back, {teacher.name}!</Text>
           <Text style={styles.userInfo}>{teacher.enrollmentID}</Text>
@@ -167,37 +165,39 @@ const TeacherHome: React.FC<Props> = ({ navigation }) => {
       </View>
 
       {/* Courses */}
-      <View style={styles.coursesSection}>
-        {/* Current course */}
-        <View style={styles.currentCourse}>
-          <Text style={styles.sectionTitle}>Current Course</Text>
-          {currentCourse ? (
-            <CourseCard
-              course={currentCourse}
-              onPress={() => handleCoursePress(currentCourse, true)}
-              isCurrentCourse={true}
-            />
-          ) : (
-            <Text style={styles.noCourseText}>No current course</Text>
-          )}
-        </View>
-
-        {/* Other courses */}
-        <View style={styles.otherCourses}>
-          <Text style={styles.sectionTitle}>Other Courses</Text>
-          {otherCourses.length > 0 ? (
-            otherCourses.map((course) => (
+      <ScrollView>
+        <View style={styles.coursesSection}>
+          {/* Current course */}
+          <View style={styles.currentCourse}>
+            <Text style={styles.sectionTitle}>Current Course</Text>
+            {currentCourse ? (
               <CourseCard
-                course={course}
-                onPress={() => handleCoursePress(course, false)}
-                isCurrentCourse={false}
+                course={currentCourse}
+                onPress={() => handleCoursePress(currentCourse, true)}
+                isCurrentCourse={true}
               />
-            ))
-          ) : (
-            <Text style={styles.noCourseText}>No courses available</Text>
-          )}
+            ) : (
+              <Text style={styles.noCourseText}>No current course</Text>
+            )}
+          </View>
+
+          {/* Other courses */}
+          <View style={styles.otherCourses}>
+            <Text style={styles.sectionTitle}>Other Courses</Text>
+            {otherCourses.length > 0 ? (
+              otherCourses.map((course) => (
+                <CourseCard
+                  course={course}
+                  onPress={() => handleCoursePress(course, false)}
+                  isCurrentCourse={false}
+                />
+              ))
+            ) : (
+              <Text style={styles.noCourseText}>No courses available</Text>
+            )}
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -221,6 +221,7 @@ const styles = StyleSheet.create({
   },
   userInfoContainer: {
     flex: 1,
+    marginLeft: 10,
     marginRight: 10,
   },
   userName: {
@@ -320,7 +321,7 @@ const styles = StyleSheet.create({
   noCourseText: {
     fontSize: 16,
     fontStyle: "italic",
-    marginLeft: 20,
+    alignSelf: "center",
   },
 });
 

@@ -8,6 +8,8 @@ import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
+
+
 type Props = {
 	route: RouteProp<RootStackParamList, "SCourse">;
 	navigation: NavigationProp<RootStackParamList, "SCourse">;

@@ -1,5 +1,5 @@
 /// <reference path="../../globals.d.ts" />
-import React, { useState } from "react";
+import React, { useState} from "react";
 import {
   StyleSheet,
   Text,
@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
+  ActionSheetIOS,
+  Platform
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { NavigationProp } from "@react-navigation/native";
@@ -62,6 +64,52 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
   const handleSettingsPress = () => {
     navigation.navigate("Settings");
   };
+
+  const renderCoursePicker = () => {
+    if(Platform.OS === "ios") {
+      return (
+        <TouchableOpacity
+          style={styles.picker}
+          onPress={() => {
+            ActionSheetIOS.showActionSheetWithOptions(
+              {
+                options: courses.map((course) => course.title),
+                cancelButtonIndex: courses.length,
+              },
+              (buttonIndex) => {
+                if (buttonIndex < courses.length) {
+                  setSelectedCourse(courses[buttonIndex]);
+                }
+              }
+            );
+          }}
+        >
+          <Text style={styles.pickerText}>
+            {selectedCourse ? selectedCourse.title : "Select a course"}
+          </Text>
+        </TouchableOpacity>
+      );
+    }
+    else {
+      return (
+        <Picker
+          style={styles.picker}
+          selectedValue={selectedCourse?.id}
+          onValueChange={handleCourseSelection}
+        >
+          <Picker.Item label="Select a course" value={null} />
+          {courses.map((course) => (
+            <Picker.Item
+              key={course.id}
+              label={`${course.title} (${course.code})`}
+              value={course.id}
+            />
+          ))}
+        </Picker>
+
+      );
+    }
+  }
 
   const handleCourseSelection = (itemValue: number) => {
     setSelectedCourse(
@@ -137,20 +185,7 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
       {/* Courses */}
       <View style={styles.courseSelection}>
         <Text style={styles.label}>Select a course:</Text>
-        <Picker
-          style={styles.picker}
-          selectedValue={selectedCourse?.id}
-          onValueChange={handleCourseSelection}
-        >
-          <Picker.Item label="Select a course" value={null} />
-          {courses.map((course) => (
-            <Picker.Item
-              key={course.id}
-              label={`${course.title} (${course.code})`}
-              value={course.id}
-            />
-          ))}
-        </Picker>
+        {renderCoursePicker()}
       </View>
       <View style={styles.buttonsContainer}>
         <TouchableOpacity style={styles.button} onPress={handleAddCourse}>
@@ -229,6 +264,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
+
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -273,6 +309,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ccc",
     marginBottom: 10,
+    justifyContent: "center",
   },
   buttonsContainer: {
     flexDirection: "row",
@@ -287,6 +324,12 @@ const styles = StyleSheet.create({
   },
   disabledButton: {
     opacity: 0.5,
+  },
+  pickerText: {
+    fontSize: 24,
+    alignSelf: "center",
+    // align this text in the TouchableOpacity 
+    
   },
   buttonText: {
     color: "#fff",

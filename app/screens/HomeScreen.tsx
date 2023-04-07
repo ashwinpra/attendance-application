@@ -41,6 +41,9 @@ export default function HomeScreen({ navigation }: Props) {
       >
         <Text style={styles.loginText}>New User? Register here</Text>
       </Pressable>
+      <View style={styles.footer}>
+        <Text>Made by Team SAY_YAS</Text>
+      </View>
     </View>
   );
 }
@@ -51,6 +54,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
+    paddingTop: 150,
   },
 
   welcomeText: {
@@ -84,5 +88,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 35,
     marginVertical: 25,
+  },
+  footer: {
+    color: "black",
+    fontSize: 15,
+    fontWeight: "bold",
+    flex: 1,
+    justifyContent: "flex-end",
   },
 });
