@@ -151,17 +151,7 @@ const TeacherHome: React.FC<Props> = ({ navigation }) => {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.userContainer}>
-        {teacher.profileImage ? (
-          <Image
-            source={{ uri: teacher.profileImage }}
-            style={styles.profileImage}
-          />
-        ) : (
-          <Image
-            source={require("../../assets/default-user.png")}
-            style={styles.profileImage}
-          />
-        )}
+        
         <View style={styles.userInfoContainer}>
           <Text style={styles.userName}>Welcome back, {teacher.name}!</Text>
           <Text style={styles.userInfo}>{teacher.enrollmentID}</Text>
@@ -330,6 +320,7 @@ const styles = StyleSheet.create({
   noCourseText: {
     fontSize: 16,
     fontStyle: "italic",
+    marginLeft: 20,
   },
 });
 
