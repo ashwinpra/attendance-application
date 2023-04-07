@@ -1,12 +1,8 @@
 import React from 'react';
 import { StyleSheet, View, Text, Pressable} from 'react-native';
 import { NativeStackNavigationProp} from '@react-navigation/native-stack';
+import { RootStackParamList } from '../components/types';
 
-type RootStackParamList = {
-    Home: undefined, // undefined means that the screen doesn't take any params
-    Login: undefined,
-    Register: undefined
-}
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList,'Home'>;
@@ -19,18 +15,15 @@ export default function HomeScreen({navigation}: Props) {
         <View style={styles.background}>
             <Text style={styles.welcomeText}>Welcome!</Text>
 
-            {/* Add buttons for student, teacher and admin login */}
-            {/* They should redirect to corresponding login page on click */}
-
-            <Pressable style={styles.loginButton} onPress={() => navigation.navigate('Login')}>
+            <Pressable style={styles.loginButton} onPress={() => navigation.navigate('Login',{userType:'student'})}>
                 <Text style={styles.loginText}>Student</Text>
             </Pressable>
 
-            <Pressable style={styles.loginButton} onPress={() => navigation.navigate('Login')}>
+            <Pressable style={styles.loginButton} onPress={() => navigation.navigate('Login',{userType:'teacher'})}>
                 <Text style={styles.loginText}>Teacher</Text>
             </Pressable>
 
-            <Pressable style={styles.loginButton} onPress={() => navigation.navigate('Login')}>
+            <Pressable style={styles.loginButton} onPress={() => navigation.navigate('Login',{userType:'admin'})}>
                 <Text style={styles.loginText}>Admin</Text>
             </Pressable>
 

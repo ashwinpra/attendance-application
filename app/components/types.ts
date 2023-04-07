@@ -14,15 +14,7 @@ export type RootStackParamList = {
 		isCurrentCourse: boolean
 	};
 	ACourse: { course: Course };
-	TakeAttendance: {
-		course: Course
-
-	};
-	GiveAttendance: {
-		course: Course
-
-	};
-	Login: undefined;
+	Login: { userType: string };
 	Register: undefined;
 	Courses: undefined;
 	Settings: undefined;

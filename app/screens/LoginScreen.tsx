@@ -7,14 +7,16 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../components/types";
 
 
 type Props = {
-  navigation: NativeStackNavigationProp<RootStackParamList, "Home">;
+	route: RouteProp<RootStackParamList, "Login">;
+  navigation: NativeStackNavigationProp<RootStackParamList, "Login">;
 };
 
-const LoginScreen: React.FC<Props> = ({ navigation }) => {
+const LoginScreen: React.FC<Props> = ({ route,navigation }) => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
@@ -22,6 +24,8 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
     // handle login logic
     navigation.navigate("Home");
   };
+
+  const userType = route.params.userType
 
   return (
     <View style={styles.container}>
