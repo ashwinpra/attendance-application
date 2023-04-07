@@ -1,10 +1,13 @@
 /// <reference path="../../globals.d.ts" />
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { RouteProp } from '@react-navigation/native';
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../components/types";
+import { useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 type Props = {
 	route: RouteProp<RootStackParamList, "SCourse">;
@@ -12,25 +15,63 @@ type Props = {
 };
 
 const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
+	const [enteredCode, setEnteredCode] = useState('');
+	const [attendanceMarked, setAttendanceMarked] = useState(false);
 
-	const handleGiveAttendance = () => {
-		// replace the button with a field to enter code, along with a submit button on the right
 
-	}
+	const attendanceCode = "123abc" // TODO: get code from DB
+
+	useEffect(() => {
+		const getAttendanceMarked = async () => {
+		  const attendanceMarked = await AsyncStorage.getItem('attendanceMarked');
+		  if (attendanceMarked) {
+			setAttendanceMarked(true);
+		  }
+		};
+		getAttendanceMarked();
+	  }, []);
+
+	const handleSubmitCode = async () => {
+		if (enteredCode === attendanceCode) {
+			// TODO: update attendance in DB
+
+		  	Alert.alert('Attendance granted', 'You have been marked present');
+			  await AsyncStorage.setItem('attendanceMarked', 'true');
+		} else {
+		  // Code is incorrect, show error
+		  Alert.alert('Incorrect code', 'Please try again');
+		}
+	  }
 
 	const renderAttendanceButton = () => {
 		if (!route.params.isCurrentCourse) {
-			return <Text style={styles.attendancePeriodInactive}>Course not ongoing</Text>;
+		  return <Text style={styles.attendancePeriodInactive}>Course not ongoing</Text>;
 		}
-		else if (route.params.isCurrentCourse && !route.params.attendancePeriod) {
-			return <Text style={styles.attendancePeriodInactive}>Attendance period inactive</Text>;
+
+		if (attendanceMarked) {
+			return (
+			  <Text style={styles.attendancePeriodInactive}>Attendance marked successfully</Text>
+			);
+		  }
+	  
+		if (attendanceCode) {
+		  return (
+			<View style={styles.attendanceContainer}>
+			  <TextInput
+				style={styles.attendanceCodeInput}
+				placeholder="Enter attendance code"
+				onChangeText={setEnteredCode}
+			  />
+			  <TouchableOpacity style={styles.otherButton} onPress={handleSubmitCode}>
+				<Text style={styles.otherText}>Submit</Text>
+			  </TouchableOpacity>
+			</View>
+		  );
 		}
-		return (
-			<TouchableOpacity style={styles.attendanceButton} onPress={handleGiveAttendance}>
-				<Text style={styles.attendanceButtonText}>Give Attendance</Text>
-			</TouchableOpacity>
-		);
-	};
+	  
+		return <Text style={styles.attendancePeriodInactive}>Attendance period not active</Text>;
+	  };
+	  
 
 	return (
 		<View style={styles.container}>
@@ -81,6 +122,21 @@ const styles = StyleSheet.create({
       textAlign: 'center',
       fontSize: 20,
     },
+	otherButton: {
+		backgroundColor: '#1e88e5',
+		borderRadius: 5,
+		padding: 10,
+		alignSelf: 'center',
+		marginTop: 10,
+	},			
+	otherText: {
+		color: '#FFF',
+		fontSize: 20,
+	},
+	attendanceContainer: {
+		alignItems: 'center',
+		paddingVertical: 50,
+	  },
     attendanceButton: {
       backgroundColor: '#1e88e5',
       borderRadius: 5,
@@ -97,7 +153,7 @@ const styles = StyleSheet.create({
       alignSelf: 'center',
     },
     attendanceCode: {
-		fontSize: 24,
+		fontSize: 20,
 		fontWeight: 'bold',
 		textAlign: 'center',
 		backgroundColor: '#f2f2f2',
@@ -106,6 +162,21 @@ const styles = StyleSheet.create({
 		padding: 10,
 		borderRadius: 5,
 		marginTop: 20,
+	  },
+	  attendanceCodeInput: {
+		fontSize: 20,
+		fontWeight: 'bold',
+		textAlign: 'center',
+		backgroundColor: '#f2f2f2',
+		padding: 10,
+		borderRadius: 5,
+		marginTop: 20,
+	  },
+	  attendanceError: {
+		fontSize: 16,
+		color: 'red',
+		alignSelf: 'center',
+		marginTop: 10,
 	  },
     attendanceRecord: {
       backgroundColor: '#FFF',

@@ -7,12 +7,19 @@ import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../components/types";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SizedBox from '../../components/SizedBox';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../store/store';
-import { generateAttendanceCodeAction, endAttendanceAction, regenerateCodeAction} from '../../store/attendanceSlice';
+import Geolocation from 'react-native-geolocation-service';
 
-
-
+Geolocation.getCurrentPosition(
+	position => {
+	  const latitude = position.coords.latitude;
+	  const longitude = position.coords.longitude;
+	  console.log('Current location:', latitude, longitude);
+	},
+	error => {
+	  console.log(error.code, error.message);
+	},
+	{enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+  );
 
 type Props = {
     route: RouteProp<RootStackParamList, "TCourse">;
@@ -20,27 +27,29 @@ type Props = {
 };
 
 const TeacherCourse: React.FC<Props> = ({route,navigation}) => {
-	const attendanceCode = useSelector((state: RootState) => state.attendance.code);
-	const attendancePeriod = useSelector((state: RootState) => state.attendance.isActive);
+	const [attendanceCode, setAttendanceCode] = useState<string | null>(null);
 
-	const dispatch = useDispatch();
+	useEffect(() => {
+		const getAttendanceCode = async () => {
+		  const code = await AsyncStorage.getItem('attendanceCode');
+		  if (code) {
+			setAttendanceCode(code);
+		  }
+		};
+		getAttendanceCode();
+	  }, []);
 
-	const handleGenerateAttendanceCode = () => {
-		dispatch(generateAttendanceCodeAction());
-	};
-
-	const generateAttendanceCode = () => {
-		const code = Math.random().toString(36).substr(2, 6);
-		return code;
-	  }
+	const handleTakeAttendance = () => {
+		const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+		//TODO: send code to DB
+  		setAttendanceCode(code);
+  		AsyncStorage.setItem('attendanceCode', code);
+	}
 
 	const handleEndAttendance = () => {
-		dispatch(endAttendanceAction());
-	};
-	
-	const handleRegenerateCode = () => {
-		dispatch(regenerateCodeAction());
-	};
+		setAttendanceCode(null);
+  		AsyncStorage.removeItem('attendanceCode');
+	}
 
 
 
@@ -53,20 +62,23 @@ const TeacherCourse: React.FC<Props> = ({route,navigation}) => {
 			return (
 				<View style={styles.attendanceContainer}>
 					<Text style={styles.attendanceCode}>{attendanceCode}</Text>
-					<TouchableOpacity style={styles.attendanceButton} onPress={handleRegenerateCode}>
-						<Text style={styles.attendanceButtonText}>Regenerate Code</Text>
+					<SizedBox height={10} />
+					<TouchableOpacity style={styles.otherButton} onPress={handleTakeAttendance}>
+						<Text style={styles.otherText}>Regenerate Code</Text>
 					</TouchableOpacity>
-					<TouchableOpacity style={styles.attendanceButton} onPress={handleEndAttendance}>
-						<Text style={styles.attendanceButtonText}>End Attendance</Text>
+					<TouchableOpacity style={styles.otherButton} onPress={handleEndAttendance}>
+						<Text style={styles.otherText}>End Attendance</Text>
 					</TouchableOpacity>
 				</View>
 			);
 		}
 	
 		return (
-			<TouchableOpacity style={styles.attendanceButton} onPress={handleGenerateAttendanceCode}>
+			<View style={styles.attendanceContainer}>
+			<TouchableOpacity style={styles.attendanceButton} onPress={handleTakeAttendance}>
 				<Text style={styles.attendanceButtonText}>Take Attendance</Text>
 			</TouchableOpacity>
+			</View>
 		);
 	};
 	
@@ -120,7 +132,7 @@ const styles = StyleSheet.create({
     },
 	attendanceContainer: {
 		alignItems: 'center',
-		paddingVertical: 20,
+		paddingVertical: 50,
 	  },
 	otherButton: {
 		backgroundColor: '#1e88e5',
@@ -129,6 +141,10 @@ const styles = StyleSheet.create({
 		alignSelf: 'center',
 		marginTop: 10,
 	},			
+	otherText: {
+		color: '#FFF',
+		fontSize: 20,
+	},
     attendanceButton: {
       backgroundColor: '#1e88e5',
       borderRadius: 5,

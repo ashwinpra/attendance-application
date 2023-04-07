@@ -12,9 +12,9 @@ Team Project for Software Engineering Laboratory Course (CS29202) 2023
 - [ ] Admin pages
 - [ ] Change current course based on time!
 - [ ] Logic for enrollment of student in course
-- [ ] Attendance period activation
 - [ ] Attendance taking & giving mechanism 
 - [ ] Display attendance record
+- [ ] Store attendance code in backend
 - [ ] Backend for getting courses of student and teacher
 - [ ] Backend for getting student attendance record
 - [ ] Backend for authentication
