@@ -1,82 +1,88 @@
-import React from 'react';
-import { StyleSheet, View, Text, Pressable} from 'react-native';
-import { NativeStackNavigationProp} from '@react-navigation/native-stack';
-import { RootStackParamList } from '../components/types';
-
+import React from "react";
+import { StyleSheet, View, Text, Pressable } from "react-native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../components/types";
 
 type Props = {
-  navigation: NativeStackNavigationProp<RootStackParamList,'Home'>;
-}
+  navigation: NativeStackNavigationProp<RootStackParamList, "Home">;
+};
 
-export default function HomeScreen({navigation}: Props) {
+export default function HomeScreen({ navigation }: Props) {
+  return (
+    // make a container for the login page
+    <View style={styles.background}>
+      <Text style={styles.welcomeText}>Welcome!</Text>
 
-    return (
-        // make a container for the login page
-        <View style={styles.background}>
-            <Text style={styles.welcomeText}>Welcome!</Text>
+      <Pressable
+        style={styles.loginButton}
+        onPress={() => navigation.navigate("Login", { userType: "student" })}
+      >
+        <Text style={styles.loginText}>Student</Text>
+      </Pressable>
 
-            <Pressable style={styles.loginButton} onPress={() => navigation.navigate('Login',{userType:'student'})}>
-                <Text style={styles.loginText}>Student</Text>
-            </Pressable>
+      <Pressable
+        style={styles.loginButton}
+        onPress={() => navigation.navigate("Login", { userType: "teacher" })}
+      >
+        <Text style={styles.loginText}>Teacher</Text>
+      </Pressable>
 
-            <Pressable style={styles.loginButton} onPress={() => navigation.navigate('Login',{userType:'teacher'})}>
-                <Text style={styles.loginText}>Teacher</Text>
-            </Pressable>
+      <Pressable
+        style={styles.loginButton}
+        onPress={() => navigation.navigate("Login", { userType: "admin" })}
+      >
+        <Text style={styles.loginText}>Admin</Text>
+      </Pressable>
 
-            <Pressable style={styles.loginButton} onPress={() => navigation.navigate('Login',{userType:'admin'})}>
-                <Text style={styles.loginText}>Admin</Text>
-            </Pressable>
-
-            {/* Add option for new user registration */}
-            <Pressable style={styles.registerButton} onPress={() => navigation.navigate('Register')}>
-                <Text style={styles.loginText}>New User? Register here</Text>
-            </Pressable>
-            
-        </View>
-
-    );
+      {/* Add option for new user registration */}
+      <Pressable
+        style={styles.registerButton}
+        onPress={() => navigation.navigate("Register")}
+      >
+        <Text style={styles.loginText}>New User? Register here</Text>
+      </Pressable>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 
-    background: {
-      flex: 1,
-      backgroundColor: 'white',
-      alignItems: 'center',
-      justifyContent: 'center'
-    },
+  welcomeText: {
+    color: "black",
+    fontSize: 30,
+    fontWeight: "bold",
+    marginBottom: 15,
+  },
 
-    welcomeText: {
-        color: 'black',
-        fontSize: 30,
-        fontWeight: 'bold',
-        marginBottom: 15,
-    },
+  loginButton: {
+    backgroundColor: "#1e88e5",
+    width: "80%",
+    height: 70,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 35,
+    margin: 10,
+  },
 
-    loginButton: {
-        backgroundColor: '#F5F5F5',
-        width: '100%',
-        height: 70,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 35,
-        marginVertical: 5,
-    },
+  loginText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
 
-    loginText: {
-        color: '#28282B',
-        fontSize: 18,
-        fontWeight: 'bold',
-    },
-
-    registerButton: {
-        backgroundColor: '#F5F5F5',
-        width: '100%',
-        height: 50,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 35,
-        marginVertical: 5,
-    }
-
-  });
+  registerButton: {
+    backgroundColor: "#1e88e5",
+    width: "80%",
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 35,
+    marginVertical: 25,
+  },
+});

@@ -20,57 +20,57 @@ type Props = {
 const coursesData: Course[] = [
   {
     id: 1,
-    title: 'React Native Course',
-    code: 'CS 100',
-    teacher: 'Prof 1',
+    title: "React Native Course",
+    code: "CS 100",
+    teacher: "Prof 1",
     timing: [
       {
         day: 0,
         startTime: "14:00",
-        endTime: "16:00"
+        endTime: "16:00",
       },
       {
         day: 2,
         startTime: "14:00",
-        endTime: "16:00"
-      }
-    ]
+        endTime: "16:00",
+      },
+    ],
   },
   {
     id: 2,
-    title: 'Web Development Course',
-    code: 'CS 200',
-    teacher: 'Prof 2',
+    title: "Web Development Course",
+    code: "CS 200",
+    teacher: "Prof 2",
     timing: [
       {
         day: 1,
         startTime: "14:00",
-        endTime: "16:00"
+        endTime: "16:00",
       },
       {
         day: 3,
         startTime: "14:00",
-        endTime: "16:00"
-      }
-    ]
+        endTime: "16:00",
+      },
+    ],
   },
   {
     id: 3,
-    title: 'Data Science Course',
-    code: 'CS 300',
-    teacher: 'Prof 3',
+    title: "Data Science Course",
+    code: "CS 300",
+    teacher: "Prof 3",
     timing: [
       {
         day: 6,
         startTime: "14:00",
-        endTime: "16:00"
+        endTime: "16:00",
       },
       {
         day: 5,
         startTime: "14:00",
-        endTime: "16:00"
-      }
-    ]
+        endTime: "16:00",
+      },
+    ],
   },
 ];
 
@@ -89,13 +89,15 @@ interface CourseCardProps {
 
 function getCurrentCourse(courses: Course[]): Course | undefined {
   const currentDate = new Date();
-  console.log(currentDate.getDay())
+  console.log(currentDate.getDay());
   for (const course of courses) {
     if (course.timing && course.timing.length > 0) {
       for (const timing of course.timing) {
         if (timing.day === currentDate.getDay()) {
-          const [startHours, startMinutes] = timing.startTime.split(':').map(Number);
-          const [endHours, endMinutes] = timing.endTime.split(':').map(Number);
+          const [startHours, startMinutes] = timing.startTime
+            .split(":")
+            .map(Number);
+          const [endHours, endMinutes] = timing.endTime.split(":").map(Number);
           const startTime = new Date();
           startTime.setHours(startHours);
           startTime.setMinutes(startMinutes);
@@ -109,7 +111,7 @@ function getCurrentCourse(courses: Course[]): Course | undefined {
       }
     }
   }
-  return undefined
+  return undefined;
 }
 
 const CourseCard = ({ course, isCurrentCourse, onPress }: CourseCardProps) => {
