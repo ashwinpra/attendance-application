@@ -14,7 +14,6 @@ import AdminCourse from "./app/screens/coursepages/AdminCourse";
 import Settings from "./app/screens/Settings";
 import { RootStackParamList } from "./app/components/types";
 
-
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const setStackOptions = (title: string) => {
@@ -31,27 +30,63 @@ const setStackOptions = (title: string) => {
     headerTitle: title,
     headerTitleAlign: "center",
   };
-}
+};
 
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="AHome">
-        <Stack.Screen name="SHome" component={StudentHome} options={setStackOptions("Home")}/>
-        <Stack.Screen name="THome" component={TeacherHome} options={setStackOptions("Home")}/>
-        <Stack.Screen name="AHome" component={AdminHome} options={setStackOptions("Home")}/>
+        <Stack.Screen
+          name="SHome"
+          component={StudentHome}
+          options={setStackOptions("Home")}
+        />
+        <Stack.Screen
+          name="THome"
+          component={TeacherHome}
+          options={setStackOptions("Home")}
+        />
+        <Stack.Screen
+          name="AHome"
+          component={AdminHome}
+          options={setStackOptions("Home")}
+        />
         <Stack.Screen
           name="Home"
           component={HomeScreen}
           options={setStackOptions("Attendance Application")}
         />
         {/* Change title of this later */}
-        <Stack.Screen name="SCourse" component={StudentCourse} options={setStackOptions("Course")}/>
-        <Stack.Screen name="TCourse" component={TeacherCourse} options={setStackOptions("Course")}/>
-        <Stack.Screen name="ACourse" component={AdminCourse} options={setStackOptions("Course")}/>
-        <Stack.Screen name="Login" component={LoginScreen} options={setStackOptions("Login")}/>
-        <Stack.Screen name="Register" component={RegistrationScreen} options={setStackOptions("Register")}/>
-        <Stack.Screen name="Settings" component={Settings} options={setStackOptions("Settings")}/>
+        <Stack.Screen
+          name="SCourse"
+          component={StudentCourse}
+          options={setStackOptions("Course")}
+        />
+        <Stack.Screen
+          name="TCourse"
+          component={TeacherCourse}
+          options={setStackOptions("Course")}
+        />
+        <Stack.Screen
+          name="ACourse"
+          component={AdminCourse}
+          options={setStackOptions("Course")}
+        />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={setStackOptions("Login")}
+        />
+        <Stack.Screen
+          name="Register"
+          component={RegistrationScreen}
+          options={setStackOptions("Register")}
+        />
+        <Stack.Screen
+          name="Settings"
+          component={Settings}
+          options={setStackOptions("Settings")}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

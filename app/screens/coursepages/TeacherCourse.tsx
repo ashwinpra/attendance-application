@@ -6,8 +6,8 @@ import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../components/types";
 
 type Props = {
-    route: RouteProp<RootStackParamList, "SCourse">;
-    navigation: NavigationProp<RootStackParamList, "SCourse">;
+    route: RouteProp<RootStackParamList, "TCourse">;
+    navigation: NavigationProp<RootStackParamList, "TCourse">;
 };
   
 const TeacherCourse: React.FC<Props> = ({route,navigation}) => {

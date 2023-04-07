@@ -6,11 +6,11 @@ import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../components/types";
 
 type Props = {
-	route: RouteProp<RootStackParamList, "SCourse">;
-	navigation: NavigationProp<RootStackParamList, "SCourse">;
+	route: RouteProp<RootStackParamList, "TCourse">;
+	navigation: NavigationProp<RootStackParamList, "TCourse">;
 };
 
-const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
+const AdminCourse: React.FC<Props> = ({ route, navigation }) => {
 
 	return (
 		<View style={styles.container}>
@@ -22,5 +22,24 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 	);
 };
 
+//make styles sheet
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: '#fff',
+	},
+	header: {
+		backgroundColor: '#fff',
+		padding: 20,
+	},
+	courseName: {
+		fontSize: 24,
+		fontWeight: 'bold',
+	},
+	courseCode: {
+		fontSize: 16,
+		color: '#666',
+	},
+});
 
-export default StudentCourse;
+export default AdminCourse;
