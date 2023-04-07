@@ -4,9 +4,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Provider } from 'react-redux';
 import store from './app/store/store';
 import React from "react";
-import { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
-import { Alert } from "react-native";
+import { useState, useEffect, useCallback} from "react";
+import {Alert, Platform, BackHandler, AppState} from "react-native";
 import HomeScreen from "./app/screens/HomeScreen";
 import LoginScreen from "./app/screens/LoginScreen";
 import RegistrationScreen from "./app/screens/RegistrationScreen";
@@ -20,6 +19,9 @@ import Settings from "./app/screens/Settings";
 import { RootStackParamList } from "./app/components/types";
 import * as Location from 'expo-location'
 import { LocationObject } from "expo-location";
+
+
+
 
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -40,12 +42,53 @@ const setStackOptions = (title: string) => {
   };
 }
 
+
+  const [location, setLocation] = useState<Location.LocationObject | null>(null);
+
+  const checkLocationPermission = async () => {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert(
+        'Location permission denied',
+        'To use this app, please go to your device settings and enable location permission for the app',
+        [{ text: 'OK' }],
+        { cancelable: false }
+      );
+      return false;
+    }
+    return true;
+  };
+
+  useEffect(() => {
+    const getLocation = async () => {
+      const hasLocationPermission = await checkLocationPermission();
+      if (!hasLocationPermission) {
+        return;
+      }
+      const locationSubscriber = await Location.watchPositionAsync(
+        {
+          accuracy: Location.Accuracy.Highest,
+          timeInterval: 5000, // adjust as needed
+          distanceInterval: 100, // adjust as needed
+        },
+        (position) => {
+          setLocation(position);
+        }
+      );
+      return () => {
+        locationSubscriber.remove();
+      };
+    };
+    getLocation();
+  }, []);
+  
+
 export default function App() {
 
   return (
       <Provider store={store}>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="SHome">
         <Stack.Screen name="SHome" component={StudentHome} options={setStackOptions("Home")}/>
         <Stack.Screen name="THome" component={TeacherHome} options={setStackOptions("Home")}/>
         <Stack.Screen name="AHome" component={AdminHome} options={setStackOptions("Home")}/>
@@ -55,14 +98,38 @@ export default function App() {
           options={setStackOptions("Attendance Application")}
         />
         {/* Change title of this later */}
-        <Stack.Screen name="SCourse" component={StudentCourse} options={setStackOptions("Course")}/>
-        <Stack.Screen name="TCourse" component={TeacherCourse} options={setStackOptions("Course")}/>
-        <Stack.Screen name="ACourse" component={AdminCourse} options={setStackOptions("Course")}/>
-        <Stack.Screen name="Login" component={LoginScreen} options={setStackOptions("Login")}/>
-        <Stack.Screen name="Register" component={RegistrationScreen} options={setStackOptions("Register")}/>
-        <Stack.Screen name="Settings" component={Settings} options={setStackOptions("Settings")}/>
+        <Stack.Screen
+          name="SCourse"
+          component={StudentCourse}
+          options={setStackOptions("Course")}
+        />
+        <Stack.Screen
+          name="TCourse"
+          component={TeacherCourse}
+          options={setStackOptions("Course")}
+        />
+        <Stack.Screen
+          name="ACourse"
+          component={AdminCourse}
+          options={setStackOptions("Course")}
+        />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={setStackOptions("Login")}
+        />
+        <Stack.Screen
+          name="Register"
+          component={RegistrationScreen}
+          options={setStackOptions("Register")}
+        />
+        <Stack.Screen
+          name="Settings"
+          component={Settings}
+          options={setStackOptions("Settings")}
+        />
       </Stack.Navigator>
     </NavigationContainer>
     </Provider>
   );
-} 
+}

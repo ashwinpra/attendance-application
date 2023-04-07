@@ -1,6 +1,6 @@
 /// <reference path="../../globals.d.ts" />
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../components/types";
@@ -27,7 +27,8 @@ const coursesData: Course[] = [
         startTime: "14:00",
         endTime: "16:00"
       }
-    ]
+    ],
+    enrollmentCode: "RNC100"
   },
   {
     id: 2,
@@ -45,7 +46,8 @@ const coursesData: Course[] = [
         startTime: "14:00",
         endTime: "16:00"
       }
-    ]
+    ], 
+    enrollmentCode: "WDC200"
   },
   {
     id: 3,
@@ -63,10 +65,48 @@ const coursesData: Course[] = [
         startTime: "14:00",
         endTime: "16:00"
       }
-    ]
+    ],
+    enrollmentCode: "DSC300"
+  },
+  {
+    id: 4,
+    title: 'Machine Learning Course',
+    code: 'CS 500',
+    teacher: 'Prof 4',
+    timing: [
+      {
+        day: 1,
+        startTime: "17:00",
+        endTime: "19:00"
+      },
+      {
+        day: 3,
+        startTime: "17:00",
+        endTime: "19:00"
+      }
+    ],
+    enrollmentCode: "MLC500"
+  },
+  {
+    id: 5,
+    title: 'Deep Learning Course',
+    code: 'CS 600',
+    teacher: 'Prof 4',
+    timing: [
+      {
+        day: 1,
+        startTime: "17:00",
+        endTime: "19:00"
+      },
+      {
+        day: 3,
+        startTime: "17:00",
+        endTime: "19:00"
+      }
+    ],
+    enrollmentCode: "DLC600"
   },
 ];
-
 
 
 function getCurrentCourse(courses: Course[]): Course | undefined {
@@ -98,7 +138,6 @@ function getCurrentCourse(courses: Course[]): Course | undefined {
 const studentData: Student = {
   name: 'John Doe',
   rollno: '21CS10001',
-  profileImage: './profile-picture.jpg',
 };
 
 interface CourseCardProps {
@@ -142,16 +181,38 @@ const StudentHome: React.FC<Props> = ({navigation}) => {
     });
   };
 
+  const handleEnroll = async () => {
+    const enrollmentCode = promptEnrollmentCode();
+    if(!enrollmentCode) return;
+    
+  };
+
+  const promptEnrollmentCode = async () => {
+    return new Promise((resolve, reject) => {
+      Alert.prompt(
+        'Enter Enrollment Code',
+        'Please enter the enrollment code for the course.',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => resolve(null),
+            style: 'cancel',
+          },
+          {
+            text: 'Enroll',
+            onPress: code => resolve(code),
+          },
+        ],
+        'plain-text'
+      );
+    });
+  };
+
   return (
 
     <View style={styles.container}>
     {/* Header */}
     <View style={styles.userContainer}>
-    {student.profileImage ? (
-        <Image source={{ uri: student.profileImage }} style={styles.profileImage} />
-      ) : (
-        <Image source={require('../../assets/default-user.png')} style={styles.profileImage} />
-      )}
       <View style={styles.userInfoContainer}>
         <Text style={styles.userName}>Welcome back, {student.name}!</Text>
         <Text style={styles.userInfo}>{student.rollno}</Text>
@@ -164,6 +225,7 @@ const StudentHome: React.FC<Props> = ({navigation}) => {
   </View>
 
   {/* Courses */}
+  <ScrollView>
   <View style={styles.coursesSection}>
         {/* Current course */}
         <View style={styles.currentCourse}>
@@ -185,8 +247,14 @@ const StudentHome: React.FC<Props> = ({navigation}) => {
         ) : (
           <Text style={styles.noCourseText}>No courses available</Text>
         )}
+        <TouchableOpacity style={styles.enrollButton} onPress={handleEnroll}>
+        <Text style={styles.enrollText}>Enroll in a Course</Text>
+      </TouchableOpacity>
         </View>
+        
+        
     </View> 
+        </ScrollView>
   </View>
   );
 };
@@ -210,6 +278,7 @@ const styles = StyleSheet.create({
   },
   userInfoContainer: {
     flex: 1,
+    marginLeft: 10,
     marginRight: 10,
   },
   userName: {
@@ -311,6 +380,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontStyle: 'italic',
     textAlign: 'center',
+  },
+  enrollButton: {
+    backgroundColor: '#1e88e5',
+    borderRadius: 5,
+    padding: 10,
+    alignSelf: 'center',
+  },
+  enrollText: {
+    color: '#FFF',
+    fontSize: 12,
   },
 });
 

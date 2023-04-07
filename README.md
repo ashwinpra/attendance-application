@@ -9,15 +9,14 @@ Team Project for Software Engineering Laboratory Course (CS29202) 2023
 - Ashwin Prasanth (21CS30009)
 
 ## TODO: 
-- [ ] Admin pages
-- [ ] Logic for enrollment of student in course
-- [ ] Fix image locations 
-- [ ] Proxy checking - **major issue with location**
-- [ ] Display attendance record 
+- [ ] Logic for enrollment of student in course - easier after backend integration
+- [ ] Proxy checking - check distance - easier after backend integration
+- [ ] Display attendance record - easier after backend integration
 - [ ] Store attendance code in backend
 - [ ] Backend for getting courses of student and teacher
 - [ ] Backend for getting student attendance record
 - [ ] Backend for authentication
+- [ ] Clean up code!
 
 ## Assignment 1
 
@@ -36,6 +35,10 @@ Team Project for Software Engineering Laboratory Course (CS29202) 2023
 - Refer to [this](docs/PA-2.pdf) document for the assignment statement
 
 - Additional helpful document: [IEEE Test Plan Outline](docs/ieee-829.pdf)
+
+## Final Submission
+
+- Presentation and Final Date: 09 April 2023 - 4:15-4:30pm
 
 # Instructions
 
