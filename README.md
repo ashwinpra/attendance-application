@@ -9,7 +9,7 @@ Team Project for Software Engineering Laboratory Course (CS29202) 2023
 - Ashwin Prasanth (21CS30009)
 
 ## TODO: 
-- [ ] Admin pages
+- [ X ] Admin pages
 - [ ] Logic for enrollment of student in course
 - [ ] Fix image locations 
 - [ ] Proxy checking - **major issue with location**
