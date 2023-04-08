@@ -184,6 +184,7 @@ const StudentHome: React.FC<Props> = ({ navigation, route }) => {
 
 	const handleCoursePress = (course: Course) => {
 		navigation.navigate("SCourse", {
+			rollno: rollno,
 			course: course,
 		});
 	};

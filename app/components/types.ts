@@ -6,6 +6,7 @@ export type RootStackParamList = {
 	THome: { enrollmentID: string};
 	AHome: undefined;
 	SCourse: {
+		rollno: string,
 		course: Course,
 	};
 	TCourse: {
