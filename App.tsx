@@ -18,10 +18,9 @@ import AdminCourse from "./app/screens/coursepages/AdminCourse";
 import Settings from "./app/screens/Settings";
 import { RootStackParamList } from "./app/components/types";
 import * as Location from 'expo-location'
-import { db } from "./app/config/firebase";
-import { collection, addDoc, query, where, getDocs,updateDoc, doc } from "firebase/firestore";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
+
 
 const setStackOptions = (title: string) => {
   return {
@@ -41,50 +40,7 @@ const setStackOptions = (title: string) => {
 }
 
 export default function App() {
-
-  const [location, setLocation] = useState<Location.LocationObject | null>(null);
-
-  const checkLocationPermission = async () => {
-    const { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') {
-      Alert.alert(
-        'Location permission denied',
-        'To use this app, please go to your device settings and enable location permission for the app',
-        [{ text: 'OK' }],
-        { cancelable: false }
-      );
-      return false;
-    }
-    return true;
-  };
-
-  useEffect(() => {
-    const getLocation = async () => {
-      const hasLocationPermission = await checkLocationPermission();
-      if (!hasLocationPermission) {
-        return;
-      }
-      const locationSubscriber = await Location.watchPositionAsync(
-        {
-          accuracy: Location.Accuracy.Highest,
-          timeInterval: 5000, // adjust as needed
-          distanceInterval: 100, // adjust as needed
-        },
-        (position) => {
-          // send this position to the database
-
-          setLocation(position);
-        }
-      );
-      return () => {
-        locationSubscriber.remove();
-      };
-    };
-    getLocation();
-  }, []);
-  
-
-
+    
   return (
       <Provider store={store}>
     <NavigationContainer>
