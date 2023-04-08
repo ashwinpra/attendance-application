@@ -33,7 +33,6 @@ type Props = {
 };
 
 const teacherRef = collection(db, "users");
-const coursesRef = collection(db, "courses");
 
 interface CourseCardProps {
 	course: Course;
@@ -108,9 +107,7 @@ const TeacherHome: React.FC<Props> = ({ navigation, route }) => {
 	let coursesData: Course[] = [];
 	const [courses, setCourses] = useState<Course[]>(coursesData);
 	const [teacher, setTeacher] = useState<Teacher>(teacherData);
-	const [location, setLocation] = useState<Location.LocationObject | null>(
-		null
-	);
+	const [location, setLocation] = useState<Location.LocationObject | null>(null);
 
 	//const currentCourse = getCurrentCourse(courses);
 	//const otherCourses = courses.filter((course) => course !== currentCourse);
@@ -129,83 +126,77 @@ const TeacherHome: React.FC<Props> = ({ navigation, route }) => {
 		return true;
 	};
 
-	useEffect(() => {
-		const getLocation = async () => {
-			const hasLocationPermission = await checkLocationPermission();
-			if (!hasLocationPermission) {
-				return;
-			}
-			const locationSubscriber = await Location.watchPositionAsync(
-				{
-					accuracy: Location.Accuracy.Highest,
-					timeInterval: 5000, // adjust as needed
-					distanceInterval: 100, // adjust as needed
-				},
-				async (position) => {
-					// send this position to the database
-					const teacherQuery = query(
-						teacherRef,
-						where("userID", "==", enrollmentID)
-					);
-					const teacherQuerySnapshot = getDocs(teacherQuery);
-					const teacherDoc = (await teacherQuerySnapshot).docs[0];
-					await updateDoc(teacherDoc.ref, { location: position });
-					setLocation(position);
-				}
-			);
-			return () => {
-				locationSubscriber.remove();
-			};
-		};
-		getLocation();
-	}, []);
-
-	async function fetchData() {
-		try {
-			const { coursesData, teaname } = await fetchInfo(
-				route.params.enrollmentID
-			);
-			const courseRef = collection(db, "courses");
-			const courseQuery = query(courseRef, where("id", "in", coursesData));
-			const courseQuerySnapshot = await getDocs(courseQuery);
-			const usersRef = collection(db, "users");
-			let counter = 1;
-			let courseData: Course[] = [];
-			for (const doc of courseQuerySnapshot.docs) {
-				const teacherQuery = query(
-					usersRef,
-					where("userID", "==", doc.data().courseTeacher)
-				);
-				const teacherQuerySnapshot = await getDocs(teacherQuery);
-				const teacherDoc = teacherQuerySnapshot.docs[0];
-				let teacherName = teacherDoc.data().name;
-				courseData.push({
-					id: counter,
-					title: doc.data().courseName,
-					code: doc.data().courseCode,
-					teacher: teacherName,
-					enrollmentCode: doc.data().enrollmentKey,
-				});
-				counter++;
-			}
-			const teacherData: Teacher = {
-				name: teaname,
-				enrollmentID: route.params.enrollmentID,
-			};
-			setCourses(coursesData);
-			setTeacher(teacherData);
-		} catch (error) {
-			console.error(error);
+	const getLocation = async () => {
+		const hasLocationPermission = await checkLocationPermission();
+		if (!hasLocationPermission) {
+			return;
 		}
-	}
+		const locationSubscriber = await Location.watchPositionAsync(
+			{
+				accuracy: Location.Accuracy.Highest,
+				timeInterval: 5000, // adjust as needed
+				distanceInterval: 100, // adjust as needed
+			},
+			async (position) => {
+				// send this position to the database
+				const teacherQuery = query(
+					teacherRef,
+					where("userID", "==", enrollmentID)
+				);
+				const teacherQuerySnapshot = getDocs(teacherQuery);
+				const teacherDoc = (await teacherQuerySnapshot).docs[0];
+				await updateDoc(teacherDoc.ref, { location: position });
+				setLocation(position);
+			}
+		);
+		return () => {
+			locationSubscriber.remove();
+		};
+	};
 
-	fetchData();
+	// fetch student courses
+	const teacherQuery = query(teacherRef, where("userID", "==", enrollmentID));
+	const teacherQuerySnapshot = getDocs(teacherQuery);
+	useEffect(() => {
+		getLocation();
+		( async function () {
+			const teacherDoc = (await teacherQuerySnapshot).docs[0];
+			let teacherData: Teacher = {
+				name: teacherDoc.data().name,
+				enrollmentID: teacherDoc.data().userID,
+			};
+			setTeacher(teacherData);
+
+			const coursesRef = collection(db, "courses");
+
+			// go through all the courses, and append those ones in which courseTeacher is the current teacher
+			const courseQuery = query(coursesRef);
+			const courseQuerySnapshot = await getDocs(courseQuery);
+
+			let counter=0;
+			let coursesData: Course[] = [];
+			for (const courseDoc of courseQuerySnapshot.docs) {
+				if (courseDoc.data().courseTeacher == enrollmentID) {
+					coursesData.push({
+						id: counter,
+						title: courseDoc.data().courseName,
+						code: courseDoc.data().courseCode,
+						teacher: courseDoc.data().courseTeacher,
+						enrollmentCode: courseDoc.data().enrollmentKey,
+					});
+				}
+			}
+			setCourses(coursesData);
+			return;
+		}
+		)();
+	}, []);
 
 	const handleSettingsPress = () => {
 		navigation.navigate("Settings");
 	};
 
-	const handleCoursePress = (teacherData: Teacher, course: Course, isCurrentCourse: boolean) => {
+	const handleCoursePress = (course: Course, isCurrentCourse: boolean) => {
 		navigation.navigate("TCourse", {
 			course: course,
 			isCurrentCourse: isCurrentCourse,
