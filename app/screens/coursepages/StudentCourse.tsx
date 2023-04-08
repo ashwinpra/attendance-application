@@ -7,7 +7,8 @@ import { RootStackParamList } from "../../components/types";
 import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SizedBox from '../../components/SizedBox';
-
+import { db } from "../../config/firebase";
+import { collection, query, where, getDocs, updateDoc } from "firebase/firestore";
 
 type Props = {
 	route: RouteProp<RootStackParamList, "SCourse">;
