@@ -13,7 +13,7 @@ import {
 import { collection, addDoc, query, where, getDocs,updateDoc, doc } from "firebase/firestore";
 
 const studentRegex = /^[0-9][0-9][A-Z][A-Z][0-9][0-9][0-9][0-9][0-9]$/;
-const teacherRegex = /^[0-9]{12}$/;
+const teacherRegex = /^T[0-9]{4}$/;
 const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 const usersRef = collection(db, "users");
 
@@ -81,7 +81,8 @@ const RegistrationScreen = () => {
       } else {
         if (teacherRegex.test(userID)) {
           // search for teacher with this ID in collection "teachers"
-          const teacherQuery = query(usersRef, where("TeacherID", "==", userID));
+          console.log(userID);
+          const teacherQuery = query(usersRef, where("userID", "==", userID));
           const teacherQuerySnapshot = await getDocs(teacherQuery);
           if (teacherQuerySnapshot.empty) {
             // Teacher with this ID does not exist
