@@ -9,9 +9,8 @@ import {
 import { auth, db } from "../config/firebase";
 import {
   createUserWithEmailAndPassword,
-  sendPasswordResetEmail,
 } from "firebase/auth";
-import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
+import { collection, addDoc, query, where, getDocs,updateDoc, doc } from "firebase/firestore";
 
 const studentRegex = /^[0-9][0-9][A-Z][A-Z][0-9][0-9][0-9][0-9][0-9]$/;
 const teacherRegex = /^[0-9]{12}$/;
@@ -41,19 +40,19 @@ const RegistrationScreen = () => {
   // const randomPassword = Math.random().toString(36).substring(2, 8);
   const handleVerification = async () => {
     if (emailRegex.test(userEmail)) {
+      // Check if user with this email already exists
+      const emailQuery = query(usersRef, where("email", "==", userEmail));
+      const emailQuerySnapshot = await getDocs(emailQuery);
+      if (!emailQuerySnapshot.empty) {
+        // User with this email already exists
+        throw new Error("A user with this email already exists");
+      }
+      if (userPassword !== userConfirmPassword) {
+        alert("Passwords do not match!");
+        return;
+      }
       if (isStudent) {
         if (studentRegex.test(userID)) {
-          // Check if user with this email already exists
-          const emailQuery = query(usersRef, where("email", "==", userEmail));
-          const emailQuerySnapshot = await getDocs(emailQuery);
-          if (!emailQuerySnapshot.empty) {
-            // User with this email already exists
-            throw new Error("A user with this email already exists");
-          }
-          if (userPassword !== userConfirmPassword) {
-            alert("Passwords do not match!");
-            return;
-          }
           const userCredential = await createUserWithEmailAndPassword(
             auth,
             userEmail,
@@ -70,7 +69,7 @@ const RegistrationScreen = () => {
             } catch (e) {
               console.error("Error adding document: ", e);
             }
-            alert("Password has been sent to student's inbox");
+            alert("New student registered!");
           //TODO: send to DB here ig?
           setUserID("");
           setUserName("");
@@ -82,7 +81,31 @@ const RegistrationScreen = () => {
         }
       } else {
         if (teacherRegex.test(userID)) {
-          alert("Verification message sent to teacher's inbox");
+          // search for teacher with this ID in collection "teachers"
+          const teacherQuery = query(usersRef, where("TeacherID", "==", userID));
+          const teacherQuerySnapshot = await getDocs(teacherQuery);
+          if (teacherQuerySnapshot.empty) {
+            // Teacher with this ID does not exist
+            throw new Error("Teacher with this ID does not exist");
+          }
+          const userCredential = await createUserWithEmailAndPassword(
+            auth,
+            userEmail,
+            userPassword
+            );
+            try {
+              // Update the teacher's document with same ID
+              const userDocRef = doc(db, 'users', teacherQuerySnapshot.docs[0].id);
+              await updateDoc(userDocRef , {
+                name: userName,
+                email: userEmail,
+                type: "teacher",
+              });
+              console.log("Document written with ID: ", userDocRef.id);
+            } catch (e) {
+              console.error("Error adding document: ", e);
+            }
+          alert("Registered as teacher!");
           //TODO: send to DB here ig?
           setUserID("");
           setUserName("");

@@ -11,8 +11,11 @@ import {
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../components/types";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from  "../config/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../config/firebase";
+import { collection, query, where, getDocs } from "firebase/firestore";
+
+const userRef = collection(db, "users");
 
 type Props = {
   route: RouteProp<RootStackParamList, "Login">;
@@ -22,43 +25,40 @@ type Props = {
 const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
   const [email, setemail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  
-
-  const handleLogIn = () => {
+  const { userType } = route.params;
+  const handleLogIn = async () => {
     try {
+      const userQuery = await query(userRef, where("email", "==", email));
+      const querySnapshot = await getDocs(userQuery);
+      if (querySnapshot.empty) {
+        Alert.alert("User does not exist!");
+        return;
+      }
+      const userData = querySnapshot.docs[0].data();
+      if (userData.userType !== userType) {
+        Alert.alert("User is not authorized!");
+        return;
+      }
       signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user.email)
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage)
-      });
-    }
-    catch (error: any) {
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log(user.email);
+          if (userType === "student") {
+            navigation.navigate("SHome");
+          }
+          else if (userType === "teacher") {
+            navigation.navigate("THome");
+          }
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode, errorMessage);
+        });
+    } catch (error: any) {
       Alert.alert(`Failed to login: ${error?.message}`);
     }
-  }
-
-  // const handleRegister = () => {
-  //   try {
-  //     createUserWithEmailAndPassword(auth, email, password)
-  //     .then((userCredential) => {
-  //       const user = userCredential.user;
-  //       console.log(user.email)
-  //     })
-  //     .catch((error) => {
-  //       const errorCode = error.code;
-  //       const errorMessage = error.message;
-  //       console.log(errorCode, errorMessage)
-  //     });
-  //   }
-  //   catch (error: any) {
-  //     Alert.alert(`Failed to register: ${error?.message}`);
-  //   }
-  // }
+  };
 
   return (
     <View style={styles.container}>
@@ -68,7 +68,7 @@ const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
         placeholder="email"
         onChangeText={(text) => setemail(text)}
         value={email}
-      />  
+      />
       <TextInput
         style={styles.input}
         placeholder="Password"
