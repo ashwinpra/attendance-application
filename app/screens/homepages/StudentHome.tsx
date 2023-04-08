@@ -25,6 +25,8 @@ import {
 	deleteDoc,
 } from "firebase/firestore";
 import { db } from "../../config/firebase";
+import * as Location from "expo-location";
+
 type Props = {
 	route: RouteProp<RootStackParamList, "SHome">;
 	navigation: NavigationProp<RootStackParamList, "SHome">;
@@ -68,6 +70,8 @@ interface CourseCardProps {
 	onPress: () => void;
 }
 
+
+
 const CourseCard = ({ course, isCurrentCourse, onPress }: CourseCardProps) => {
 	const cardStyle = isCurrentCourse
 		? styles.currentCourseCard
@@ -110,40 +114,83 @@ const StudentHome: React.FC<Props> = ({ navigation, route }) => {
 	let coursesData: Course[] = [];
 	const [student, setStudent] = useState<Student>(studentData);
 	const [courses, setCourses] = useState<Course[]>(coursesData);
+	const [location, setLocation] = useState<Location.LocationObject | null>(null);
 
-  async function fetchData() {
-    try {
-      const { coursesData, stuname } = await fetchInfo(route.params.rollno);
-      const courseRef = collection(db, "courses");
-      const courseQuery = query(courseRef, where("id", "in", coursesData));
-      const courseQuerySnapshot = await getDocs(courseQuery);
-      const usersRef = collection(db, "users");
-      let counter = 1;
-      let courseData: Course[] = [];
-      for (const doc of courseQuerySnapshot.docs) {
-        const teacherQuery = query( usersRef, where("userID", "==", doc.data().courseTeacher));
-        const teacherQuerySnapshot = await getDocs(teacherQuery);
-        const teacherDoc = teacherQuerySnapshot.docs[0];
-        let teacherName = teacherDoc.data().name;
-        courseData.push({
-          id: counter,
-          title: doc.data().courseName,
-          code: doc.data().courseCode,
-          teacher: teacherName,
-          enrollmentCode: doc.data().enrollmentKey,
-        });
-        counter++;
-      };
-      const studentData: Student = {
-        name: stuname,
-        rollno: route.params.rollno,
-      };
-      setCourses(coursesData);
-      setStudent(studentData);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+	const checkLocationPermission = async () => {
+		const { status } = await Location.requestForegroundPermissionsAsync();
+		if (status !== 'granted') {
+			Alert.alert(
+				'Location permission denied',
+				'To use this app, please go to your device settings and enable location permission for the app',
+				[{ text: 'OK' }],
+				{ cancelable: false }
+			);
+			return false;
+		}
+		return true;
+	};
+
+	useEffect(() => {
+		const getLocation = async () => {
+			const hasLocationPermission = await checkLocationPermission();
+			if (!hasLocationPermission) {
+				return;
+			}
+			const locationSubscriber = await Location.watchPositionAsync(
+				{
+					accuracy: Location.Accuracy.Highest,
+					timeInterval: 5000, // adjust as needed
+					distanceInterval: 100, // adjust as needed
+				},
+				async (position) => {
+					// send this position to the database
+					const studentQuery = query(studentRef, where("userID", "==", rollno));
+					const studentQuerySnapshot = getDocs(studentQuery);
+					const studentDoc = (await studentQuerySnapshot).docs[0];
+					await updateDoc(studentDoc.ref, {location: position})
+					setLocation(position);
+				}
+			);
+			return () => {
+				locationSubscriber.remove();
+			};
+		};
+		getLocation();
+	}, []);
+
+	async function fetchData() {
+		try {
+			const { coursesData, stuname } = await fetchInfo(route.params.rollno);
+			const courseRef = collection(db, "courses");
+			const courseQuery = query(courseRef, where("id", "in", coursesData));
+			const courseQuerySnapshot = await getDocs(courseQuery);
+			const usersRef = collection(db, "users");
+			let counter = 1;
+			let courseData: Course[] = [];
+			for (const doc of courseQuerySnapshot.docs) {
+				const teacherQuery = query(usersRef, where("userID", "==", doc.data().courseTeacher));
+				const teacherQuerySnapshot = await getDocs(teacherQuery);
+				const teacherDoc = teacherQuerySnapshot.docs[0];
+				let teacherName = teacherDoc.data().name;
+				courseData.push({
+					id: counter,
+					title: doc.data().courseName,
+					code: doc.data().courseCode,
+					teacher: teacherName,
+					enrollmentCode: doc.data().enrollmentKey,
+				});
+				counter++;
+			};
+			const studentData: Student = {
+				name: stuname,
+				rollno: route.params.rollno,
+			};
+			setCourses(coursesData);
+			setStudent(studentData);
+		} catch (error) {
+			console.error(error);
+		}
+	}
 
 	fetchData();
 	const handleSettingsPress = () => {
@@ -170,7 +217,7 @@ const StudentHome: React.FC<Props> = ({ navigation, route }) => {
 			Alert.alert("Error", "Invalid enrollment code.");
 			return;
 		}
-		else{
+		else {
 			const courseDoc = (await courseQuerySnapshot).docs[0];
 
 			const studentQuery = query(studentRef, where("userID", "==", rollno));
@@ -180,9 +227,9 @@ const StudentHome: React.FC<Props> = ({ navigation, route }) => {
 			// add this course to the student's courses
 			if (studentDoc.data().courses == undefined) {
 				studentDoc.data().courses = [];
-			} 
+			}
 			const userCourses = studentDoc.data().courses;
-			if(userCourses.includes(courseDoc.id)) {
+			if (userCourses.includes(courseDoc.id)) {
 				Alert.alert("Error", "You are already enrolled in this course.");
 				return;
 			}
@@ -192,8 +239,8 @@ const StudentHome: React.FC<Props> = ({ navigation, route }) => {
 
 			await updateDoc(studentDoc.ref, { courses: userCourses });
 			Alert.alert("Success", "Course enrolled successfully!");
-				}
-			};
+		}
+	};
 
 	const promptEnrollmentCode = async () => {
 		return new Promise((resolve, reject) => {
