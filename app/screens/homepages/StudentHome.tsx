@@ -180,7 +180,10 @@ const StudentHome: React.FC<Props> = ({ navigation, route }) => {
 			const studentDoc = (await studentQuerySnapshot).docs[0];
 
 			// add this course to the student's courses
-			const userCourses = studentDoc.data().courses || [];
+			if (studentDoc.data().courses == undefined) {
+				studentDoc.data().courses = [];
+			} 
+			const userCourses = studentDoc.data().courses;
 			if(userCourses.includes(courseDoc.id)) {
 				Alert.alert("Error", "You are already enrolled in this course.");
 				return;
