@@ -10,12 +10,12 @@ Team Project for Software Engineering Laboratory Course (CS29202) 2023
 
 ## TODO: 
 - [ ] Prevent going back after login/save the state
-- [ ] Add course timings / remove the timing check altogether
-- [ ] Logic for enrollment of student in course - check if its working - CURRENT
-- [ ] Fetch code + teacher location from backend and check if attendance is valid
+- [ ] Logic for enrollment of student in course - NEED TO TEST 
+- [ ] Fetch code + teacher location from backend and check if attendance is valid - DOING NOW 
 - [ ] Store attendance in record
-- [ ] Store attendance code in backend 
-- [ ] Fetch teacher courses
+- [ ] Store attendance code in backend - NEED TO TEST 
+- [ ] Fetch teacher courses - NEED TO TEST
+- [ ] Send location to backend - NEED TO TEST
 - [ ] Fetch student attendance record and display
 - [ ] Clean up code!
 

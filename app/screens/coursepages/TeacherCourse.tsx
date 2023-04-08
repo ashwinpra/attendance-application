@@ -10,7 +10,6 @@ import SizedBox from '../../components/SizedBox';
 import { db } from "../../config/firebase";
 import { collection, query, where, getDocs, updateDoc } from "firebase/firestore";
 
-const userRef = collection(db, "users");
 const courseRef = collection(db, "courses");
 
 type Props = {
@@ -21,7 +20,7 @@ type Props = {
 const attendanceRecord = {}
 
 const TeacherCourse: React.FC<Props> = ({ route, navigation }) => {
-	const { teacher, course, isCurrentCourse } = route.params;
+	const { course, isCurrentCourse } = route.params;
 	const [attendanceCode, setAttendanceCode] = useState<string | null>(null);
 	const [recordType, setRecordType] = useState('day-wise');
 

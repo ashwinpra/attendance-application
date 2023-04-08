@@ -10,7 +10,6 @@ export type RootStackParamList = {
 		isCurrentCourse: boolean
 	};
 	TCourse: {
-		teacher: Teacher,
 		course: Course,
 		isCurrentCourse: boolean
 	};

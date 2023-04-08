@@ -207,7 +207,6 @@ const TeacherHome: React.FC<Props> = ({ navigation, route }) => {
 
 	const handleCoursePress = (teacherData: Teacher, course: Course, isCurrentCourse: boolean) => {
 		navigation.navigate("TCourse", {
-			teacher: teacherData,
 			course: course,
 			isCurrentCourse: isCurrentCourse,
 		});
