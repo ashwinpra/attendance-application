@@ -17,65 +17,65 @@ type Props = {
 };
 
 //TODO: this will be fetched from the backend
-const coursesData: Course[] = [
-  {
-    id: 1,
-    title: "React Native Course",
-    code: "CS 100",
-    teacher: "Prof 1",
-    timing: [
-      {
-        day: 0,
-        startTime: "14:00",
-        endTime: "16:00",
-      },
-      {
-        day: 2,
-        startTime: "14:00",
-        endTime: "16:00",
-      },
-    ],
-    enrollmentCode: "RNC100",
-  },
-  {
-    id: 2,
-    title: "Web Development Course",
-    code: "CS 200",
-    teacher: "Prof 2",
-    timing: [
-      {
-        day: 1,
-        startTime: "14:00",
-        endTime: "16:00",
-      },
-      {
-        day: 3,
-        startTime: "14:00",
-        endTime: "16:00",
-      },
-    ],
-    enrollmentCode: "WDC200",
-  },
-  {
-    id: 3,
-    title: "Data Science Course",
-    code: "CS 300",
-    teacher: "Prof 3",
-    timing: [
-      {
-        day: 6,
-        startTime: "14:00",
-        endTime: "16:00",
-      },
-      {
-        day: 5,
-        startTime: "14:00",
-        endTime: "16:00",
-      },
-    ],
-    enrollmentCode: "DSC300",
-  },
-];
+// const coursesData: Course[] = [
+//   {
+//     id: 1,
+//     title: "React Native Course",
+//     code: "CS 100",
+//     teacher: "Prof 1",
+//     timing: [
+//       {
+//         day: 0,
+//         startTime: "14:00",
+//         endTime: "16:00",
+//       },
+//       {
+//         day: 2,
+//         startTime: "14:00",
+//         endTime: "16:00",
+//       },
+//     ],
+//     enrollmentCode: "RNC100",
+//   },
+//   {
+//     id: 2,
+//     title: "Web Development Course",
+//     code: "CS 200",
+//     teacher: "Prof 2",
+//     timing: [
+//       {
+//         day: 1,
+//         startTime: "14:00",
+//         endTime: "16:00",
+//       },
+//       {
+//         day: 3,
+//         startTime: "14:00",
+//         endTime: "16:00",
+//       },
+//     ],
+//     enrollmentCode: "WDC200",
+//   },
+//   {
+//     id: 3,
+//     title: "Data Science Course",
+//     code: "CS 300",
+//     teacher: "Prof 3",
+//     timing: [
+//       {
+//         day: 6,
+//         startTime: "14:00",
+//         endTime: "16:00",
+//       },
+//       {
+//         day: 5,
+//         startTime: "14:00",
+//         endTime: "16:00",
+//       },
+//     ],
+//     enrollmentCode: "DSC300",
+//   },
+// ];
 
 //TODO: this will be fetched from the backend
 const teacherData: Teacher = {

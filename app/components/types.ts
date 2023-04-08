@@ -2,7 +2,7 @@
 
 export type RootStackParamList = {
 	Home: undefined;
-	SHome: undefined;
+	SHome: { rollno: string};
 	THome: undefined;
 	AHome: undefined;
 	SCourse: {

@@ -194,6 +194,8 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
       console.log(
         `Modify course button pressed for course ${selectedCourse.title} (${selectedCourse.code})`
       );
+      // Close the modal
+      setShowModifyModal(false);
     }
   };
 
@@ -304,7 +306,8 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
               style={styles.button}
               onPress={() => setShowModal(false)}
             >
-              <Text style={styles.buttonText}>Cancel</Text>
+              <Text style={styles.buttonText} 
+                onPress={()=> setShowModal(false)}>Cancel</Text>
             </TouchableOpacity>
           </SafeAreaView>
         </Modal>
@@ -348,7 +351,9 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
               style={styles.button}
               onPress={() => setShowModifyModal(false)}
             >
-              <Text style={styles.buttonText}>Cancel</Text>
+              <Text style={styles.buttonText}
+                onPress={()=> setShowModifyModal(false)
+              }>Cancel</Text>
             </TouchableOpacity>
           </SafeAreaView>
         </Modal>

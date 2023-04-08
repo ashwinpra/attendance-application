@@ -18,6 +18,8 @@ import AdminCourse from "./app/screens/coursepages/AdminCourse";
 import Settings from "./app/screens/Settings";
 import { RootStackParamList } from "./app/components/types";
 import * as Location from 'expo-location'
+import { db } from "./app/config/firebase";
+import { collection, addDoc, query, where, getDocs,updateDoc, doc } from "firebase/firestore";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -69,6 +71,8 @@ export default function App() {
           distanceInterval: 100, // adjust as needed
         },
         (position) => {
+          // send this position to the database
+
           setLocation(position);
         }
       );

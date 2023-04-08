@@ -3,11 +3,11 @@ interface Course {
     title: string;
     code: string;
     teacher: string;
-    timing: {
-        day: number;
-        startTime: string;
-        endTime: string;
-      }[];
+    // timing: {
+    //     day: number;
+    //     startTime: string;
+    //     endTime: string;
+    //   }[];
     enrollmentCode: string
   }
 
