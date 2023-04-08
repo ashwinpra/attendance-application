@@ -17,7 +17,6 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 
 const userRef = collection(db, "users");
 
-
 type Props = {
   route: RouteProp<RootStackParamList, "Login">;
   navigation: NativeStackNavigationProp<RootStackParamList, "Login">;
@@ -28,62 +27,62 @@ const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
   const [password, setPassword] = useState<string>("");
   const { userType } = route.params;
 
-	const handleLogIn = async () => {
-    if  (userType === "student" || userType === "teacher"){ 
-		try {
-			const userQuery = await query(userRef, where("email", "==", email));
-			const querySnapshot = await getDocs(userQuery);
-			if (querySnapshot.empty) {
-				Alert.alert("User does not exist!");
-				return;
-			}
-			const userData = querySnapshot.docs[0].data();
-			if (userData.type !== userType) {
-				Alert.alert("User is not authorized!");
-				console.log(userData, userType);
-				return;
-			}
-			signInWithEmailAndPassword(auth, email, password)
-				.then((userCredential) => {
-					const user = userCredential.user;
-					console.log(user.email);
-					if (userType === "student") {
-						console.log(userData.userID);
-						navigation.navigate("SHome", { rollno: userData.userID });
-					}
-					else if (userType === "teacher") {
-						navigation.navigate("THome");
-					}
-				})
-				.catch((error) => {
-					const errorCode = error.code;
-					const errorMessage = error.message;
-					console.log(errorCode, errorMessage);
-				});
-		} catch (error: any) {
-			Alert.alert(`Failed to login: ${error?.message}`);
-		}
-	}
-  else if (userType === "admin"){
-    const adminRef = collection(db, "admin");
-    try {
-      const adminQuery = await query(adminRef, where("email", "==", email));
-      const querySnapshot = await getDocs(adminQuery);
-      if (querySnapshot.empty) {
-        Alert.alert("User does not exist!");
-        return;
+  const handleLogIn = async () => {
+    if (userType === "student" || userType === "teacher") {
+      try {
+        const userQuery = await query(userRef, where("email", "==", email));
+        const querySnapshot = await getDocs(userQuery);
+        if (querySnapshot.empty) {
+          Alert.alert("User does not exist!");
+          return;
+        }
+        const userData = querySnapshot.docs[0].data();
+        if (userData.type !== userType) {
+          Alert.alert("User is not authorized!");
+          console.log(userData, userType);
+          return;
+        }
+        signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+            console.log(user.email);
+            if (userType === "student") {
+              console.log(userData.userID);
+              navigation.navigate("SHome", { rollno: userData.userID });
+            } else if (userType === "teacher") {
+              navigation.navigate("THome");
+            }
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorCode, errorMessage);
+          });
+      } catch (error: any) {
+        Alert.alert(`Failed to login: ${error?.message}`);
       }
-      signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user.email);
-        navigation.navigate("AHome");
-      }
-      )
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+    } else if (userType === "admin") {
+      const adminRef = collection(db, "admin");
+      try {
+        const adminQuery = await query(adminRef, where("email", "==", email));
+        const querySnapshot = await getDocs(adminQuery);
+        if (querySnapshot.empty) {
+          Alert.alert("User does not exist!");
+          return;
+        }
+        signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+            console.log(user.email);
+            navigation.navigate("AHome");
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorCode, errorMessage);
+          });
+      } catch (error: any) {
+        Alert.alert(`Failed to login: ${error?.message}`);
       }
     }
   };

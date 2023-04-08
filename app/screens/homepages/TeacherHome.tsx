@@ -11,8 +11,21 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../components/types";
+import { RouteProp } from "@react-navigation/native"
+import {
+	collection,
+	query,
+	where,
+	getDocs,
+	updateDoc,
+	doc,
+	addDoc,
+	deleteDoc,
+} from "firebase/firestore";
+import { db } from "../../config/firebase";
 
 type Props = {
+  route: NavigationProp<RootStackParamList, "THome">;
   navigation: NavigationProp<RootStackParamList, "THome">;
 };
 

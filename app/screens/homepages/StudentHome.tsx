@@ -84,8 +84,6 @@ const CourseCard = ({ course, isCurrentCourse, onPress }: CourseCardProps) => {
 	);
 };
 
-
-
 const fetchInfo = async (rollno: string) => {
 	const studentQuery = query(studentRef, where("userID", "==", rollno));
 	const studentQuerySnapshot = getDocs(studentQuery);
