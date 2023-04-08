@@ -64,6 +64,7 @@ const studentData: Student = {
 
 const AdminHomepage: React.FC<Props> = ({ navigation }) => {
   const [showModal, setShowModal] = useState(false);
+  const [showModifyModal, setShowModifyModal] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [courses, setCourses] = useState<Course[]>([
     { id: 1, title: "React Native Course", code: "CS 100" },
@@ -78,6 +79,8 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
   const [courseName, setCourseName] = useState("");
   const [courseCode, setCourseCode] = useState("");
   const [courseTeacher, setCourseTeacher] = useState("");
+  const [modifyCourseName, setModifyCourseName] = useState("");
+  const [modifyCourseCode, setModifyCourseCode] = useState("");
 
   const courseRef = collection(db, "courses");
   // fetch all courses in Course[]
@@ -182,7 +185,10 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
     if (selectedCourse) {
       // Delete the course from your list of courses
       try {
-        const q = query(courseRef, where("courseCode", "==", selectedCourse.code));
+        const q = query(
+          courseRef,
+          where("courseCode", "==", selectedCourse.code)
+        );
         const querySnapshot = await getDocs(q);
         if (querySnapshot.size > 0) {
           querySnapshot.forEach(async (doc) => {
@@ -292,11 +298,44 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
             //styles.secondaryButton,
             !selectedCourse && styles.disabledButton,
           ]}
-          onPress={handleModifyCourse}
+          onPress={() => setShowModifyModal(true)}
           disabled={!selectedCourse}
         >
           <Text style={styles.buttonText}>Modify course</Text>
         </TouchableOpacity>
+        <Modal visible={showModifyModal} animationType="slide">
+          <SafeAreaView style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>Modify Course</Text>
+            <SizedBox height={10} />
+            <Text>
+              Current course: {/*{CurrentCourseName} + {CurrentCourseCode*/}{" "}
+            </Text>
+            <SizedBox height={10} />
+            <TextInput
+              style={styles.modalText}
+              placeholder="New Course Name"
+              onChangeText={(text) => setModifyCourseName(text)}
+            />
+            <TextInput
+              style={styles.modalText}
+              placeholder="New Course Code"
+              onChangeText={(text) => setModifyCourseCode(text)}
+            />
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleModifyCourse}
+            >
+              <Text style={styles.buttonText}>Modify</Text>
+            </TouchableOpacity>
+            <SizedBox height={10} />
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => setShowModal(false)}
+            >
+              <Text style={styles.buttonText}>Cancel</Text>
+            </TouchableOpacity>
+          </SafeAreaView>
+        </Modal>
         <TouchableOpacity
           style={[
             styles.button,

@@ -35,6 +35,7 @@ const coursesData: Course[] = [
         endTime: "16:00",
       },
     ],
+    enrollmentCode: "RNC100",
   },
   {
     id: 2,
@@ -53,6 +54,7 @@ const coursesData: Course[] = [
         endTime: "16:00",
       },
     ],
+    enrollmentCode: "WDC200",
   },
   {
     id: 3,
@@ -71,6 +73,7 @@ const coursesData: Course[] = [
         endTime: "16:00",
       },
     ],
+    enrollmentCode: "DSC300",
   },
 ];
 
