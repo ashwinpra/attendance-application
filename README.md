@@ -15,7 +15,6 @@ Team Project for Software Engineering Laboratory Course (CS29202) 2023
 - [ ] Fetch code + teacher location from backend and check if attendance is valid
 - [ ] Store attendance in record
 - [ ] Store attendance code in backend 
-- [ ] Store location in backend - CURRENT
 - [ ] Fetch teacher courses
 - [ ] Fetch student attendance record and display
 - [ ] Clean up code!

@@ -1,113 +1,44 @@
 /// <reference path="../../globals.d.ts" />
 import React, { useState, useEffect } from "react";
 import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-  Alert,
+	StyleSheet,
+	Text,
+	View,
+	Image,
+	TouchableOpacity,
+	ScrollView,
+	Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../components/types";
 import { RouteProp } from "@react-navigation/native";
 import {
-  collection,
-  query,
-  where,
-  getDocs,
-  updateDoc,
-  doc,
-  addDoc,
-  deleteDoc,
+	collection,
+	query,
+	where,
+	getDocs,
+	updateDoc,
+	doc,
+	addDoc,
+	deleteDoc,
 } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import * as Location from "expo-location";
 
 
 type Props = {
-  route: RouteProp<RootStackParamList, "THome">;
-  navigation: NavigationProp<RootStackParamList, "THome">;
+	route: RouteProp<RootStackParamList, "THome">;
+	navigation: NavigationProp<RootStackParamList, "THome">;
 };
 
 const teacherRef = collection(db, "users");
 const coursesRef = collection(db, "courses");
 
-//TODO: this will be fetched from the backend
-// const coursesData: Course[] = [
-//   {
-//     id: 1,
-//     title: "React Native Course",
-//     code: "CS 100",
-//     teacher: "Prof 1",
-//     timing: [
-//       {
-//         day: 0,
-//         startTime: "14:00",
-//         endTime: "16:00",
-//       },
-//       {
-//         day: 2,
-//         startTime: "14:00",
-//         endTime: "16:00",
-//       },
-//     ],
-//     enrollmentCode: "RNC100",
-//   },
-//   {
-//     id: 2,
-//     title: "Web Development Course",
-//     code: "CS 200",
-//     teacher: "Prof 2",
-//     timing: [
-//       {
-//         day: 1,
-//         startTime: "14:00",
-//         endTime: "16:00",
-//       },
-//       {
-//         day: 3,
-//         startTime: "14:00",
-//         endTime: "16:00",
-//       },
-//     ],
-//     enrollmentCode: "WDC200",
-//   },
-//   {
-//     id: 3,
-//     title: "Data Science Course",
-//     code: "CS 300",
-//     teacher: "Prof 3",
-//     timing: [
-//       {
-//         day: 6,
-//         startTime: "14:00",
-//         endTime: "16:00",
-//       },
-//       {
-//         day: 5,
-//         startTime: "14:00",
-//         endTime: "16:00",
-//       },
-//     ],
-//     enrollmentCode: "DSC300",
-//   },
-// ];
-
-//TODO: this will be fetched from the backend
-
-//
-//    const teacherData: Teacher = {
-//      name: "John Doe",
-//      enrollmentID: "123456789",
-//    };
-
 interface CourseCardProps {
-  course: Course;
-  isCurrentCourse: boolean;
-  onPress: () => void;
+	course: Course;
+	isCurrentCourse: boolean;
+	onPress: () => void;
 }
 
 //  function getCurrentCourse(courses: Course[]): Course | undefined {
@@ -138,171 +69,172 @@ interface CourseCardProps {
 //  }
 
 const CourseCard = ({ course, isCurrentCourse, onPress }: CourseCardProps) => {
-  const cardStyle = isCurrentCourse
-    ? styles.currentCourseCard
-    : styles.courseCard;
+	const cardStyle = isCurrentCourse
+		? styles.currentCourseCard
+		: styles.courseCard;
 
-  return (
-    <TouchableOpacity style={cardStyle} onPress={onPress}>
-      <View style={styles.courseCardContent}>
-        <Text style={styles.courseCardTitle}>{course.title}</Text>
-        <Text style={styles.courseCardCode}>{course.code}</Text>
-      </View>
-    </TouchableOpacity>
-  );
+	return (
+		<TouchableOpacity style={cardStyle} onPress={onPress}>
+			<View style={styles.courseCardContent}>
+				<Text style={styles.courseCardTitle}>{course.title}</Text>
+				<Text style={styles.courseCardCode}>{course.code}</Text>
+			</View>
+		</TouchableOpacity>
+	);
 };
 
 const fetchInfo = async (id: string) => {
-  const teacherQuery = query(teacherRef, where("userID", "==", id));
-  const teacherQuerySnapshot = getDocs(teacherQuery);
-  const teacherDoc = (await teacherQuerySnapshot).docs[0];
-  let coursesData: Course[] = [];
-  let teaname: string = "";
-  if (teacherDoc.data().courses == undefined) {
-    coursesData = [];
-  } else {
-    coursesData = teacherDoc.data().courses;
-  }
-  teaname = teacherDoc.data().name;
-  return { coursesData, teaname };
+	const teacherQuery = query(teacherRef, where("userID", "==", id));
+	const teacherQuerySnapshot = getDocs(teacherQuery);
+	const teacherDoc = (await teacherQuerySnapshot).docs[0];
+	let coursesData: Course[] = [];
+	let teaname: string = "";
+	if (teacherDoc.data().courses == undefined) {
+		coursesData = [];
+	} else {
+		coursesData = teacherDoc.data().courses;
+	}
+	teaname = teacherDoc.data().name;
+	return { coursesData, teaname };
 };
 
 const TeacherHome: React.FC<Props> = ({ navigation, route }) => {
-  const { enrollmentID } = route.params;
+	const { enrollmentID } = route.params;
 
-  let teacherData: Teacher = {
-    name: "",
-    enrollmentID: "",
-  };
-  let coursesData: Course[] = [];
-  const [courses, setCourses] = useState<Course[]>(coursesData);
-  const [teacher, setTeacher] = useState<Teacher>(teacherData);
-  const [location, setLocation] = useState<Location.LocationObject | null>(
-    null
-  );
+	let teacherData: Teacher = {
+		name: "",
+		enrollmentID: "",
+	};
+	let coursesData: Course[] = [];
+	const [courses, setCourses] = useState<Course[]>(coursesData);
+	const [teacher, setTeacher] = useState<Teacher>(teacherData);
+	const [location, setLocation] = useState<Location.LocationObject | null>(
+		null
+	);
 
-  //const currentCourse = getCurrentCourse(courses);
-  //const otherCourses = courses.filter((course) => course !== currentCourse);
+	//const currentCourse = getCurrentCourse(courses);
+	//const otherCourses = courses.filter((course) => course !== currentCourse);
 
-  const checkLocationPermission = async () => {
-    const { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      Alert.alert(
-        "Location permission denied",
-        "To use this app, please go to your device settings and enable location permission for the app",
-        [{ text: "OK" }],
-        { cancelable: false }
-      );
-      return false;
-    }
-    return true;
-  };
+	const checkLocationPermission = async () => {
+		const { status } = await Location.requestForegroundPermissionsAsync();
+		if (status !== "granted") {
+			Alert.alert(
+				"Location permission denied",
+				"To use this app, please go to your device settings and enable location permission for the app",
+				[{ text: "OK" }],
+				{ cancelable: false }
+			);
+			return false;
+		}
+		return true;
+	};
 
-  useEffect(() => {
-    const getLocation = async () => {
-      const hasLocationPermission = await checkLocationPermission();
-      if (!hasLocationPermission) {
-        return;
-      }
-      const locationSubscriber = await Location.watchPositionAsync(
-        {
-          accuracy: Location.Accuracy.Highest,
-          timeInterval: 5000, // adjust as needed
-          distanceInterval: 100, // adjust as needed
-        },
-        async (position) => {
-          // send this position to the database
-          const teacherQuery = query(
-            teacherRef,
-            where("userID", "==", enrollmentID)
-          );
-          const teacherQuerySnapshot = getDocs(teacherQuery);
-          const teacherDoc = (await teacherQuerySnapshot).docs[0];
-          await updateDoc(teacherDoc.ref, { location: position });
-          setLocation(position);
-        }
-      );
-      return () => {
-        locationSubscriber.remove();
-      };
-    };
-    getLocation();
-  }, []);
+	useEffect(() => {
+		const getLocation = async () => {
+			const hasLocationPermission = await checkLocationPermission();
+			if (!hasLocationPermission) {
+				return;
+			}
+			const locationSubscriber = await Location.watchPositionAsync(
+				{
+					accuracy: Location.Accuracy.Highest,
+					timeInterval: 5000, // adjust as needed
+					distanceInterval: 100, // adjust as needed
+				},
+				async (position) => {
+					// send this position to the database
+					const teacherQuery = query(
+						teacherRef,
+						where("userID", "==", enrollmentID)
+					);
+					const teacherQuerySnapshot = getDocs(teacherQuery);
+					const teacherDoc = (await teacherQuerySnapshot).docs[0];
+					await updateDoc(teacherDoc.ref, { location: position });
+					setLocation(position);
+				}
+			);
+			return () => {
+				locationSubscriber.remove();
+			};
+		};
+		getLocation();
+	}, []);
 
-  async function fetchData() {
-    try {
-      const { coursesData, teaname } = await fetchInfo(
-        route.params.enrollmentID
-      );
-      const courseRef = collection(db, "courses");
-      const courseQuery = query(courseRef, where("id", "in", coursesData));
-      const courseQuerySnapshot = await getDocs(courseQuery);
-      const usersRef = collection(db, "users");
-      let counter = 1;
-      let courseData: Course[] = [];
-      for (const doc of courseQuerySnapshot.docs) {
-        const teacherQuery = query(
-          usersRef,
-          where("userID", "==", doc.data().courseTeacher)
-        );
-        const teacherQuerySnapshot = await getDocs(teacherQuery);
-        const teacherDoc = teacherQuerySnapshot.docs[0];
-        let teacherName = teacherDoc.data().name;
-        courseData.push({
-          id: counter,
-          title: doc.data().courseName,
-          code: doc.data().courseCode,
-          teacher: teacherName,
-          enrollmentCode: doc.data().enrollmentKey,
-        });
-        counter++;
-      }
-      const teacherData: Teacher = {
-        name: teaname,
-        enrollmentID: route.params.enrollmentID,
-      };
-      setCourses(coursesData);
-      setTeacher(teacherData);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+	async function fetchData() {
+		try {
+			const { coursesData, teaname } = await fetchInfo(
+				route.params.enrollmentID
+			);
+			const courseRef = collection(db, "courses");
+			const courseQuery = query(courseRef, where("id", "in", coursesData));
+			const courseQuerySnapshot = await getDocs(courseQuery);
+			const usersRef = collection(db, "users");
+			let counter = 1;
+			let courseData: Course[] = [];
+			for (const doc of courseQuerySnapshot.docs) {
+				const teacherQuery = query(
+					usersRef,
+					where("userID", "==", doc.data().courseTeacher)
+				);
+				const teacherQuerySnapshot = await getDocs(teacherQuery);
+				const teacherDoc = teacherQuerySnapshot.docs[0];
+				let teacherName = teacherDoc.data().name;
+				courseData.push({
+					id: counter,
+					title: doc.data().courseName,
+					code: doc.data().courseCode,
+					teacher: teacherName,
+					enrollmentCode: doc.data().enrollmentKey,
+				});
+				counter++;
+			}
+			const teacherData: Teacher = {
+				name: teaname,
+				enrollmentID: route.params.enrollmentID,
+			};
+			setCourses(coursesData);
+			setTeacher(teacherData);
+		} catch (error) {
+			console.error(error);
+		}
+	}
 
-  fetchData();
+	fetchData();
 
-  const handleSettingsPress = () => {
-    navigation.navigate("Settings");
-  };
+	const handleSettingsPress = () => {
+		navigation.navigate("Settings");
+	};
 
-  const handleCoursePress = (course: Course, isCurrentCourse: boolean) => {
-    navigation.navigate("TCourse", {
-      course: course,
-      isCurrentCourse: isCurrentCourse,
-    });
-  };
+	const handleCoursePress = (teacherData: Teacher, course: Course, isCurrentCourse: boolean) => {
+		navigation.navigate("TCourse", {
+			teacher: teacherData,
+			course: course,
+			isCurrentCourse: isCurrentCourse,
+		});
+	};
 
-  return (
-    <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.userContainer}>
-        <View style={styles.userInfoContainer}>
-          <Text style={styles.userName}>Welcome back, {teacher.name}!</Text>
-          <Text style={styles.userInfo}>{teacher.enrollmentID}</Text>
-        </View>
-        <View style={styles.settingsButton}>
-          <TouchableOpacity onPress={() => handleSettingsPress()}>
-            <Image
-              source={require("../../assets/setting.png")}
-              style={styles.settingsIcon}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
+	return (
+		<View style={styles.container}>
+			{/* Header */}
+			<View style={styles.userContainer}>
+				<View style={styles.userInfoContainer}>
+					<Text style={styles.userName}>Welcome back, {teacher.name}!</Text>
+					<Text style={styles.userInfo}>{teacher.enrollmentID}</Text>
+				</View>
+				<View style={styles.settingsButton}>
+					<TouchableOpacity onPress={() => handleSettingsPress()}>
+						<Image
+							source={require("../../assets/setting.png")}
+							style={styles.settingsIcon}
+						/>
+					</TouchableOpacity>
+				</View>
+			</View>
 
-      {/* Courses */}
-      <ScrollView>
-        <View style={styles.coursesSection}>
-          {/* Current course 
+			{/* Courses */}
+			<ScrollView>
+				<View style={styles.coursesSection}>
+					{/* Current course 
           <View style={styles.currentCourse}>
             <Text style={styles.sectionTitle}>Current Course</Text>
             {currentCourse ? (
@@ -316,148 +248,148 @@ const TeacherHome: React.FC<Props> = ({ navigation, route }) => {
             )}
           </View> */}
 
-          {/* Other courses */}
-          <View style={styles.otherCourses}>
-            <Text style={styles.sectionTitle}>Other Courses</Text>
-            {coursesData.length > 0 ? (
-              coursesData.map((course) => (
-                <CourseCard
-                  course={course}
-                  onPress={() => handleCoursePress(course, false)}
-                  isCurrentCourse={false}
-                />
-              ))
-            ) : (
-              <Text style={styles.noCourseText}>No courses available</Text>
-            )}
-          </View>
-        </View>
-      </ScrollView>
-    </View>
-  );
+					{/* Other courses */}
+					<View style={styles.otherCourses}>
+						<Text style={styles.sectionTitle}>Other Courses</Text>
+						{coursesData.length > 0 ? (
+							coursesData.map((course) => (
+								<CourseCard
+									course={course}
+									onPress={() => handleCoursePress(course, false)}
+									isCurrentCourse={false}
+								/>
+							))
+						) : (
+							<Text style={styles.noCourseText}>No courses available</Text>
+						)}
+					</View>
+				</View>
+			</ScrollView>
+		</View>
+	);
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FFFFFF",
-  },
-  userContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 20,
-  },
-  profileImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    marginRight: 10,
-  },
-  userInfoContainer: {
-    flex: 1,
-    marginLeft: 10,
-    marginRight: 10,
-  },
-  userName: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-  userInfo: {
-    fontSize: 16,
-    color: "#555555",
-  },
-  settingsButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-  },
-  settingsIcon: {
-    width: 30,
-    height: 30,
-  },
-  coursesSection: {
-    marginTop: 20,
-  },
+	container: {
+		flex: 1,
+		backgroundColor: "#FFFFFF",
+	},
+	userContainer: {
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "space-between",
+		padding: 20,
+	},
+	profileImage: {
+		width: 60,
+		height: 60,
+		borderRadius: 30,
+		marginRight: 10,
+	},
+	userInfoContainer: {
+		flex: 1,
+		marginLeft: 10,
+		marginRight: 10,
+	},
+	userName: {
+		fontSize: 18,
+		fontWeight: "bold",
+		marginBottom: 5,
+	},
+	userInfo: {
+		fontSize: 16,
+		color: "#555555",
+	},
+	settingsButton: {
+		paddingVertical: 10,
+		paddingHorizontal: 20,
+		borderRadius: 5,
+	},
+	settingsIcon: {
+		width: 30,
+		height: 30,
+	},
+	coursesSection: {
+		marginTop: 20,
+	},
 
-  currentCourse: {
-    marginBottom: 20,
-  },
+	currentCourse: {
+		marginBottom: 20,
+	},
 
-  otherCourses: {
-    marginBottom: 20,
-  },
+	otherCourses: {
+		marginBottom: 20,
+	},
 
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-    marginLeft: 20,
-  },
+	sectionTitle: {
+		fontSize: 24,
+		fontWeight: "bold",
+		marginBottom: 20,
+		marginLeft: 20,
+	},
 
-  currentCourseCard: {
-    marginBottom: 15,
-    width: "95%",
-    height: 130,
-    alignSelf: "center",
-    borderRadius: 10,
-    padding: 20,
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
-    elevation: 7,
-  },
+	currentCourseCard: {
+		marginBottom: 15,
+		width: "95%",
+		height: 130,
+		alignSelf: "center",
+		borderRadius: 10,
+		padding: 20,
+		flexDirection: "row",
+		alignItems: "center",
+		backgroundColor: "#fff",
+		shadowColor: "#000",
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.29,
+		shadowRadius: 4.65,
+		elevation: 7,
+	},
 
-  courseCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 20,
-    backgroundColor: "#fff",
-    borderRadius: 5,
-    elevation: 3,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    padding: 10,
-    width: "95%",
-    height: 90,
-    alignSelf: "center",
-  },
+	courseCard: {
+		flexDirection: "row",
+		alignItems: "center",
+		marginBottom: 20,
+		backgroundColor: "#fff",
+		borderRadius: 5,
+		elevation: 3,
+		shadowColor: "#000",
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 0.2,
+		shadowRadius: 2,
+		padding: 10,
+		width: "95%",
+		height: 90,
+		alignSelf: "center",
+	},
 
-  courseCardContent: {
-    paddingLeft: 15,
-  },
+	courseCardContent: {
+		paddingLeft: 15,
+	},
 
-  courseCardTitle: {
-    fontSize: 22,
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
+	courseCardTitle: {
+		fontSize: 22,
+		fontWeight: "bold",
+		marginBottom: 5,
+	},
 
-  courseCardProfessor: {
-    fontSize: 15,
-    color: "#666",
-  },
+	courseCardProfessor: {
+		fontSize: 15,
+		color: "#666",
+	},
 
-  courseCardCode: {
-    fontSize: 15,
-    color: "#666",
-  },
+	courseCardCode: {
+		fontSize: 15,
+		color: "#666",
+	},
 
-  noCourseText: {
-    fontSize: 16,
-    fontStyle: "italic",
-    alignSelf: "center",
-  },
+	noCourseText: {
+		fontSize: 16,
+		fontStyle: "italic",
+		alignSelf: "center",
+	},
 });
 
 export default TeacherHome;
