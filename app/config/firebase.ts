@@ -6,7 +6,7 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-import * as firebase from "firebase/app";
+import { getFirestore } from 'firebase/firestore';
 import {getAuth} from "firebase/auth";
 export const firebaseConfig = {
   apiKey: "AIzaSyAYanNj0zy02KKVOBz4NAze2nob8JabLtk",
@@ -15,10 +15,12 @@ export const firebaseConfig = {
   storageBucket: "swe-attendance.appspot.com",
   messagingSenderId: "290391420379",
   appId: "1:290391420379:web:7a87e94920b19f3ccbcbfe",
-  measurementId: "G-JWTF82KDMC"
+  measurementId: "G-JWTF82KDMC",
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+export default app;
 export const auth = getAuth();
+export const db = getFirestore(app)
 // const analytics = getAnalytics(app);

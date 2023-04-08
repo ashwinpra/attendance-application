@@ -42,23 +42,23 @@ const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
     }
   }
 
-  const handleRegister = () => {
-    try {
-      createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user.email)
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage)
-      });
-    }
-    catch (error: any) {
-      Alert.alert(`Failed to register: ${error?.message}`);
-    }
-  }
+  // const handleRegister = () => {
+  //   try {
+  //     createUserWithEmailAndPassword(auth, email, password)
+  //     .then((userCredential) => {
+  //       const user = userCredential.user;
+  //       console.log(user.email)
+  //     })
+  //     .catch((error) => {
+  //       const errorCode = error.code;
+  //       const errorMessage = error.message;
+  //       console.log(errorCode, errorMessage)
+  //     });
+  //   }
+  //   catch (error: any) {
+  //     Alert.alert(`Failed to register: ${error?.message}`);
+  //   }
+  // }
 
   return (
     <View style={styles.container}>
@@ -76,8 +76,8 @@ const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
         value={password}
         secureTextEntry={true}
       />
-      <TouchableOpacity style={styles.button} onPress={handleRegister}>
-        <Text style={styles.buttonText}>Register</Text>
+      <TouchableOpacity style={styles.button} onPress={handleLogIn}>
+        <Text style={styles.buttonText}>LogIn</Text>
       </TouchableOpacity>
     </View>
   );

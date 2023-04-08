@@ -6,57 +6,95 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
+import { auth, db } from "../config/firebase";
+import {
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
+} from "firebase/auth";
+import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
 
 const studentRegex = /^[0-9][0-9][A-Z][A-Z][0-9][0-9][0-9][0-9][0-9]$/;
 const teacherRegex = /^[0-9]{12}$/;
 const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+const usersRef = collection(db, "users");
+
 
 const RegistrationScreen = () => {
   const [isStudent, setIsStudent] = useState(true);
   const [userID, setUserID] = useState("");
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
-
+  const [userPassword, setUserPassword] = useState("");
+  const [userConfirmPassword, setUserConfirmPassword] = useState("");
   const handleUserID = (text: string) => {
     setUserID(text);
   };
-
+  
   const handleUserName = (text: string) => {
     setUserName(text);
   };
-
+  
   const handleUserEmail = (text: string) => {
     setUserEmail(text);
   };
-
-
-
-  const handleVerification = () => {
-    if(emailRegex.test(userEmail)){
+  
+  // const randomPassword = Math.random().toString(36).substring(2, 8);
+  const handleVerification = async () => {
+    if (emailRegex.test(userEmail)) {
       if (isStudent) {
         if (studentRegex.test(userID)) {
-          alert("Verification message sent to student's inbox");
+          // Check if user with this email already exists
+          const emailQuery = query(usersRef, where("email", "==", userEmail));
+          const emailQuerySnapshot = await getDocs(emailQuery);
+          if (!emailQuerySnapshot.empty) {
+            // User with this email already exists
+            throw new Error("A user with this email already exists");
+          }
+          if (userPassword !== userConfirmPassword) {
+            alert("Passwords do not match!");
+            return;
+          }
+          const userCredential = await createUserWithEmailAndPassword(
+            auth,
+            userEmail,
+            userPassword
+            );
+            try {
+              const docRef = await addDoc(collection(db, "users"), {
+                name: userName,
+                email: userEmail,
+                userID: userID,
+                type: "student",
+              });
+              console.log("Document written with ID: ", docRef.id);
+            } catch (e) {
+              console.error("Error adding document: ", e);
+            }
+            alert("Password has been sent to student's inbox");
           //TODO: send to DB here ig?
           setUserID("");
           setUserName("");
           setUserEmail("");
+          setUserPassword("");
+          setUserConfirmPassword("");
         } else {
           alert("Invalid Roll no. format for student!");
         }
       } else {
         if (teacherRegex.test(userID)) {
           alert("Verification message sent to teacher's inbox");
-           //TODO: send to DB here ig?
-           setUserID("");
-           setUserName("");
-           setUserEmail("");
+          //TODO: send to DB here ig?
+          setUserID("");
+          setUserName("");
+          setUserEmail("");
+          setUserPassword("");
+          setUserConfirmPassword("");
         } else {
           alert("Invalid Enrollment ID format for teacher!");
         }
       }
-    }
-    else {
-      alert("Invalid E-mail ID!")
+    } else {
+      alert("Invalid E-mail ID!");
     }
   };
 
@@ -91,6 +129,20 @@ const RegistrationScreen = () => {
         onChangeText={handleUserEmail}
         value={userEmail}
         placeholder={"eg. name@mail.com"}
+      />
+      <TextInput
+        style={Styles.input}
+        placeholder="Password"
+        onChangeText={(text) => setUserPassword(text)}
+        value={userPassword}
+        secureTextEntry={true}
+      />
+      <TextInput
+        style={Styles.input}
+        placeholder="Confirm Password"
+        onChangeText={(text) => setUserConfirmPassword(text)}
+        value={userConfirmPassword}
+        secureTextEntry={true}
       />
       <TouchableOpacity style={Styles.button} onPress={handleVerification}>
         <Text>Send verification message</Text>
