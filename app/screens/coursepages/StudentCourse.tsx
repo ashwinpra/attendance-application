@@ -84,7 +84,6 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 			<View style={styles.attendanceRecord}>
 				<Text style={styles.sectionTitle}>Attendance Record</Text>
 				{/* Attendance record goes here */}
-				4
 			</View>
 		</View>
 	);

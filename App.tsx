@@ -18,7 +18,6 @@ import AdminCourse from "./app/screens/coursepages/AdminCourse";
 import Settings from "./app/screens/Settings";
 import { RootStackParamList } from "./app/components/types";
 import * as Location from 'expo-location'
-import { LocationObject } from "expo-location";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -78,7 +77,7 @@ export default function App() {
     };
     getLocation();
   }, []);
-  
+  //TODO: send this location to the DB
 
 
   return (
