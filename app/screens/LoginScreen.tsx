@@ -17,6 +17,7 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 
 const userRef = collection(db, "users");
 
+
 type Props = {
 	route: RouteProp<RootStackParamList, "Login">;
 	navigation: NativeStackNavigationProp<RootStackParamList, "Login">;
@@ -47,7 +48,8 @@ const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
 					const user = userCredential.user;
 					console.log(user.email);
 					if (userType === "student") {
-						navigation.navigate("SHome");
+						console.log(userData.userID);
+						navigation.navigate("SHome", { rollno: userData.userID });
 					}
 					else if (userType === "teacher") {
 						navigation.navigate("THome");

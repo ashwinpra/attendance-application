@@ -13,142 +13,152 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../components/types";
-
+import { RouteProp } from "@react-navigation/native";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+  doc,
+  addDoc,
+  deleteDoc,
+} from "firebase/firestore";
+import { db } from "../../config/firebase";
 type Props = {
+  route: RouteProp<RootStackParamList, "SHome">;
   navigation: NavigationProp<RootStackParamList, "SHome">;
 };
 
-//TODO: this will be fetched from the backend
-const coursesData: Course[] = [
-  {
-    id: 1,
-    title: "React Native Course",
-    code: "CS 100",
-    teacher: "Prof 1",
-    timing: [
-      {
-        day: 0,
-        startTime: "14:00",
-        endTime: "16:00",
-      },
-      {
-        day: 2,
-        startTime: "14:00",
-        endTime: "16:00",
-      },
-    ],
-    enrollmentCode: "RNC100",
-  },
-  {
-    id: 2,
-    title: "Web Development Course",
-    code: "CS 200",
-    teacher: "Prof 2",
-    timing: [
-      {
-        day: 1,
-        startTime: "14:00",
-        endTime: "16:00",
-      },
-      {
-        day: 3,
-        startTime: "14:00",
-        endTime: "16:00",
-      },
-    ],
-    enrollmentCode: "WDC200",
-  },
-  {
-    id: 3,
-    title: "Data Science Course",
-    code: "CS 300",
-    teacher: "Prof 3",
-    timing: [
-      {
-        day: 6,
-        startTime: "14:00",
-        endTime: "16:00",
-      },
-      {
-        day: 5,
-        startTime: "14:00",
-        endTime: "16:00",
-      },
-    ],
-    enrollmentCode: "DSC300",
-  },
-  {
-    id: 4,
-    title: "Machine Learning Course",
-    code: "CS 500",
-    teacher: "Prof 4",
-    timing: [
-      {
-        day: 1,
-        startTime: "17:00",
-        endTime: "19:00",
-      },
-      {
-        day: 3,
-        startTime: "17:00",
-        endTime: "19:00",
-      },
-    ],
-    enrollmentCode: "MLC500",
-  },
-  {
-    id: 5,
-    title: "Deep Learning Course",
-    code: "CS 600",
-    teacher: "Prof 4",
-    timing: [
-      {
-        day: 1,
-        startTime: "17:00",
-        endTime: "19:00",
-      },
-      {
-        day: 3,
-        startTime: "17:00",
-        endTime: "19:00",
-      },
-    ],
-    enrollmentCode: "DLC600",
-  },
-];
-
-function getCurrentCourse(courses: Course[]): Course | undefined {
-  const currentDate = new Date();
-  console.log(currentDate.getDay());
-  for (const course of courses) {
-    if (course.timing && course.timing.length > 0) {
-      for (const timing of course.timing) {
-        if (timing.day === currentDate.getDay()) {
-          const [startHours, startMinutes] = timing.startTime
-            .split(":")
-            .map(Number);
-          const [endHours, endMinutes] = timing.endTime.split(":").map(Number);
-          const startTime = new Date();
-          startTime.setHours(startHours);
-          startTime.setMinutes(startMinutes);
-          const endTime = new Date();
-          endTime.setHours(endHours);
-          endTime.setMinutes(endMinutes);
-          if (currentDate >= startTime && currentDate <= endTime) {
-            return course;
-          }
-        }
-      }
-    }
-  }
-  return undefined;
-}
+const studentRef = collection(db, "users");
 
 //TODO: this will be fetched from the backend
-const studentData: Student = {
-  name: "John Doe",
-  rollno: "21CS10001",
-};
+// const coursesData: Course[] = [
+//   {
+//     id: 1,
+//     title: "React Native Course",
+//     code: "CS 100",
+//     teacher: "Prof 1",
+//     timing: [
+//       {
+//         day: 0,
+//         startTime: "14:00",
+//         endTime: "16:00",
+//       },
+//       {
+//         day: 2,
+//         startTime: "14:00",
+//         endTime: "16:00",
+//       },
+//     ],
+//     enrollmentCode: "RNC100",
+//   },
+//   {
+//     id: 2,
+//     title: "Web Development Course",
+//     code: "CS 200",
+//     teacher: "Prof 2",
+//     timing: [
+//       {
+//         day: 1,
+//         startTime: "14:00",
+//         endTime: "16:00",
+//       },
+//       {
+//         day: 3,
+//         startTime: "14:00",
+//         endTime: "16:00",
+//       },
+//     ],
+//     enrollmentCode: "WDC200",
+//   },
+//   {
+//     id: 3,
+//     title: "Data Science Course",
+//     code: "CS 300",
+//     teacher: "Prof 3",
+//     timing: [
+//       {
+//         day: 6,
+//         startTime: "14:00",
+//         endTime: "16:00",
+//       },
+//       {
+//         day: 5,
+//         startTime: "14:00",
+//         endTime: "16:00",
+//       },
+//     ],
+//     enrollmentCode: "DSC300",
+//   },
+//   {
+//     id: 4,
+//     title: "Machine Learning Course",
+//     code: "CS 500",
+//     teacher: "Prof 4",
+//     timing: [
+//       {
+//         day: 1,
+//         startTime: "17:00",
+//         endTime: "19:00",
+//       },
+//       {
+//         day: 3,
+//         startTime: "17:00",
+//         endTime: "19:00",
+//       },
+//     ],
+//     enrollmentCode: "MLC500",
+//   },
+//   {
+//     id: 5,
+//     title: "Deep Learning Course",
+//     code: "CS 600",
+//     teacher: "Prof 4",
+//     timing: [
+//       {
+//         day: 1,
+//         startTime: "17:00",
+//         endTime: "19:00",
+//       },
+//       {
+//         day: 3,
+//         startTime: "17:00",
+//         endTime: "19:00",
+//       },
+//     ],
+//     enrollmentCode: "DLC600",
+//   },
+// ];
+
+// function getCurrentCourse(courses: Course[]): Course | undefined {
+//   const currentDate = new Date();
+//   console.log(currentDate.getDay());
+//   for (const course of courses) {
+//     if (course.timing && course.timing.length > 0) {
+//       for (const timing of course.timing) {
+//         if (timing.day === currentDate.getDay()) {
+//           const [startHours, startMinutes] = timing.startTime
+//             .split(":")
+//             .map(Number);
+//           const [endHours, endMinutes] = timing.endTime.split(":").map(Number);
+//           const startTime = new Date();
+//           startTime.setHours(startHours);
+//           startTime.setMinutes(startMinutes);
+//           const endTime = new Date();
+//           endTime.setHours(endHours);
+//           endTime.setMinutes(endMinutes);
+//           if (currentDate >= startTime && currentDate <= endTime) {
+//             return course;
+//           }
+//         }
+//       }
+//     }
+//   }
+//   return undefined;
+// }
+
+//TODO: this will be fetched from the backend
 
 interface CourseCardProps {
   course: Course;
@@ -172,13 +182,49 @@ const CourseCard = ({ course, isCurrentCourse, onPress }: CourseCardProps) => {
   );
 };
 
-const StudentHome: React.FC<Props> = ({ navigation }) => {
-  const [courses, setCourses] = useState<Course[]>(coursesData);
+const fetchInfo = async (rollno: string) => {
+  const studentQuery = query(studentRef, where("userID", "==", rollno));
+  const studentQuerySnapshot = getDocs(studentQuery);
+  const studentDoc = (await studentQuerySnapshot).docs[0];
+  let coursesData: Course[] = [];
+  let stuname: string = "";
+  if (studentDoc.data().courses == undefined) {
+    coursesData= [];
+  } else {
+    coursesData = studentDoc.data().courses;
+  }
+  stuname = studentDoc.data().name;
+  return {coursesData, stuname};
+};
+
+const StudentHome: React.FC<Props> =  ({ navigation, route }) => {
+  const { rollno } = route.params;
+  // const currentCourse = getCurrentCourse(courses);
+  // const otherCourses = courses.filter((course) => course !== currentCourse);
+  let studentData: Student = {
+    name: "",
+    rollno: "",
+  };
+  let coursesData: Course[] = [];
   const [student, setStudent] = useState<Student>(studentData);
+  const [courses, setCourses] = useState<Course[]>(coursesData);
+  
 
-  const currentCourse = getCurrentCourse(courses);
-  const otherCourses = courses.filter((course) => course !== currentCourse);
+  async function fetchData() {
+    try {
+      const { coursesData, stuname } = await fetchInfo(route.params.rollno);
+      const studentData: Student = {
+        name: stuname,
+        rollno: route.params.rollno,
+      };
+      setCourses(coursesData);
+      setStudent(studentData);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
+  fetchData();
   const handleSettingsPress = () => {
     navigation.navigate("Settings");
   };
@@ -237,7 +283,7 @@ const StudentHome: React.FC<Props> = ({ navigation }) => {
       {/* Courses */}
       <ScrollView>
         <View style={styles.coursesSection}>
-          {/* Current course */}
+          {/* Current course
           <View style={styles.currentCourse}>
             <Text style={styles.sectionTitle}>Current Course</Text>
             {currentCourse ? (
@@ -249,13 +295,13 @@ const StudentHome: React.FC<Props> = ({ navigation }) => {
             ) : (
               <Text style={styles.noCourseText}>No current course</Text>
             )}
-          </View>
+          </View> */}
 
           {/* Other courses */}
           <View style={styles.otherCourses}>
             <Text style={styles.sectionTitle}>Other Courses</Text>
-            {otherCourses.length > 0 ? (
-              otherCourses.map((course) => (
+            {coursesData.length > 0 ? (
+              coursesData.map((course) => (
                 <CourseCard
                   course={course}
                   onPress={() => handleCoursePress(course, false)}
