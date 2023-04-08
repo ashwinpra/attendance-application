@@ -18,7 +18,6 @@ import AdminCourse from "./app/screens/coursepages/AdminCourse";
 import Settings from "./app/screens/Settings";
 import { RootStackParamList } from "./app/components/types";
 import * as Location from 'expo-location'
-import { LocationObject } from "expo-location";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -35,6 +34,7 @@ const setStackOptions = (title: string) => {
     },
     headerTitle: title,
     headerTitleAlign: "center",
+    headerLeft: () => null
   };
 }
 
@@ -84,7 +84,7 @@ export default function App() {
   return (
       <Provider store={store}>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="AHome">
         <Stack.Screen name="SHome" component={StudentHome} options={setStackOptions("Home")}/>
         <Stack.Screen name="THome" component={TeacherHome} options={setStackOptions("Home")}/>
         <Stack.Screen name="AHome" component={AdminHome} options={setStackOptions("Home")}/>

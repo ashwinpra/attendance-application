@@ -1,6 +1,7 @@
 /// <reference path="../../globals.d.ts" />
 import React, { useState} from "react";
 import {
+  SafeAreaView,
   StyleSheet,
   Text,
   View,
@@ -8,11 +9,14 @@ import {
   TextInput,
   Image,
   ActionSheetIOS,
-  Platform
+  Platform, 
+  Modal, 
+  Button
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../components/types";
+import SizedBox from "../../components/SizedBox";
 
 type Props = {
   navigation: NavigationProp<RootStackParamList, "AHome">;
@@ -49,6 +53,7 @@ const studentData: Student = {
 };
 
 const AdminHomepage: React.FC<Props> = ({ navigation }) => {
+  const [showModal, setShowModal] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [courses, setCourses] = useState<Course[]>([
     { id: 1, title: "React Native Course", code: "CS 100" },
@@ -57,9 +62,12 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
   ]);
   const [rollNo, setRollNo] = useState("");
   //add null option to student
-  const [student, setStudent] = useState<Student | null>(studentData);
+  const [student, setStudent] = useState<Student | null>(null);
   const [teacherID, setTeacherID] = useState("");
-  const [teacher, setTeacher] = useState<Teacher | null>(teacherData);
+  const [teacher, setTeacher] = useState<Teacher | null>(null);
+  const [courseName, setCourseName] = useState("");
+  const [courseCode, setCourseCode] = useState("");
+  const [courseTeacher, setCourseTeacher] = useState("");
 
   const handleSettingsPress = () => {
     navigation.navigate("Settings");
@@ -118,7 +126,11 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
   };
 
   const handleAddCourse = () => {
-    console.log("Add course button pressed");
+    // Add the new course to your list of courses
+    // (e.g., by calling an API endpoint or updating state)
+    console.log('New course added')
+    // Close the modal
+    setShowModal(false);
   };
 
   const handleModifyCourse = () => {
@@ -188,9 +200,37 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
         {renderCoursePicker()}
       </View>
       <View style={styles.buttonsContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleAddCourse}>
+        <TouchableOpacity style={styles.button} onPress={() => setShowModal(true)}>
           <Text style={styles.buttonText}>Add course</Text>
         </TouchableOpacity>
+      <Modal visible={showModal} animationType="slide">
+        <SafeAreaView style={styles.modalContainer}>
+          <Text style={styles.modalTitle}>Add Course</Text>
+          <SizedBox height={10} />
+          <TextInput
+            style = {styles.modalText}
+            placeholder="Course Name"
+            onChangeText={text => setCourseName(text)}
+          />
+          <TextInput
+            style={styles.modalText}
+            placeholder="Course Code"
+            onChangeText={text => setCourseCode(text)}
+          />
+          <TextInput
+            style={styles.modalText}
+            placeholder="Course Teacher"
+            onChangeText={text => setCourseTeacher(text)}
+          />
+          <TouchableOpacity style={styles.button} onPress={handleAddCourse}>
+          <Text style={styles.buttonText}>Add</Text>
+        </TouchableOpacity>
+        <SizedBox height={10} />
+        <TouchableOpacity style={styles.button} onPress={() => setShowModal(false)}>
+          <Text style={styles.buttonText}>Cancel</Text>
+        </TouchableOpacity>
+        </SafeAreaView>
+      </Modal>
         <TouchableOpacity
           style={[
             styles.button,
@@ -360,6 +400,27 @@ const styles = StyleSheet.create({
   Info: {
     fontSize: 16,
     marginBottom: 5,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 10,
+    alignSelf: "center",
+  },
+  modalText: {
+    height: 50,
+    width: "90%",
+    backgroundColor: "#fff",
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    marginBottom: 10,
+    paddingHorizontal: 10,
   },
 });
 export default AdminHomepage;

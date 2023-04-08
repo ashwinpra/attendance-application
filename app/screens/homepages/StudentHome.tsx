@@ -1,13 +1,17 @@
 /// <reference path="../../globals.d.ts" />
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { BackHandler } from 'react-native';
 import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../components/types";
 
+
 type Props = {
   navigation: NavigationProp<RootStackParamList, "SHome">;
 };
+
+
 
 //TODO: this will be fetched from the backend
 const coursesData: Course[] = [

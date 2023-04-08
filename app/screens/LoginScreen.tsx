@@ -47,9 +47,13 @@ const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
 					console.log(user.email);
 					if (userType === "student") {
 						navigation.navigate("SHome");
+						// prevent back navigation from here
 					}
 					else if (userType === "teacher") {
 						navigation.navigate("THome");
+					}
+					else if (userType === "admin") {
+						navigation.navigate("AHome");
 					}
 				})
 				.catch((error) => {
@@ -80,7 +84,7 @@ const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
 				secureTextEntry={true}
 			/>
 			<TouchableOpacity style={styles.button} onPress={handleLogIn}>
-				<Text style={styles.buttonText}>LogIn</Text>
+				<Text style={styles.buttonText}>Login</Text>
 			</TouchableOpacity>
 		</View>
 	);
