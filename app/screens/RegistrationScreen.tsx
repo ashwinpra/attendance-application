@@ -138,7 +138,6 @@ const RegistrationScreen = () => {
         placeholder={isStudent ? "eg. 19CS10001" : "eg. 123456789012"}
         keyboardType={isStudent ? "default" : "number-pad"}
       />
-      {/* add fields for name and e-mail also */}
       <Text style={Styles.title}>Name</Text>
       <TextInput
         style={Styles.input}
@@ -150,9 +149,11 @@ const RegistrationScreen = () => {
       <TextInput
         style={Styles.input}
         onChangeText={handleUserEmail}
+        autoCapitalize="none"
         value={userEmail}
         placeholder={"eg. name@mail.com"}
       />
+      <Text style={Styles.title}>Password</Text>
       <TextInput
         style={Styles.input}
         placeholder="Password"
