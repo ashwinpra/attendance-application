@@ -7,11 +7,9 @@ export type RootStackParamList = {
 	AHome: undefined;
 	SCourse: {
 		course: Course,
-		isCurrentCourse: boolean
 	};
 	TCourse: {
 		course: Course,
-		isCurrentCourse: boolean
 	};
 	ACourse: { course: Course };
 	Login: { userType: string };

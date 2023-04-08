@@ -196,10 +196,9 @@ const TeacherHome: React.FC<Props> = ({ navigation, route }) => {
 		navigation.navigate("Settings");
 	};
 
-	const handleCoursePress = (course: Course, isCurrentCourse: boolean) => {
+	const handleCoursePress = (course: Course) => {
 		navigation.navigate("TCourse", {
 			course: course,
-			isCurrentCourse: isCurrentCourse,
 		});
 	};
 
@@ -240,12 +239,12 @@ const TeacherHome: React.FC<Props> = ({ navigation, route }) => {
 
 					{/* Other courses */}
 					<View style={styles.otherCourses}>
-						<Text style={styles.sectionTitle}>Other Courses</Text>
-						{coursesData.length > 0 ? (
-							coursesData.map((course) => (
+						<Text style={styles.sectionTitle}>Courses</Text>
+						{courses.length > 0 ? (
+							courses.map((course) => (
 								<CourseCard
 									course={course}
-									onPress={() => handleCoursePress(course, false)}
+									onPress={() => handleCoursePress(course)}
 									isCurrentCourse={false}
 								/>
 							))

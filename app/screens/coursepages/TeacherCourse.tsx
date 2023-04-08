@@ -20,7 +20,7 @@ type Props = {
 const attendanceRecord = {}
 
 const TeacherCourse: React.FC<Props> = ({ route, navigation }) => {
-	const { course, isCurrentCourse } = route.params;
+	const { course } = route.params;
 	const [attendanceCode, setAttendanceCode] = useState<string | null>(null);
 	const [recordType, setRecordType] = useState('day-wise');
 
@@ -49,7 +49,6 @@ const TeacherCourse: React.FC<Props> = ({ route, navigation }) => {
 		//TODO: send code to DB
 		const courseDoc = await fetchCourseInfo(course.code);
 		await updateDoc(courseDoc.ref, {attendanceCode: code})
-
 		setAttendanceCode(code);
 		// AsyncStorage.setItem('attendanceCode', code);
 	}
@@ -87,10 +86,6 @@ const TeacherCourse: React.FC<Props> = ({ route, navigation }) => {
 	
 
 	const renderAttendanceButton = () => {
-		if (!isCurrentCourse) {
-			return <Text style={styles.attendancePeriodInactive}>Course not ongoing</Text>;
-		}
-
 		if (attendanceCode) {
 			return (
 				<View style={styles.attendanceContainer}>

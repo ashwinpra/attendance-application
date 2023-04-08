@@ -67,10 +67,6 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 	  }
 
 	const renderAttendanceButton = () => {
-		if (!route.params.isCurrentCourse) {
-		  return <Text style={styles.attendancePeriodInactive}>Course not ongoing</Text>;
-		}
-
 		if (attendanceMarked) {
 			return (
 			  <Text style={styles.attendancePeriodInactive}>Attendance marked successfully</Text>

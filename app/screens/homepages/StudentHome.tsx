@@ -182,10 +182,9 @@ const StudentHome: React.FC<Props> = ({ navigation, route }) => {
 		navigation.navigate("Settings");
 	};
 
-	const handleCoursePress = (course: Course, isCurrentCourse: boolean) => {
+	const handleCoursePress = (course: Course) => {
 		navigation.navigate("SCourse", {
 			course: course,
-			isCurrentCourse: isCurrentCourse,
 		});
 	};
 
@@ -273,7 +272,7 @@ const StudentHome: React.FC<Props> = ({ navigation, route }) => {
 							courses.map((course) => (
 								<CourseCard
 									course={course}
-									onPress={() => handleCoursePress(course, false)}
+									onPress={() => handleCoursePress(course)}
 									isCurrentCourse={false}
 								/>
 							))
