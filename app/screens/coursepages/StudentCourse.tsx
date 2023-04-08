@@ -111,6 +111,7 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 				<Text style={styles.courseCode}>Total Classes Present: {attendanceRecord.filter(record => record.status).length}</Text>
 				<Text style={styles.courseCode}>Attendance Percentage: {attendanceRecord.filter(record => record.status).length/attendanceRecord.length * 100}%</Text>
 				<SizedBox height={30}></SizedBox>
+				{/* Option to view detailed record */}
 				<TouchableOpacity onPress={() => setShowModal(true)} style={styles.button}>
   					<Text style={styles.attendanceButtonText}>View detailed record</Text>
 				</TouchableOpacity>

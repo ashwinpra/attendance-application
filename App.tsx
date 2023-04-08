@@ -84,7 +84,7 @@ export default function App() {
   return (
       <Provider store={store}>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="SHome">
+      <Stack.Navigator initialRouteName="THome">
         <Stack.Screen name="SHome" component={StudentHome} options={setStackOptions("Home")}/>
         <Stack.Screen name="THome" component={TeacherHome} options={setStackOptions("Home")}/>
         <Stack.Screen name="AHome" component={AdminHome} options={setStackOptions("Home")}/>
