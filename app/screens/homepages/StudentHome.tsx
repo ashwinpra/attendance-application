@@ -213,6 +213,26 @@ const StudentHome: React.FC<Props> =  ({ navigation, route }) => {
   async function fetchData() {
     try {
       const { coursesData, stuname } = await fetchInfo(route.params.rollno);
+      const courseRef = collection(db, "courses");
+      const courseQuery = query(courseRef, where("id", "in", coursesData));
+      const courseQuerySnapshot = await getDocs(courseQuery);
+      const usersRef = collection(db, "users");
+      let counter = 1;
+      let courseData: Course[] = [];
+      for (const doc of courseQuerySnapshot.docs) {
+        const teacherQuery = query( usersRef, where("userID", "==", doc.data().courseTeacher));
+        const teacherQuerySnapshot = await getDocs(teacherQuery);
+        const teacherDoc = teacherQuerySnapshot.docs[0];
+        let teacherName = teacherDoc.data().name;
+        courseData.push({
+          id: counter,
+          title: doc.data().courseName,
+          code: doc.data().courseCode,
+          teacher: teacherName,
+          enrollmentCode: doc.data().enrollmentKey,
+        });
+        counter++;
+      };
       const studentData: Student = {
         name: stuname,
         rollno: route.params.rollno,
