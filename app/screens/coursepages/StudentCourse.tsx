@@ -1,11 +1,12 @@
 /// <reference path="../../globals.d.ts" />
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert, FlatList, Modal, SafeAreaView} from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../components/types";
 import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import SizedBox from '../../components/SizedBox';
 
 
 type Props = {
@@ -13,9 +14,31 @@ type Props = {
 	navigation: NavigationProp<RootStackParamList, "SCourse">;
 };
 
+//TODO: get this from DB
+const attendanceData: attendanceRecord[] = [
+	{
+		date: "2021-03-01",
+		status: true
+	},
+	{
+		date: "2021-03-02",
+		status: true
+	},
+	{
+		date: "2021-03-03",
+		status: true
+	},
+	{
+		date: "2021-03-04",
+		status: false
+	},
+];
+
 const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 	const [enteredCode, setEnteredCode] = useState('');
 	const [attendanceMarked, setAttendanceMarked] = useState(false);
+	const [attendanceRecord, setAttendanceRecord] = useState<attendanceRecord[]>(attendanceData);
+	const [showModal, setShowModal] = useState(false);
 
 
 	const attendanceCode = "123abc" // TODO: get code from DB
@@ -71,7 +94,6 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 	  
 		return <Text style={styles.attendancePeriodInactive}>Attendance period not active</Text>;
 	  };
-	  
 
 	return (
 		<View style={styles.container}>
@@ -84,12 +106,27 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 			<View style={styles.attendanceRecord}>
 				<Text style={styles.sectionTitle}>Attendance Record</Text>
 				{/* Attendance record goes here */}
-				4
+				{/* show total statistics */}
+				<Text style={styles.courseCode}>Total Classes: {attendanceRecord.length}</Text>
+				<Text style={styles.courseCode}>Total Classes Present: {attendanceRecord.filter(record => record.status).length}</Text>
+				<Text style={styles.courseCode}>Attendance Percentage: {attendanceRecord.filter(record => record.status).length/attendanceRecord.length * 100}%</Text>
+				<SizedBox height={30}></SizedBox>
+				<TouchableOpacity onPress={() => setShowModal(true)} style={styles.button}>
+  					<Text style={styles.attendanceButtonText}>View detailed record</Text>
+				</TouchableOpacity>
+				<Modal visible={showModal} animationType='slide'>
+				<SafeAreaView style={styles.modalContainer}>
+				<SizedBox height={30}></SizedBox>
+				<FlatList data={attendanceRecord} renderItem={({item}) => <Text style={styles.modalTitle}>{item.date} - {item.status ? "Present" : "Absent"}</Text>} keyExtractor={item => item.date} />
+			<TouchableOpacity onPress={() => setShowModal(false)}style={styles.button}>
+				<Text style={styles.attendanceButtonText}>Close</Text>
+			</TouchableOpacity>
+				</SafeAreaView>
+			</Modal>
 			</View>
 		</View>
 	);
 };
-
 
 export default StudentCourse;
 
@@ -123,6 +160,13 @@ const styles = StyleSheet.create({
       textAlign: 'center',
       fontSize: 20,
     },
+	button: {
+		backgroundColor: "#007bff",
+		padding: 10,
+		borderRadius: 5,
+		width: "90%",
+		alignSelf: "center",
+	  },
 	otherButton: {
 		backgroundColor: '#1e88e5',
 		borderRadius: 5,
@@ -147,6 +191,7 @@ const styles = StyleSheet.create({
     attendanceButtonText: {
       color: '#FFF',
       fontSize: 24,
+	  alignSelf: 'center'
     },
     attendancePeriodInactive: {
       fontSize: 16,
@@ -156,6 +201,7 @@ const styles = StyleSheet.create({
     attendanceCode: {
 		fontSize: 20,
 		fontWeight: 'bold',
+		width: '90%',
 		textAlign: 'center',
 		backgroundColor: '#f2f2f2',
 		// paddingVertical: 10,
@@ -182,7 +228,7 @@ const styles = StyleSheet.create({
     attendanceRecord: {
       backgroundColor: '#FFF',
       borderRadius: 10,
-      paddingTop: 50,
+      paddingTop: 100,
 	  paddingBottom: 20,
     },
     sectionTitle: {
@@ -191,4 +237,19 @@ const styles = StyleSheet.create({
       marginBottom: 20,
       alignSelf: 'center'
     },
+	modalContainer: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+		margin: 20,
+	  },
+	  modalTitle: {
+		fontSize: 24,
+		fontWeight: "bold",
+		marginBottom: 10,
+		alignSelf: "center",
+	  },
+	  modalText: {
+		fontSize: 20,
+	  },
   });
