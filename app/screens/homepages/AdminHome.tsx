@@ -17,7 +17,8 @@ import { Picker } from "@react-native-picker/picker";
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../components/types";
 import SizedBox from "../../components/SizedBox";
-
+import { collection, query, where, getDocs,updateDoc, doc, addDoc } from "firebase/firestore";
+import { db } from "../../config/firebase";
 type Props = {
   navigation: NavigationProp<RootStackParamList, "AHome">;
 };
@@ -125,8 +126,21 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
     );
   };
 
-  const handleAddCourse = () => {
+  const handleAddCourse = async () => {
     // Add the new course to your list of courses
+    const courseRef = collection(db, "courses");
+    const q = query(courseRef, where("courseCode", "==", courseCode));
+    const querySnapshot = await getDocs(q);
+    if (querySnapshot.size > 0) {
+      console.log("Course already exists");
+      return;
+    }
+    const docRef = await addDoc(courseRef, {
+      courseName: courseName,
+      courseCode: courseCode,
+      courseTeacher: courseTeacher,
+      enrollmentKey: courseCode,
+    });
     // (e.g., by calling an API endpoint or updating state)
     console.log('New course added')
     // Close the modal

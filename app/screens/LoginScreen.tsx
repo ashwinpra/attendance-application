@@ -28,6 +28,7 @@ const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
 	const { userType } = route.params;
 
 	const handleLogIn = async () => {
+    if  (userType === "student" || userType === "teacher"){ 
 		try {
 			const userQuery = await query(userRef, where("email", "==", email));
 			const querySnapshot = await getDocs(userQuery);
@@ -47,13 +48,9 @@ const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
 					console.log(user.email);
 					if (userType === "student") {
 						navigation.navigate("SHome");
-						// prevent back navigation from here
 					}
 					else if (userType === "teacher") {
 						navigation.navigate("THome");
-					}
-					else if (userType === "admin") {
-						navigation.navigate("AHome");
 					}
 				})
 				.catch((error) => {
@@ -64,7 +61,35 @@ const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
 		} catch (error: any) {
 			Alert.alert(`Failed to login: ${error?.message}`);
 		}
-	};
+	}
+  else if (userType === "admin"){
+    const adminRef = collection(db, "admin");
+    try {
+      const adminQuery = await query(adminRef, where("email", "==", email));
+      const querySnapshot = await getDocs(adminQuery);
+      if (querySnapshot.empty) {
+        Alert.alert("User does not exist!");
+        return;
+      }
+      signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(user.email);
+        navigation.navigate("AHome");
+      }
+      )
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      }
+      );
+    }
+    catch (error: any) {
+      Alert.alert(`Failed to login: ${error?.message}`);
+    }
+  }
+};
 
 	return (
 		<View style={styles.container}>
@@ -84,7 +109,7 @@ const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
 				secureTextEntry={true}
 			/>
 			<TouchableOpacity style={styles.button} onPress={handleLogIn}>
-				<Text style={styles.buttonText}>Login</Text>
+				<Text style={styles.buttonText}>LogIn</Text>
 			</TouchableOpacity>
 		</View>
 	);
