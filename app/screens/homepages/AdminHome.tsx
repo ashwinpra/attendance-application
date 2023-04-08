@@ -370,7 +370,7 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
         </TouchableOpacity>
       </View>
       <View style={styles.searchContainer}>
-        <Text style={styles.label}>Enter roll no/ID:</Text>
+        <Text style={styles.label}>Enter Roll No. / ID:</Text>
         {student ? (
           <TextInput
             style={styles.textInput}

@@ -31,7 +31,7 @@ interface Admin extends User {
 
 interface attendanceRecord {
     date: string;
-    status: string;
+    status: boolean;
 }
 
 // const primaryColor = '#1e88e5';
