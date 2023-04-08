@@ -173,8 +173,24 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
     setShowModal(false);
   };
 
-  const handleModifyCourse = () => {
+  const handleModifyCourse = async () => {
     if (selectedCourse) {
+      const q = query(courseRef, where("courseCode", "==", modifyCourseCode));
+      console.log(modifyCourseCode);
+      const querySnapshot = await getDocs(q);
+      if (querySnapshot.size > 0) {
+        console.log("Course already exists");
+        return;
+      }
+      const q2 = query(courseRef, where("courseCode", "==", selectedCourse.code));
+      const querySnapshot2 = await getDocs(q2);
+
+      const docRef = querySnapshot2.docs[0].ref
+      await updateDoc(docRef, {
+        courseName: modifyCourseName,
+        courseCode: modifyCourseCode,
+      });
+      // (e.g., by calling an API endpoint or updating state)
       console.log(
         `Modify course button pressed for course ${selectedCourse.title} (${selectedCourse.code})`
       );
