@@ -128,6 +128,9 @@ const RegistrationScreen = () => {
 
   return (
     <View style={Styles.container}>
+      <Text style={Styles.mainTitle}>
+        {isStudent ? "Student" : "Teacher"} Registration
+      </Text>
       <Text style={Styles.title}>
         {isStudent ? "Roll no." : "Enrollment ID"}
       </Text>
@@ -191,6 +194,11 @@ const Styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#fff",
+  },
+  mainTitle: {
+    fontSize: 30,
+    fontWeight: "bold",
+    marginBottom: 20,
   },
   title: {
     fontSize: 20,

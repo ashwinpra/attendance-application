@@ -346,7 +346,7 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
             <SizedBox height={10} />
             <TouchableOpacity
               style={styles.button}
-              onPress={() => setShowModal(false)}
+              onPress={() => setShowModifyModal(false)}
             >
               <Text style={styles.buttonText}>Cancel</Text>
             </TouchableOpacity>
