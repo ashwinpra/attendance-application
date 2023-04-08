@@ -14,6 +14,7 @@ Team Project for Software Engineering Laboratory Course (CS29202) 2023
 - [ ] Proxy checking - check distance - easier after backend integration
 - [ ] Display attendance record - easier after backend integration
 - [ ] Store attendance code in backend
+- [ ] Store location in backend
 - [ ] Backend for getting courses of student and teacher
 - [ ] Backend for getting student attendance record
 - [ ] Clean up code!
