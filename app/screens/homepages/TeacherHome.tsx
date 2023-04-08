@@ -1,5 +1,5 @@
 /// <reference path="../../globals.d.ts" />
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,27 +7,32 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../components/types";
-import { RouteProp } from "@react-navigation/native"
+import { RouteProp } from "@react-navigation/native";
 import {
-	collection,
-	query,
-	where,
-	getDocs,
-	updateDoc,
-	doc,
-	addDoc,
-	deleteDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+  doc,
+  addDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import { db } from "../../config/firebase";
+import * as Location from "expo-location";
 
 type Props = {
-  route: NavigationProp<RootStackParamList, "THome">;
+  route: RouteProp<RootStackParamList, "THome">;
   navigation: NavigationProp<RootStackParamList, "THome">;
 };
+
+const teacherRef = collection(db, "users");
+const coursesRef = collection(db, "courses");
 
 //TODO: this will be fetched from the backend
 // const coursesData: Course[] = [
@@ -91,10 +96,12 @@ type Props = {
 // ];
 
 //TODO: this will be fetched from the backend
-const teacherData: Teacher = {
-  name: "John Doe",
-  enrollmentID: "123456789",
-};
+
+//
+//    const teacherData: Teacher = {
+//      name: "John Doe",
+//      enrollmentID: "123456789",
+//    };
 
 interface CourseCardProps {
   course: Course;
@@ -102,32 +109,32 @@ interface CourseCardProps {
   onPress: () => void;
 }
 
-function getCurrentCourse(courses: Course[]): Course | undefined {
-  const currentDate = new Date();
-  console.log(currentDate.getDay());
-  for (const course of courses) {
-    if (course.timing && course.timing.length > 0) {
-      for (const timing of course.timing) {
-        if (timing.day === currentDate.getDay()) {
-          const [startHours, startMinutes] = timing.startTime
-            .split(":")
-            .map(Number);
-          const [endHours, endMinutes] = timing.endTime.split(":").map(Number);
-          const startTime = new Date();
-          startTime.setHours(startHours);
-          startTime.setMinutes(startMinutes);
-          const endTime = new Date();
-          endTime.setHours(endHours);
-          endTime.setMinutes(endMinutes);
-          if (currentDate >= startTime && currentDate <= endTime) {
-            return course;
-          }
-        }
-      }
-    }
-  }
-  return undefined;
-}
+//  function getCurrentCourse(courses: Course[]): Course | undefined {
+//    const currentDate = new Date();
+//    console.log(currentDate.getDay());
+//    for (const course of courses) {
+//      if (course.timing && course.timing.length > 0) {
+//        for (const timing of course.timing) {
+//          if (timing.day === currentDate.getDay()) {
+//            const [startHours, startMinutes] = timing.startTime
+//              .split(":")
+//              .map(Number);
+//            const [endHours, endMinutes] = timing.endTime.split(":").map(Number);
+//            const startTime = new Date();
+//            startTime.setHours(startHours);
+//            startTime.setMinutes(startMinutes);
+//            const endTime = new Date();
+//            endTime.setHours(endHours);
+//            endTime.setMinutes(endMinutes);
+//            if (currentDate >= startTime && currentDate <= endTime) {
+//              return course;
+//            }
+//          }
+//        }
+//      }
+//    }
+//    return undefined;
+//  }
 
 const CourseCard = ({ course, isCurrentCourse, onPress }: CourseCardProps) => {
   const cardStyle = isCurrentCourse
@@ -144,12 +151,123 @@ const CourseCard = ({ course, isCurrentCourse, onPress }: CourseCardProps) => {
   );
 };
 
-const TeacherHome: React.FC<Props> = ({ navigation }) => {
+const fetchInfo = async (id: string) => {
+  const teacherQuery = query(teacherRef, where("userID", "==", id));
+  const teacherQuerySnapshot = getDocs(teacherQuery);
+  const teacherDoc = (await teacherQuerySnapshot).docs[0];
+  let coursesData: Course[] = [];
+  let teaname: string = "";
+  if (teacherDoc.data().courses == undefined) {
+    coursesData = [];
+  } else {
+    coursesData = teacherDoc.data().courses;
+  }
+  teaname = teacherDoc.data().name;
+  return { coursesData, teaname };
+};
+
+const TeacherHome: React.FC<Props> = ({ navigation, route }) => {
+  const { enrollmentID } = route.params;
+
+  let teacherData: Teacher = {
+    name: "",
+    enrollmentID: "",
+  };
+  let coursesData: Course[] = [];
   const [courses, setCourses] = useState<Course[]>(coursesData);
   const [teacher, setTeacher] = useState<Teacher>(teacherData);
+  const [location, setLocation] = useState<Location.LocationObject | null>(
+    null
+  );
 
-  const currentCourse = getCurrentCourse(courses);
-  const otherCourses = courses.filter((course) => course !== currentCourse);
+  //const currentCourse = getCurrentCourse(courses);
+  //const otherCourses = courses.filter((course) => course !== currentCourse);
+
+  const checkLocationPermission = async () => {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert(
+        "Location permission denied",
+        "To use this app, please go to your device settings and enable location permission for the app",
+        [{ text: "OK" }],
+        { cancelable: false }
+      );
+      return false;
+    }
+    return true;
+  };
+
+  useEffect(() => {
+    const getLocation = async () => {
+      const hasLocationPermission = await checkLocationPermission();
+      if (!hasLocationPermission) {
+        return;
+      }
+      const locationSubscriber = await Location.watchPositionAsync(
+        {
+          accuracy: Location.Accuracy.Highest,
+          timeInterval: 5000, // adjust as needed
+          distanceInterval: 100, // adjust as needed
+        },
+        async (position) => {
+          // send this position to the database
+          const teacherQuery = query(
+            teacherRef,
+            where("userID", "==", enrollmentID)
+          );
+          const teacherQuerySnapshot = getDocs(teacherQuery);
+          const teacherDoc = (await teacherQuerySnapshot).docs[0];
+          await updateDoc(teacherDoc.ref, { location: position });
+          setLocation(position);
+        }
+      );
+      return () => {
+        locationSubscriber.remove();
+      };
+    };
+    getLocation();
+  }, []);
+
+  async function fetchData() {
+    try {
+      const { coursesData, teaname } = await fetchInfo(
+        route.params.enrollmentID
+      );
+      const courseRef = collection(db, "courses");
+      const courseQuery = query(courseRef, where("id", "in", coursesData));
+      const courseQuerySnapshot = await getDocs(courseQuery);
+      const usersRef = collection(db, "users");
+      let counter = 1;
+      let courseData: Course[] = [];
+      for (const doc of courseQuerySnapshot.docs) {
+        const teacherQuery = query(
+          usersRef,
+          where("userID", "==", doc.data().courseTeacher)
+        );
+        const teacherQuerySnapshot = await getDocs(teacherQuery);
+        const teacherDoc = teacherQuerySnapshot.docs[0];
+        let teacherName = teacherDoc.data().name;
+        courseData.push({
+          id: counter,
+          title: doc.data().courseName,
+          code: doc.data().courseCode,
+          teacher: teacherName,
+          enrollmentCode: doc.data().enrollmentKey,
+        });
+        counter++;
+      }
+      const teacherData: Teacher = {
+        name: teaname,
+        enrollmentID: route.params.enrollmentID,
+      };
+      setCourses(coursesData);
+      setTeacher(teacherData);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  fetchData();
 
   const handleSettingsPress = () => {
     navigation.navigate("Settings");
@@ -183,7 +301,7 @@ const TeacherHome: React.FC<Props> = ({ navigation }) => {
       {/* Courses */}
       <ScrollView>
         <View style={styles.coursesSection}>
-          {/* Current course */}
+          {/* Current course 
           <View style={styles.currentCourse}>
             <Text style={styles.sectionTitle}>Current Course</Text>
             {currentCourse ? (
@@ -195,13 +313,13 @@ const TeacherHome: React.FC<Props> = ({ navigation }) => {
             ) : (
               <Text style={styles.noCourseText}>No current course</Text>
             )}
-          </View>
+          </View> */}
 
           {/* Other courses */}
           <View style={styles.otherCourses}>
             <Text style={styles.sectionTitle}>Other Courses</Text>
-            {otherCourses.length > 0 ? (
-              otherCourses.map((course) => (
+            {coursesData.length > 0 ? (
+              coursesData.map((course) => (
                 <CourseCard
                   course={course}
                   onPress={() => handleCoursePress(course, false)}

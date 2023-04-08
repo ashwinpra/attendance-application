@@ -50,7 +50,8 @@ const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
               console.log(userData.userID);
               navigation.navigate("SHome", { rollno: userData.userID });
             } else if (userType === "teacher") {
-              navigation.navigate("THome");
+              console.log(userData.userID);
+              navigation.navigate("THome", {enrollmentID: userData.userID});
             }
           })
           .catch((error) => {

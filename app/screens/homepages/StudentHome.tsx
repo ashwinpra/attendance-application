@@ -156,7 +156,7 @@ const StudentHome: React.FC<Props> = ({ navigation, route }) => {
 			};
 		};
 		getLocation();
-	}, []);
+	}, []);	
 
 	async function fetchData() {
 		try {
