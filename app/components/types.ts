@@ -3,13 +3,14 @@
 export type RootStackParamList = {
 	Home: undefined;
 	SHome: { rollno: string};
-	THome: undefined;
+	THome: { enrollmentID: string};
 	AHome: undefined;
 	SCourse: {
 		course: Course,
 		isCurrentCourse: boolean
 	};
 	TCourse: {
+		teacher: Teacher,
 		course: Course,
 		isCurrentCourse: boolean
 	};

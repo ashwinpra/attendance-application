@@ -7,22 +7,11 @@ import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../components/types";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SizedBox from '../../components/SizedBox';
-import { auth, db } from "../../config/firebase";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "../../config/firebase";
+import { collection, query, where, getDocs, updateDoc } from "firebase/firestore";
 
-// import Geolocation from '@react-native-community/geolocation';
-
-// Geolocation.getCurrentPosition(
-// 	position => {
-// 	  const latitude = position.coords.latitude;
-// 	  const longitude = position.coords.longitude;
-// 	  console.log('Current location:', latitude, longitude);
-// 	},
-// 	error => {
-// 	  console.log(error.code, error.message);
-// 	},
-// 	{enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
-//   );
+const userRef = collection(db, "users");
+const courseRef = collection(db, "courses");
 
 type Props = {
 	route: RouteProp<RootStackParamList, "TCourse">;
@@ -32,12 +21,23 @@ type Props = {
 const attendanceRecord = {}
 
 const TeacherCourse: React.FC<Props> = ({ route, navigation }) => {
+	const { teacher, course, isCurrentCourse } = route.params;
 	const [attendanceCode, setAttendanceCode] = useState<string | null>(null);
 	const [recordType, setRecordType] = useState('day-wise');
 
+	const fetchCourseInfo = async (id: string) => {
+		const courseQuery = query(courseRef, where("courseCode", "==", id));
+		const courseQuerySnapshot = getDocs(courseQuery);
+		const courseDoc = (await courseQuerySnapshot).docs[0];
+		return courseDoc; 
+	};
+
+
 	useEffect(() => {
 		const getAttendanceCode = async () => {
-			const code = await AsyncStorage.getItem('attendanceCode');
+			const courseDoc = await fetchCourseInfo(course.code);
+			let code = courseDoc.data().attendanceCode;
+			// const code = await AsyncStorage.getItem('attendanceCode');
 			if (code) {
 				setAttendanceCode(code);
 			}
@@ -45,16 +45,21 @@ const TeacherCourse: React.FC<Props> = ({ route, navigation }) => {
 		getAttendanceCode();
 	}, []);
 
-	const handleTakeAttendance = () => {
+	const handleTakeAttendance = async () => {
 		const code = Math.random().toString(36).substring(2, 8).toUpperCase();
 		//TODO: send code to DB
+		const courseDoc = await fetchCourseInfo(course.code);
+		await updateDoc(courseDoc.ref, {attendanceCode: code})
+
 		setAttendanceCode(code);
-		AsyncStorage.setItem('attendanceCode', code);
+		// AsyncStorage.setItem('attendanceCode', code);
 	}
 
-	const handleEndAttendance = () => {
+	const handleEndAttendance = async () => {
+		const courseDoc = await fetchCourseInfo(course.code);
+		await updateDoc(courseDoc.ref, {attendanceCode: null})
 		setAttendanceCode(null);
-		AsyncStorage.removeItem('attendanceCode');
+		// AsyncStorage.removeItem('attendanceCode');
 	}
 
 	const DayWiseRecord = ({attendanceRecord}: any) => {
@@ -83,7 +88,7 @@ const TeacherCourse: React.FC<Props> = ({ route, navigation }) => {
 	
 
 	const renderAttendanceButton = () => {
-		if (!route.params.isCurrentCourse) {
+		if (!isCurrentCourse) {
 			return <Text style={styles.attendancePeriodInactive}>Course not ongoing</Text>;
 		}
 
@@ -115,8 +120,8 @@ const TeacherCourse: React.FC<Props> = ({ route, navigation }) => {
 	return (
 		<View style={styles.container}>
 			<View style={styles.header}>
-				<Text style={styles.courseName}>{route.params.course.title}</Text>
-				<Text style={styles.courseCode}>{route.params.course.code}</Text>
+				<Text style={styles.courseName}>{course.title}</Text>
+				<Text style={styles.courseCode}>{course.code}</Text>
 			</View>
 			{renderAttendanceButton()}
 			<View style={styles.attendanceRecord}>

@@ -104,47 +104,58 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
 
   const renderCoursePicker = () => {
     fetchCourses();
-    if (Platform.OS === "ios") {
+    if (courses.length === 0) {
       return (
-        <TouchableOpacity
-          style={styles.picker}
-          onPress={() => {
-            ActionSheetIOS.showActionSheetWithOptions(
-              {
-                options: courses.map((course) => course.title),
-                cancelButtonIndex: courses.length,
-              },
-              (buttonIndex) => {
-                if (buttonIndex < courses.length) {
-                  setSelectedCourse(courses[buttonIndex]);
-                }
-              }
-            );
-          }}
-        >
-          <Text style={styles.pickerText}>
-            {selectedCourse ? selectedCourse.title : "Select a course"}
-          </Text>
-        </TouchableOpacity>
-      );
-    } else {
-      return (
-        <Picker
-          style={styles.picker}
-          selectedValue={selectedCourse?.id}
-          onValueChange={handleCourseSelection}
-        >
-          <Picker.Item label="Select a course" value={null} />
-          {courses.map((course) => (
-            <Picker.Item
-              key={course.id}
-              label={`${course.title} (${course.code})`}
-              value={course.id}
-            />
-          ))}
-        </Picker>
+        <View style={styles.picker}>
+          <Text style={styles.pickerText}>No courses available</Text>
+        </View>
       );
     }
+      else {
+        if (Platform.OS === "ios") {
+          return (
+            <TouchableOpacity
+              style={styles.picker}
+              onPress={() => {
+                ActionSheetIOS.showActionSheetWithOptions(
+                  {
+                    options: courses.map((course) => course.title),
+                    cancelButtonIndex: courses.length,
+                  },
+                  (buttonIndex) => {
+                    console.log("Here");
+                    if (buttonIndex < courses.length) {
+                      setSelectedCourse(courses[buttonIndex]);
+                    }
+                  }
+                );
+              }}
+            >
+              <Text style={styles.pickerText}>
+                {selectedCourse ? selectedCourse.title : "Select a course"}
+              </Text>
+            </TouchableOpacity>
+          );
+        } else {
+          return (
+            <Picker
+              style={styles.picker}
+              selectedValue={selectedCourse?.id}
+              onValueChange={handleCourseSelection}
+            >
+              <Picker.Item label="Select a course" value={null} />
+              {courses.map((course) => (
+                <Picker.Item
+                  key={course.id}
+                  label={`${course.title} (${course.code})`}
+                  value={course.id}
+                />
+              ))}
+            </Picker>
+          );
+        }
+      }
+    
   };
 
   const handleCourseSelection = (itemValue: number) => {
@@ -349,7 +360,7 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
             <SizedBox height={10} />
             <TouchableOpacity
               style={styles.button}
-              onPress={() => setShowModal(false)}
+              onPress={() => setShowModifyModal(false)}
             >
               <Text style={styles.buttonText}
                 onPress={()=> setShowModifyModal(false)

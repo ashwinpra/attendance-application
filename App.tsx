@@ -21,6 +21,7 @@ import * as Location from 'expo-location'
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+
 const setStackOptions = (title: string) => {
   return {
     // options to be passed to the navigator
@@ -39,48 +40,7 @@ const setStackOptions = (title: string) => {
 }
 
 export default function App() {
-
-  const [location, setLocation] = useState<Location.LocationObject | null>(null);
-
-  const checkLocationPermission = async () => {
-    const { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') {
-      Alert.alert(
-        'Location permission denied',
-        'To use this app, please go to your device settings and enable location permission for the app',
-        [{ text: 'OK' }],
-        { cancelable: false }
-      );
-      return false;
-    }
-    return true;
-  };
-
-  useEffect(() => {
-    const getLocation = async () => {
-      const hasLocationPermission = await checkLocationPermission();
-      if (!hasLocationPermission) {
-        return;
-      }
-      const locationSubscriber = await Location.watchPositionAsync(
-        {
-          accuracy: Location.Accuracy.Highest,
-          timeInterval: 5000, // adjust as needed
-          distanceInterval: 100, // adjust as needed
-        },
-        (position) => {
-          setLocation(position);
-        }
-      );
-      return () => {
-        locationSubscriber.remove();
-      };
-    };
-    getLocation();
-  }, []);
-  
-
-
+    
   return (
       <Provider store={store}>
     <NavigationContainer>

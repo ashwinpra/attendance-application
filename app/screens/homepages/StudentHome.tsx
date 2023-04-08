@@ -27,6 +27,8 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { db } from "../../config/firebase";
+import * as Location from "expo-location";
+
 type Props = {
   route: RouteProp<RootStackParamList, "SHome">;
   navigation: NavigationProp<RootStackParamList, "SHome">;
@@ -70,6 +72,8 @@ interface CourseCardProps {
   onPress: () => void;
 }
 
+
+
 const CourseCard = ({ course, isCurrentCourse, onPress }: CourseCardProps) => {
   const cardStyle = isCurrentCourse
     ? styles.currentCourseCard
@@ -99,6 +103,49 @@ const StudentHome: React.FC<Props> = ({ navigation, route }) => {
   const [courses, setCourses] = useState<Course[]>(coursesData);
   const [dialogVisible, setDialogVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');
+	const [location, setLocation] = useState<Location.LocationObject | null>(null);
+
+	const checkLocationPermission = async () => {
+		const { status } = await Location.requestForegroundPermissionsAsync();
+		if (status !== 'granted') {
+			Alert.alert(
+				'Location permission denied',
+				'To use this app, please go to your device settings and enable location permission for the app',
+				[{ text: 'OK' }],
+				{ cancelable: false }
+			);
+			return false;
+		}
+		return true;
+	};
+
+	useEffect(() => {
+		const getLocation = async () => {
+			const hasLocationPermission = await checkLocationPermission();
+			if (!hasLocationPermission) {
+				return;
+			}
+			const locationSubscriber = await Location.watchPositionAsync(
+				{
+					accuracy: Location.Accuracy.Highest,
+					timeInterval: 5000, // adjust as needed
+					distanceInterval: 100, // adjust as needed
+				},
+				async (position) => {
+					// send this position to the database
+					const studentQuery = query(studentRef, where("userID", "==", rollno));
+					const studentQuerySnapshot = getDocs(studentQuery);
+					const studentDoc = (await studentQuerySnapshot).docs[0];
+					await updateDoc(studentDoc.ref, {location: position})
+					setLocation(position);
+				}
+			);
+			return () => {
+				locationSubscriber.remove();
+			};
+		};
+		getLocation();
+	}, []);	
 
   // fetch student courses
   const studentQuery = query(studentRef, where("userID", "==", rollno));
@@ -130,7 +177,6 @@ const StudentHome: React.FC<Props> = ({ navigation, route }) => {
     }
     setCourses(coursesData);
     console.log("coursesData", coursesData);
-    fetch_is_called = true;
     return;
   }
   )();}, []);
