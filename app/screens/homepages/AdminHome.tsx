@@ -1,5 +1,5 @@
 /// <reference path="../../globals.d.ts" />
-import React, { useState} from "react";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -9,15 +9,24 @@ import {
   TextInput,
   Image,
   ActionSheetIOS,
-  Platform, 
-  Modal, 
-  Button
+  Platform,
+  Modal,
+  Button,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../components/types";
 import SizedBox from "../../components/SizedBox";
-import { collection, query, where, getDocs,updateDoc, doc, addDoc } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+  doc,
+  addDoc,
+  deleteDoc,
+} from "firebase/firestore";
 import { db } from "../../config/firebase";
 type Props = {
   navigation: NavigationProp<RootStackParamList, "AHome">;
@@ -70,12 +79,29 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
   const [courseCode, setCourseCode] = useState("");
   const [courseTeacher, setCourseTeacher] = useState("");
 
+  const courseRef = collection(db, "courses");
+  // fetch all courses in Course[]
+  const fetchCourses = async () => {
+    const courseQuery = query(courseRef);
+    const courseSnapshot = await getDocs(courseQuery);
+    const courseList: Course[] = [];
+    let counter = 1;
+    courseSnapshot.forEach((doc) => {
+      courseList.push({
+        id: counter++,
+        title: doc.data().courseName,
+        code: doc.data().courseCode,
+      });
+    });
+    setCourses(courseList);
+  };
   const handleSettingsPress = () => {
     navigation.navigate("Settings");
   };
 
   const renderCoursePicker = () => {
-    if(Platform.OS === "ios") {
+    fetchCourses();
+    if (Platform.OS === "ios") {
       return (
         <TouchableOpacity
           style={styles.picker}
@@ -98,8 +124,7 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
           </Text>
         </TouchableOpacity>
       );
-    }
-    else {
+    } else {
       return (
         <Picker
           style={styles.picker}
@@ -115,10 +140,9 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
             />
           ))}
         </Picker>
-
       );
     }
-  }
+  };
 
   const handleCourseSelection = (itemValue: number) => {
     setSelectedCourse(
@@ -128,7 +152,6 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
 
   const handleAddCourse = async () => {
     // Add the new course to your list of courses
-    const courseRef = collection(db, "courses");
     const q = query(courseRef, where("courseCode", "==", courseCode));
     const querySnapshot = await getDocs(q);
     if (querySnapshot.size > 0) {
@@ -142,7 +165,7 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
       enrollmentKey: courseCode,
     });
     // (e.g., by calling an API endpoint or updating state)
-    console.log('New course added')
+    console.log("New course added");
     // Close the modal
     setShowModal(false);
   };
@@ -155,11 +178,23 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
     }
   };
 
-  const handleDeleteCourse = () => {
+  const handleDeleteCourse = async () => {
     if (selectedCourse) {
-      console.log(
-        `Delete course button pressed for course ${selectedCourse.title} (${selectedCourse.code})`
-      );
+      // Delete the course from your list of courses
+      try {
+        const q = query(courseRef, where("courseCode", "==", selectedCourse.code));
+        const querySnapshot = await getDocs(q);
+        if (querySnapshot.size > 0) {
+          querySnapshot.forEach(async (doc) => {
+            await deleteDoc(doc.ref);
+          });
+        }
+        console.log(
+          `Delete course button pressed for course ${selectedCourse.title} (${selectedCourse.code})`
+        );
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
 
@@ -214,37 +249,43 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
         {renderCoursePicker()}
       </View>
       <View style={styles.buttonsContainer}>
-        <TouchableOpacity style={styles.button} onPress={() => setShowModal(true)}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => setShowModal(true)}
+        >
           <Text style={styles.buttonText}>Add course</Text>
         </TouchableOpacity>
-      <Modal visible={showModal} animationType="slide">
-        <SafeAreaView style={styles.modalContainer}>
-          <Text style={styles.modalTitle}>Add Course</Text>
-          <SizedBox height={10} />
-          <TextInput
-            style = {styles.modalText}
-            placeholder="Course Name"
-            onChangeText={text => setCourseName(text)}
-          />
-          <TextInput
-            style={styles.modalText}
-            placeholder="Course Code"
-            onChangeText={text => setCourseCode(text)}
-          />
-          <TextInput
-            style={styles.modalText}
-            placeholder="Course Teacher"
-            onChangeText={text => setCourseTeacher(text)}
-          />
-          <TouchableOpacity style={styles.button} onPress={handleAddCourse}>
-          <Text style={styles.buttonText}>Add</Text>
-        </TouchableOpacity>
-        <SizedBox height={10} />
-        <TouchableOpacity style={styles.button} onPress={() => setShowModal(false)}>
-          <Text style={styles.buttonText}>Cancel</Text>
-        </TouchableOpacity>
-        </SafeAreaView>
-      </Modal>
+        <Modal visible={showModal} animationType="slide">
+          <SafeAreaView style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>Add Course</Text>
+            <SizedBox height={10} />
+            <TextInput
+              style={styles.modalText}
+              placeholder="Course Name"
+              onChangeText={(text) => setCourseName(text)}
+            />
+            <TextInput
+              style={styles.modalText}
+              placeholder="Course Code"
+              onChangeText={(text) => setCourseCode(text)}
+            />
+            <TextInput
+              style={styles.modalText}
+              placeholder="Course Teacher"
+              onChangeText={(text) => setCourseTeacher(text)}
+            />
+            <TouchableOpacity style={styles.button} onPress={handleAddCourse}>
+              <Text style={styles.buttonText}>Add</Text>
+            </TouchableOpacity>
+            <SizedBox height={10} />
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => setShowModal(false)}
+            >
+              <Text style={styles.buttonText}>Cancel</Text>
+            </TouchableOpacity>
+          </SafeAreaView>
+        </Modal>
         <TouchableOpacity
           style={[
             styles.button,
@@ -382,8 +423,7 @@ const styles = StyleSheet.create({
   pickerText: {
     fontSize: 24,
     alignSelf: "center",
-    // align this text in the TouchableOpacity 
-    
+    // align this text in the TouchableOpacity
   },
   buttonText: {
     color: "#fff",
