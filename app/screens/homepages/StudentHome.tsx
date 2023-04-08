@@ -210,6 +210,7 @@ const StudentHome: React.FC<Props> = ({ navigation, route }) => {
 		// search for enrollment code
 		// if found, add course to student's courses
 		// else, show error
+		console.log("Hello")
 		const courseQuery = query(coursesRef, where("enrollmentKey", "==", enrollmentCode));
 		const courseQuerySnapshot = getDocs(courseQuery);
 

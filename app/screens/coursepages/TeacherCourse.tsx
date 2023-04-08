@@ -7,7 +7,7 @@ import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../components/types";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SizedBox from '../../components/SizedBox';
-import { auth, db } from "../../config/firebase";
+import { db } from "../../config/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 
 // import Geolocation from '@react-native-community/geolocation';
@@ -23,6 +23,8 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 // 	},
 // 	{enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
 //   );
+
+const userRef = collection(db, "users");
 
 type Props = {
 	route: RouteProp<RootStackParamList, "TCourse">;
@@ -48,6 +50,7 @@ const TeacherCourse: React.FC<Props> = ({ route, navigation }) => {
 	const handleTakeAttendance = () => {
 		const code = Math.random().toString(36).substring(2, 8).toUpperCase();
 		//TODO: send code to DB
+
 		setAttendanceCode(code);
 		AsyncStorage.setItem('attendanceCode', code);
 	}

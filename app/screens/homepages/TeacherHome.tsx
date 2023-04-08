@@ -26,6 +26,7 @@ import {
 import { db } from "../../config/firebase";
 import * as Location from "expo-location";
 
+
 type Props = {
   route: RouteProp<RootStackParamList, "THome">;
   navigation: NavigationProp<RootStackParamList, "THome">;
