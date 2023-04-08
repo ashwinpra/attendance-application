@@ -70,7 +70,6 @@ const RegistrationScreen = () => {
               console.error("Error adding document: ", e);
             }
             alert("New student registered!");
-          //TODO: send to DB here ig?
           setUserID("");
           setUserName("");
           setUserEmail("");
@@ -106,7 +105,6 @@ const RegistrationScreen = () => {
               console.error("Error adding document: ", e);
             }
           alert("Registered as teacher!");
-          //TODO: send to DB here ig?
           setUserID("");
           setUserName("");
           setUserEmail("");

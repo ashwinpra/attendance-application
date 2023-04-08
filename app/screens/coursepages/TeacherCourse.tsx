@@ -7,6 +7,8 @@ import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../components/types";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SizedBox from '../../components/SizedBox';
+import { auth, db } from "../../config/firebase";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 // import Geolocation from '@react-native-community/geolocation';
 
