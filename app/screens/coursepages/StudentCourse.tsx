@@ -49,19 +49,15 @@ const attendanceRef = collection(db, "attendance");
 //TODO: get this from DB
 const attendanceData: attendanceRecord[] = [
   {
-    date: "2021-03-01",
+    date: "2023-04-07",
     status: true,
   },
   {
-    date: "2021-03-02",
+    date: "2023-04-08",
     status: true,
   },
   {
-    date: "2021-03-03",
-    status: true,
-  },
-  {
-    date: "2021-03-04",
+    date: "2023-04-09",
     status: false,
   },
 ];
@@ -130,7 +126,7 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
     const courseQuerySnapshot = await getDocs(courseQuery);
     const courseDoc = (await courseQuerySnapshot).docs[0];
 
-    return courseDoc.data().attendanceCode;
+    return courseDoc.data().attendanceCode === undefined? "": courseDoc.data().attendanceCode;
   };
 
   const getStudentLocation = async () => {
@@ -235,7 +231,7 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 			);
 		  }
 	  
-		if (attendanceCode === '') {
+		if (attendanceCode != '') {
 		  return (
 			<View style={styles.attendanceContainer}>
 			  <TextInput
@@ -305,7 +301,7 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
             <SizedBox height={30}></SizedBox>
             <LineChart
               data={line}
-              width={Dimensions.get("window").width} // from react-native
+              width={Dimensions.get("window").width*0.9} // from react-native
               height={220}
               yAxisLabel={"%"}
               chartConfig={{

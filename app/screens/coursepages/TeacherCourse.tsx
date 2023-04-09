@@ -96,7 +96,7 @@ const TeacherCourse: React.FC<Props> = ({ route, navigation }) => {
       <View>
         <LineChart
           data={line}
-          width={Dimensions.get("window").width} // from react-native
+          width={Dimensions.get("window").width*0.9} // from react-native
           height={220}
           yAxisLabel={"%"}
           chartConfig={{
