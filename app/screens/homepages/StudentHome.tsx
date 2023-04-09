@@ -179,7 +179,7 @@ const StudentHome: React.FC<Props> = ({ navigation, route }) => {
 	}, []);
 
 	const handleSettingsPress = () => {
-		navigation.navigate("Settings");
+		navigation.navigate("Settings",{userType: "student"});
 	};
 
 	const handleCoursePress = (course: Course) => {
@@ -211,23 +211,26 @@ const StudentHome: React.FC<Props> = ({ navigation, route }) => {
 
 			// add this course to the student's courses
 			let userCourses = studentDoc.data().courses;
-			
-			if (userCourses.includes(courseDoc.data().courseCode)) {
+			console.log(userCourses);
+
+			if (userCourses == undefined) {
+				await updateDoc(studentDoc.ref, { courses: [courseDoc.data().courseCode] });
+				Alert.alert("Success", "Course enrolled successfully!");
+			}
+			else if (userCourses.includes(courseDoc.data().courseCode)) {
 				Alert.alert("Error", "You are already enrolled in this course.");
 				return;
 			} else {
-				userCourses.push(courseDoc.data().courseCode);
-			if (userCourses == undefined) {
-				await updateDoc(studentDoc.ref, { courses: [courseDoc.data().courseCode] });
-			} else {
+				// userCourses.push(courseDoc.data().courseCode);
+			//  else {
 				await updateDoc(studentDoc.ref, {
 					courses: [...userCourses, courseDoc.data().courseCode],
 				});
-			}
+				Alert.alert("Success", "Course enrolled successfully!");
+			// }
 			}
 
-			await updateDoc(studentDoc.ref, { courses: userCourses });
-			Alert.alert("Success", "Course enrolled successfully!");
+			// await updateDoc(studentDoc.ref, { courses: userCourses });
 		}
 	};
 

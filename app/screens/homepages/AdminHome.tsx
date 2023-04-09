@@ -99,7 +99,7 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
 		setCourses(courseList);
 	};
 	const handleSettingsPress = () => {
-		navigation.navigate("Settings");
+		navigation.navigate("Settings",{userType: "admin"});
 	};
 
 	const renderCoursePicker = () => {

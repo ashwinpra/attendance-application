@@ -1,5 +1,5 @@
 /// <reference path="../../globals.d.ts" />
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useTransition } from "react";
 import {
 	StyleSheet,
 	Text,
@@ -193,7 +193,7 @@ const TeacherHome: React.FC<Props> = ({ navigation, route }) => {
 	}, []);
 
 	const handleSettingsPress = () => {
-		navigation.navigate("Settings");
+		navigation.navigate("Settings",{userType: "teacher"});
 	};
 
 	const handleCoursePress = (course: Course) => {
