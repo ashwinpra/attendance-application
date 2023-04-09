@@ -10,11 +10,11 @@ Team Project for Software Engineering Laboratory Course (CS29202) 2023
 
 ## TODO: 
 - [ ] Prevent going back after login/save the state
-- [ ] Fetch code + teacher location from backend and check if attendance is valid - DOING NOW 
+- [ ] Test if attendance + storage is working 
 - [ ] Store attendance in record
-- [ ] Store attendance code in backend - NEED TO TEST 
-- [ ] Send location to backend - NEED TO TEST
 - [ ] Fetch student attendance record and display
+- [ ] Admin Home glitch 
+- [ ] Settings - reset password, logout 
 - [ ] Clean up code!
 
 ## Assignment 1
