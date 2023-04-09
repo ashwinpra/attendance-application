@@ -134,7 +134,7 @@ const TeacherHome: React.FC<Props> = ({ navigation, route }) => {
 		const locationSubscriber = await Location.watchPositionAsync(
 			{
 				accuracy: Location.Accuracy.Highest,
-				timeInterval: 5000, // adjust as needed
+				timeInterval: 600000, // adjust as needed
 				distanceInterval: 100, // adjust as needed
 			},
 			async (position) => {

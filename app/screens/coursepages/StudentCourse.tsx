@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import SizedBox from '../../components/SizedBox';
 import { db } from "../../config/firebase";
 import { collection, query, where, getDocs, updateDoc, addDoc } from "firebase/firestore";
+import * as Location from "expo-location";
 import { current } from '@reduxjs/toolkit';
 
 const userRef = collection(db, "students");
@@ -68,15 +69,17 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 	const [attendanceDenied, setAttendanceDenied] = useState(false);
 	const [showModal, setShowModal] = useState(false);
 
-	const stuName = useEffect(() => {
-		// get student name
+	const stuLocation = useEffect(() => {
+		// get student location		
 		async() => {
 		const studentQuery = query(userRef, where("userID", "==", rollno));
 		const studentQuerySnapshot = await getDocs(studentQuery);
 		const studentDoc = (await studentQuerySnapshot).docs[0];
-		return studentDoc.data().name;
+		return studentDoc.data();
 		}
 	});
+
+
 	const getAttendanceCode = async () => {
 		const courseQuery = query(coursesRef, where("courseCode", "==", course.code));
 		const courseQuerySnapshot = await getDocs(courseQuery);
@@ -85,13 +88,12 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 		return courseDoc.data().attendanceCode;
 	}
 
-	const getStudentLocation = async () => {
-		const studentQuery = query(userRef, where("userID", "==", rollno));
-		const studentQuerySnapshot = await getDocs(studentQuery);
-		const studentDoc = (await studentQuerySnapshot).docs[0];
-
-		return studentDoc.data().location;
-	}
+	// const getStudentLocation = async () => {
+	// 	const studentQuery = query(userRef, where("userID", "==", rollno));
+	// 	const studentQuerySnapshot = await getDocs(studentQuery);
+	// 	const studentDoc = (await studentQuerySnapshot).docs[0];
+	// 	return studentDoc.data();
+	// }
 
 	const getTeacherLocation = async () => {
 		const courseQuery = query(coursesRef, where("courseCode", "==", course.code));
@@ -108,64 +110,115 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 	}
 
 	useEffect(() => {
+		const getTeacherLocation = async () => {
+			const courseQuery = query(coursesRef, where("courseCode", "==", course.code));
+			const courseQuerySnapshot = await getDocs(courseQuery);
+			const courseDoc = (await courseQuerySnapshot).docs[0];
+	
+			courseTeacher = courseDoc.data().courseTeacher;
+	
+			const teacherQuery = query(userRef, where("userID", "==", courseTeacher));
+			const teacherQuerySnapshot = await getDocs(teacherQuery);
+			const teacherDoc = (await teacherQuerySnapshot).docs[0];
+	
+			return teacherDoc.data().location;
+		}
+
+		const stuName = async () => {
+			// get student name
+			const studentQuery = query(userRef, where("userID", "==", rollno));
+			const studentQuerySnapshot = await getDocs(studentQuery);
+			const studentDoc = (await studentQuerySnapshot).docs[0];
+			return studentDoc.data().name;
+		}
+
+		const stuLocation = async() => {
+			const studentQuery = query(userRef, where("userID", "==", rollno));
+			const studentQuerySnapshot = await getDocs(studentQuery);
+			const studentDoc = (await studentQuerySnapshot).docs[0];
+			return studentDoc.data();
+			}
+
 		const getAttendanceCode = async () => {
 			const code = String(await getAttendanceCode());
 			setAttendanceCode(code);
 		}
 
 		const getAttendanceMarked = async () => {
-		//   const attendanceMarked = await AsyncStorage.getItem('attendanceMarked');
-		// TODO: check if attendance is marked in DB by checking status
-		  if (attendanceMarked) {
-			setAttendanceMarked(true);
-		  }
+			const courseQuery = query(coursesRef, where("courseCode", "==", course.code));
+			const courseQuerySnapshot = await getDocs(courseQuery);
+			const courseDoc = (await courseQuerySnapshot).docs[0];
+
+			const attendanceQuery = query(attendanceRef, where("courseCode", "==", course.code));
+			const attendanceQuerySnapshot = await getDocs(attendanceQuery);
+			const attendanceDocs = (await attendanceQuerySnapshot).docs;
+			if(attendanceDocs.length === 0) {
+				setAttendanceMarked(false);
+			}
+			else{
+				const attendanceList: attendanceRecord[] = [];
+				attendanceDocs.forEach((doc) => {
+					const data = doc.data();
+					if (data.studentName === stuName) {
+						attendanceList.push({
+							date: data.date,
+							status: data.status
+						});
+					}
+				});
+				setAttendanceRecord(attendanceList);
+				setAttendanceMarked(attendanceList.some((record) => record.date === currentDate));
+			}
+
 		};
 		getAttendanceCode();
 		getAttendanceMarked();
 	  }, []);
 
-	const handleSubmitCode = async () => {
+	  const handleSubmitCode = async () => {
 		const attendanceCode = await getAttendanceCode();
+		console.log(attendanceCode);
 		if (enteredCode === attendanceCode) {
-			
-			const studentLocation = await getStudentLocation();
-			const teacherLocation = await getTeacherLocation();
+			try {
+				const teacherLocation = await getTeacherLocation();
+				console.log("teacherLocation", teacherLocation);
 
-			const distance = checkDistance(studentLocation.latitude, studentLocation.longitude, teacherLocation.latitude, teacherLocation.longitude);
+				let stuName="Ashwin";
+				console.log("studentName", stuName);
+				// const teacherLocation = await getTeacherLocation();
+				// const distanceInRange = checkDistance(studentLocation.latitude, studentLocation.longitude, teacherLocation.latitude, teacherLocation.longitude);
 
-			if (!distance) {
-				Alert.alert('Attendance not granted', 'You are not in the class');
-				setAttendanceDenied(true);
-				useEffect(() => {
-					// Add Doc
-					async() => {
+				const distanceInRange = true;
+	
+				if (!distanceInRange) {
+					Alert.alert('Attendance not granted', 'You are not in the class');
+					setAttendanceDenied(true);
 					await addDoc(attendanceRef, {
 						studentName: stuName,
 						courseCode: course.code,
 						date: currentDate,
 						status: "Absent",
-					});}
-				});
-				return;
-			}
-			else{
-				Alert.alert('Attendance granted', 'You have been marked present');
-				useEffect(() => {
-					async() => {
+					});
+				}
+				else {
+					Alert.alert('Attendance granted', 'You have been marked present');
 					await addDoc(attendanceRef, {
 						studentName: stuName,
 						courseCode: course.code,
 						date: currentDate,
 						status: "Present",
-					});}
-				});
-				setAttendanceMarked(true)
+					});
+					setAttendanceMarked(true)
+				}
+			} catch (error) {
+				console.log("Error fetching location: ", error);
+				Alert.alert('Error', 'There was an error fetching your location. Please try again.');
 			}
 		} else {
-		  // Code is incorrect, show error
-		  Alert.alert('Incorrect code', 'Please try again');
+			// Code is incorrect, show error
+			Alert.alert('Incorrect code', 'Please try again');
 		}
-	  }
+	}
 
 	const renderAttendanceButton = () => {
 
@@ -181,7 +234,7 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 			);
 		  }
 	  
-		if (attendanceCode != '') {
+		if (attendanceCode === '') {
 		  return (
 			<View style={styles.attendanceContainer}>
 			  <TextInput
