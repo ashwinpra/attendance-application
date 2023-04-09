@@ -10,6 +10,9 @@ import SizedBox from '../../components/SizedBox';
 import { db } from "../../config/firebase";
 import { collection, query, where, getDocs, updateDoc } from "firebase/firestore";
 
+const userRef = collection(db, "students");
+const coursesRef = collection(db, "courses");
+
 type Props = {
 	route: RouteProp<RootStackParamList, "SCourse">;
 	navigation: NavigationProp<RootStackParamList, "SCourse">;
@@ -36,13 +39,41 @@ const attendanceData: attendanceRecord[] = [
 ];
 
 const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
+	const {rollno, course} = route.params;
 	const [enteredCode, setEnteredCode] = useState('');
 	const [attendanceMarked, setAttendanceMarked] = useState(false);
 	const [attendanceRecord, setAttendanceRecord] = useState<attendanceRecord[]>(attendanceData);
 	const [showModal, setShowModal] = useState(false);
 
+	const getAttendanceCode = async () => {
+		const courseQuery = query(coursesRef, where("courseCode", "==", course.code));
+		const courseQuerySnapshot = await getDocs(courseQuery);
+		const courseDoc = (await courseQuerySnapshot).docs[0];
 
-	const attendanceCode = "123abc" // TODO: get code from DB
+		return courseDoc.data().attendanceCode;
+	}
+
+	const getUserLocation = async () => {
+		const studentQuery = query(userRef, where("userID", "==", rollno));
+		const studentQuerySnapshot = await getDocs(studentQuery);
+		const studentDoc = (await studentQuerySnapshot).docs[0];
+
+		return studentDoc.data().location;
+	}
+
+	const getTeacherLocation = async () => {
+		const courseQuery = query(coursesRef, where("courseCode", "==", course.code));
+		const courseQuerySnapshot = await getDocs(courseQuery);
+		const courseDoc = (await courseQuerySnapshot).docs[0];
+
+		const courseTeacher = courseDoc.data().courseTeacher;
+
+		const teacherQuery = query(userRef, where("userID", "==", courseTeacher));
+		const teacherQuerySnapshot = await getDocs(teacherQuery);
+		const teacherDoc = (await teacherQuerySnapshot).docs[0];
+
+		return teacherDoc.data().location;
+	}
 
 	useEffect(() => {
 		const getAttendanceMarked = async () => {
@@ -55,11 +86,15 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 	  }, []);
 
 	const handleSubmitCode = async () => {
+		const attendanceCode = await getAttendanceCode();
 		if (enteredCode === attendanceCode) {
-			// TODO: update attendance in DB
+			// check location 
+			// if location is correct, mark attendance
+			// else show error
 
+			// TODO: update attendance in DB
 		  	Alert.alert('Attendance granted', 'You have been marked present');
-			await AsyncStorage.setItem('attendanceMarked', 'true');
+			// await AsyncStorage.setItem('attendanceMarked', 'true');
 			setAttendanceMarked(true)
 		} else {
 		  // Code is incorrect, show error
