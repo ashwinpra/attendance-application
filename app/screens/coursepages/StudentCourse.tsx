@@ -148,7 +148,7 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
     const courseQuerySnapshot = await getDocs(courseQuery);
     const courseDoc = (await courseQuerySnapshot).docs[0];
 
-    return courseDoc.data().attendanceCode;
+    return courseDoc.data().attendanceCode === undefined? "": courseDoc.data().attendanceCode;
   };
 
   const getStudentLocation = async () => {
@@ -252,7 +252,7 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 			);
 		  }
 	  
-		if (attendanceCode === '') {
+		if (attendanceCode != '') {
 		  return (
 			<View style={styles.attendanceContainer}>
 			  <TextInput
@@ -322,7 +322,7 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
             <SizedBox height={30}></SizedBox>
             {/* <LineChart
               data={line}
-              width={Dimensions.get("window").width} // from react-native
+              width={Dimensions.get("window").width*0.9} // from react-native
               height={220}
               yAxisLabel={"%"}
               chartConfig={{
