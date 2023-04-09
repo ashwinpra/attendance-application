@@ -8,10 +8,9 @@ import { useState, useEffect } from 'react';
 import SizedBox from '../../components/SizedBox';
 import { db } from "../../config/firebase";
 import { collection, query, where, getDocs, updateDoc, addDoc } from "firebase/firestore";
-import * as Location from "expo-location";
 import { current } from '@reduxjs/toolkit';
 
-const userRef = collection(db, "students");
+const userRef = collection(db, "users");
 const coursesRef = collection(db, "courses");
 
 type Props = {
@@ -49,15 +48,22 @@ const currentDate = new Date().toLocaleDateString('en-IN', {
 
 let courseTeacher = "";
 const checkDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+	console.log(lat1, lon1, lat2, lon2)
 	const earthRadius = 6371000; // meters
-	const dLat = (lat2 - lat1)*(Math.PI/180);
-	const dLon = (lon2 - lon1)*(Math.PI/180);
+	const dLat = deg2rad(lat2 - lat1);
+	const dLon = deg2rad(lon2 - lon1);
 	const a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-			+ Math.cos((lat1)*(Math.PI/180)) * Math.cos((lat2)*(Math.PI/180))
+			+ Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2))
 			* Math.sin(dLon / 2) * Math.sin(dLon / 2);
 	const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+	console.log(c)
 	const distance = earthRadius * c;
+	console.log(distance)
 	return distance <= 100;
+  }
+  
+  const deg2rad = (deg: number) => {
+	return deg * (Math.PI/180)
   }
 
 const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
@@ -69,17 +75,15 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 	const [attendanceDenied, setAttendanceDenied] = useState(false);
 	const [showModal, setShowModal] = useState(false);
 
-	const stuLocation = useEffect(() => {
-		// get student location		
+	const stuName = useEffect(() => {
+		// get student name
 		async() => {
 		const studentQuery = query(userRef, where("userID", "==", rollno));
 		const studentQuerySnapshot = await getDocs(studentQuery);
 		const studentDoc = (await studentQuerySnapshot).docs[0];
-		return studentDoc.data();
+		return studentDoc.data().name;
 		}
 	});
-
-
 	const getAttendanceCode = async () => {
 		const courseQuery = query(coursesRef, where("courseCode", "==", course.code));
 		const courseQuerySnapshot = await getDocs(courseQuery);
@@ -88,12 +92,13 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 		return courseDoc.data().attendanceCode;
 	}
 
-	// const getStudentLocation = async () => {
-	// 	const studentQuery = query(userRef, where("userID", "==", rollno));
-	// 	const studentQuerySnapshot = await getDocs(studentQuery);
-	// 	const studentDoc = (await studentQuerySnapshot).docs[0];
-	// 	return studentDoc.data();
-	// }
+	const getStudentLocation = async () => {
+		const studentQuery = query(userRef, where("userID", "==", rollno));
+		const studentQuerySnapshot = await getDocs(studentQuery);
+		const studentDoc = (await studentQuerySnapshot).docs[0];
+
+		return studentDoc.data().location;
+	}
 
 	const getTeacherLocation = async () => {
 		const courseQuery = query(coursesRef, where("courseCode", "==", course.code));
@@ -110,115 +115,68 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 	}
 
 	useEffect(() => {
-		const getTeacherLocation = async () => {
-			const courseQuery = query(coursesRef, where("courseCode", "==", course.code));
-			const courseQuerySnapshot = await getDocs(courseQuery);
-			const courseDoc = (await courseQuerySnapshot).docs[0];
-	
-			courseTeacher = courseDoc.data().courseTeacher;
-	
-			const teacherQuery = query(userRef, where("userID", "==", courseTeacher));
-			const teacherQuerySnapshot = await getDocs(teacherQuery);
-			const teacherDoc = (await teacherQuerySnapshot).docs[0];
-	
-			return teacherDoc.data().location;
-		}
-
-		const stuName = async () => {
-			// get student name
-			const studentQuery = query(userRef, where("userID", "==", rollno));
-			const studentQuerySnapshot = await getDocs(studentQuery);
-			const studentDoc = (await studentQuerySnapshot).docs[0];
-			return studentDoc.data().name;
-		}
-
-		const stuLocation = async() => {
-			const studentQuery = query(userRef, where("userID", "==", rollno));
-			const studentQuerySnapshot = await getDocs(studentQuery);
-			const studentDoc = (await studentQuerySnapshot).docs[0];
-			return studentDoc.data();
-			}
-
 		const getAttendanceCode = async () => {
 			const code = String(await getAttendanceCode());
 			setAttendanceCode(code);
 		}
 
 		const getAttendanceMarked = async () => {
-			const courseQuery = query(coursesRef, where("courseCode", "==", course.code));
-			const courseQuerySnapshot = await getDocs(courseQuery);
-			const courseDoc = (await courseQuerySnapshot).docs[0];
-
-			const attendanceQuery = query(attendanceRef, where("courseCode", "==", course.code));
-			const attendanceQuerySnapshot = await getDocs(attendanceQuery);
-			const attendanceDocs = (await attendanceQuerySnapshot).docs;
-			if(attendanceDocs.length === 0) {
-				setAttendanceMarked(false);
-			}
-			else{
-				const attendanceList: attendanceRecord[] = [];
-				attendanceDocs.forEach((doc) => {
-					const data = doc.data();
-					if (data.studentName === stuName) {
-						attendanceList.push({
-							date: data.date,
-							status: data.status
-						});
-					}
-				});
-				setAttendanceRecord(attendanceList);
-				setAttendanceMarked(attendanceList.some((record) => record.date === currentDate));
-			}
-
+		//   const attendanceMarked = await AsyncStorage.getItem('attendanceMarked');
+		// TODO: check if attendance is marked in DB by checking status
+		  if (attendanceMarked) {
+			setAttendanceMarked(true);
+		  }
 		};
 		getAttendanceCode();
 		getAttendanceMarked();
 	  }, []);
 
-	  const handleSubmitCode = async () => {
+	const handleSubmitCode = async () => {
 		const attendanceCode = await getAttendanceCode();
-		console.log(attendanceCode);
 		if (enteredCode === attendanceCode) {
-			try {
-				const teacherLocation = await getTeacherLocation();
-				console.log("teacherLocation", teacherLocation);
+			
+			const studentLocation = await getStudentLocation();
+			const teacherLocation = await getTeacherLocation();
 
-				let stuName="Ashwin";
-				console.log("studentName", stuName);
-				// const teacherLocation = await getTeacherLocation();
-				// const distanceInRange = checkDistance(studentLocation.latitude, studentLocation.longitude, teacherLocation.latitude, teacherLocation.longitude);
+			console.log("studentLocation",studentLocation)
+			console.log("teacherLocation", teacherLocation)
 
-				const distanceInRange = true;
-	
-				if (!distanceInRange) {
-					Alert.alert('Attendance not granted', 'You are not in the class');
-					setAttendanceDenied(true);
+
+			const distance = checkDistance(studentLocation.coords.latitude, studentLocation.coords.longitude, teacherLocation.coords.latitude, teacherLocation.coords.longitude);
+
+			if (!distance) {
+				Alert.alert('Attendance not granted', 'You are not in the class');
+				setAttendanceDenied(true);
+				useEffect(() => {
+					// Add Doc
+					async() => {
 					await addDoc(attendanceRef, {
 						studentName: stuName,
 						courseCode: course.code,
 						date: currentDate,
 						status: "Absent",
-					});
-				}
-				else {
-					Alert.alert('Attendance granted', 'You have been marked present');
+					});}
+				});
+				return;
+			}
+			else{
+				Alert.alert('Attendance granted', 'You have been marked present');
+				setAttendanceMarked(true);
+				useEffect(() => {
+					async() => {
 					await addDoc(attendanceRef, {
 						studentName: stuName,
 						courseCode: course.code,
 						date: currentDate,
 						status: "Present",
-					});
-					setAttendanceMarked(true)
-				}
-			} catch (error) {
-				console.log("Error fetching location: ", error);
-				Alert.alert('Error', 'There was an error fetching your location. Please try again.');
+					});}
+				});
 			}
 		} else {
-			// Code is incorrect, show error
-			Alert.alert('Incorrect code', 'Please try again');
+		  // Code is incorrect, show error
+		  Alert.alert('Incorrect code', 'Please try again');
 		}
-	}
+	  }
 
 	const renderAttendanceButton = () => {
 
@@ -228,7 +186,7 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 			);
 		}
 	
-		if (attendanceMarked) {
+		else if (attendanceMarked) {
 			return (
 			  <Text style={styles.attendancePeriodInactive}>Attendance marked successfully</Text>
 			);
