@@ -27,14 +27,14 @@ import {
   addDoc,
 } from "firebase/firestore";
 import { current } from "@reduxjs/toolkit";
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
-} from "react-native-chart-kit";
+// import {
+//   LineChart,
+//   BarChart,
+//   PieChart,
+//   ProgressChart,
+//   ContributionGraph,
+//   StackedBarChart,
+// } from "react-native-chart-kit";
 
 const userRef = collection(db, "users");
 const coursesRef = collection(db, "courses");
@@ -47,23 +47,23 @@ type Props = {
 const attendanceRef = collection(db, "attendance");
 
 //TODO: get this from DB
-const attendanceData: attendanceRecord[] = [
-  {
-    date: "2021-03-01",
-    status: true,
-  },
-  {
-    date: "2021-03-02",
-    status: true,
-  },
-  {
-    date: "2021-03-03",
-    status: true,
-  },
-  {
-    date: "2021-03-04",
-    status: false,
-  },
+let attendanceData: attendanceRecord[] = [
+//   {
+//     date: "2021-03-01",
+//     status: true,
+//   },
+//   {
+//     date: "2021-03-02",
+//     status: true,
+//   },
+//   {
+//     date: "2021-03-03",
+//     status: true,
+//   },
+//   {
+//     date: "2021-03-04",
+//     status: false,
+//   },
 ];
 
 // get this from db for line chart
@@ -113,15 +113,33 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
   const [attendanceDenied, setAttendanceDenied] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  const stuName = useEffect(() => {
-    // get student name
-    async () => {
-      const studentQuery = query(userRef, where("userID", "==", rollno));
-      const studentQuerySnapshot = await getDocs(studentQuery);
-      const studentDoc = (await studentQuerySnapshot).docs[0];
-      return studentDoc.data().name;
-    };
-  });
+
+//   const stuName = useEffect(() => {
+//     // get student name
+//     async () => {
+//       const studentQuery = query(userRef, where("userID", "==", rollno));
+//       const studentQuerySnapshot = await getDocs(studentQuery);
+//       const studentDoc = (await studentQuerySnapshot).docs[0];
+//       return studentDoc.data().name;
+//     };
+//   });
+
+  const handleReport = async () => {
+	const attendanceQuery = query( attendanceRef, where("courseCode", "==", course.code), where("student", "==", rollno));
+	const attendanceQuerySnapshot = await getDocs(attendanceQuery);
+	for (const doc of attendanceQuerySnapshot.docs) {
+		let status_bool;
+		if (doc.data().status == "Present")
+			status_bool = true;
+		else
+			status_bool = false;
+		attendanceData.push({
+			date: doc.data().date,
+			status: status_bool
+		})
+	}
+	setAttendanceRecord(attendanceData);
+  }
   const getAttendanceCode = async () => {
     const courseQuery = query(
       coursesRef,
@@ -184,7 +202,6 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 			console.log("studentLocation",studentLocation)
 			console.log("teacherLocation", teacherLocation)
 
-
 			const distance = checkDistance(studentLocation.coords.latitude, studentLocation.coords.longitude, teacherLocation.coords.latitude, teacherLocation.coords.longitude);
 
 			if (!distance) {
@@ -194,7 +211,7 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 					// Add Doc
 					async() => {
 					await addDoc(attendanceRef, {
-						studentName: stuName,
+						student: rollno,
 						courseCode: course.code,
 						date: currentDate,
 						status: "Absent",
@@ -208,7 +225,7 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 				useEffect(() => {
 					async() => {
 					await addDoc(attendanceRef, {
-						studentName: stuName,
+						student: rollno,
 						courseCode: course.code,
 						date: currentDate,
 						status: "Present",
@@ -303,7 +320,7 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
               keyExtractor={(item) => item.date}
             />
             <SizedBox height={30}></SizedBox>
-            <LineChart
+            {/* <LineChart
               data={line}
               width={Dimensions.get("window").width} // from react-native
               height={220}
@@ -323,7 +340,7 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
                 marginVertical: 8,
                 borderRadius: 16,
               }}
-            />
+            /> */}
             <TouchableOpacity
               onPress={() => setShowModal(false)}
               style={styles.button}
