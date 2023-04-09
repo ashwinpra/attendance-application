@@ -39,7 +39,7 @@ export default function HomeScreen({ navigation }: Props) {
         style={styles.registerButton}
         onPress={() => navigation.navigate("Register")}
       >
-        <Text style={styles.loginText}>New User? Register here</Text>
+        <Text style={styles.registerText}>New User? Register here</Text>
       </Pressable>
       <View style={styles.footer}>
         <Text>Made by Team SAY_YAS</Text>
@@ -51,44 +51,75 @@ export default function HomeScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "#f5f5f5",
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: 150,
+    paddingHorizontal: 30,
+    paddingTop: 100,
   },
 
   welcomeText: {
-    color: "black",
-    fontSize: 30,
+    color: "#212121",
+    fontSize: 40,
     fontWeight: "bold",
-    marginBottom: 15,
+    marginBottom: 30,
+    textAlign: "center",
   },
 
   loginButton: {
     backgroundColor: "#1e88e5",
-    width: "80%",
-    height: 70,
+    width: "100%",
+    height: 50,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 35,
-    margin: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#082e57",
+    marginVertical: 10,
+    shadowColor: "black",
+    shadowOffset: {
+      width: 1,
+      height: 5,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 5,
+    elevation: 10,
   },
 
   loginText: {
     color: "#fff",
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: "bold",
   },
 
   registerButton: {
     backgroundColor: "#1e88e5",
     width: "80%",
-    height: 50,
+    height: 40,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 35,
+    borderWidth: 1,
+    borderColor: "#082e57",
     marginVertical: 25,
+    shadowOffset: {
+      width: 1,
+      height: 5,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 5,
+    elevation: 10,
   },
+  registerText: {
+    color: "#fff",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+
+  separator: {
+    height: 20,
+  },
+
   footer: {
     color: "black",
     fontSize: 15,
