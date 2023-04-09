@@ -5,10 +5,10 @@ import { RouteProp } from '@react-navigation/native';
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../components/types";
 import { useState, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import SizedBox from '../../components/SizedBox';
 import { db } from "../../config/firebase";
-import { collection, query, where, getDocs, updateDoc } from "firebase/firestore";
+import { collection, query, where, getDocs, updateDoc, addDoc } from "firebase/firestore";
+import { current } from '@reduxjs/toolkit';
 
 const userRef = collection(db, "students");
 const coursesRef = collection(db, "courses");
@@ -17,6 +17,8 @@ type Props = {
 	route: RouteProp<RootStackParamList, "SCourse">;
 	navigation: NavigationProp<RootStackParamList, "SCourse">;
 };
+
+const attendanceRef = collection(db, "attendance");
 
 //TODO: get this from DB
 const attendanceData: attendanceRecord[] = [
@@ -38,6 +40,13 @@ const attendanceData: attendanceRecord[] = [
 	},
 ];
 
+const currentDate = new Date().toLocaleDateString('en-IN', {
+	day: '2-digit',
+	month: '2-digit',
+	year: 'numeric'
+  });
+
+let courseTeacher = "";
 const checkDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
 	const earthRadius = 6371000; // meters
 	const dLat = (lat2 - lat1)*(Math.PI/180);
@@ -59,6 +68,15 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 	const [attendanceDenied, setAttendanceDenied] = useState(false);
 	const [showModal, setShowModal] = useState(false);
 
+	const stuName = useEffect(() => {
+		// get student name
+		async() => {
+		const studentQuery = query(userRef, where("userID", "==", rollno));
+		const studentQuerySnapshot = await getDocs(studentQuery);
+		const studentDoc = (await studentQuerySnapshot).docs[0];
+		return studentDoc.data().name;
+		}
+	});
 	const getAttendanceCode = async () => {
 		const courseQuery = query(coursesRef, where("courseCode", "==", course.code));
 		const courseQuerySnapshot = await getDocs(courseQuery);
@@ -80,7 +98,7 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 		const courseQuerySnapshot = await getDocs(courseQuery);
 		const courseDoc = (await courseQuerySnapshot).docs[0];
 
-		const courseTeacher = courseDoc.data().courseTeacher;
+		courseTeacher = courseDoc.data().courseTeacher;
 
 		const teacherQuery = query(userRef, where("userID", "==", courseTeacher));
 		const teacherQuerySnapshot = await getDocs(teacherQuery);
@@ -118,16 +136,31 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 			if (!distance) {
 				Alert.alert('Attendance not granted', 'You are not in the class');
 				setAttendanceDenied(true);
+				useEffect(() => {
+					// Add Doc
+					async() => {
+					await addDoc(attendanceRef, {
+						studentName: stuName,
+						courseCode: course.code,
+						date: currentDate,
+						status: "Absent",
+					});}
+				});
 				return;
-				// TODO: mark absent in DB
 			}
 			else{
-				// TODO: update attendance in DB
 				Alert.alert('Attendance granted', 'You have been marked present');
-				// await AsyncStorage.setItem('attendanceMarked', 'true');
+				useEffect(() => {
+					async() => {
+					await addDoc(attendanceRef, {
+						studentName: stuName,
+						courseCode: course.code,
+						date: currentDate,
+						status: "Present",
+					});}
+				});
 				setAttendanceMarked(true)
 			}
-		
 		} else {
 		  // Code is incorrect, show error
 		  Alert.alert('Incorrect code', 'Please try again');
