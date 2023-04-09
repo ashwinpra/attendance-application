@@ -211,6 +211,12 @@ const StudentHome: React.FC<Props> = ({ navigation, route }) => {
 
 			// add this course to the student's courses
 			let userCourses = studentDoc.data().courses;
+			
+			if (userCourses.includes(courseDoc.data().courseCode)) {
+				Alert.alert("Error", "You are already enrolled in this course.");
+				return;
+			} else {
+				userCourses.push(courseDoc.data().courseCode);
 			if (userCourses == undefined) {
 				await updateDoc(studentDoc.ref, { courses: [courseDoc.data().courseCode] });
 			} else {
@@ -218,12 +224,6 @@ const StudentHome: React.FC<Props> = ({ navigation, route }) => {
 					courses: [...userCourses, courseDoc.data().courseCode],
 				});
 			}
-
-			if (userCourses.includes(courseDoc.id)) {
-				Alert.alert("Error", "You are already enrolled in this course.");
-				return;
-			} else {
-				userCourses.push(courseDoc.id);
 			}
 
 			await updateDoc(studentDoc.ref, { courses: userCourses });
@@ -287,7 +287,7 @@ const StudentHome: React.FC<Props> = ({ navigation, route }) => {
 							<Text style={styles.enrollText}>Enroll in a Course</Text>
 						</TouchableOpacity>
 						<Dialog.Container visible={dialogVisible}>
-							<Dialog.Title>Enter your name:</Dialog.Title>
+							<Dialog.Title>Enter course code</Dialog.Title>
 							<Dialog.Input value={inputValue} onChangeText={setInputValue} />
 							<Dialog.Button label="Cancel" onPress={() => setDialogVisible(false)} />
 							<Dialog.Button

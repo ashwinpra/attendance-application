@@ -36,7 +36,7 @@ import {
   StackedBarChart,
 } from "react-native-chart-kit";
 
-const userRef = collection(db, "students");
+const userRef = collection(db, "users");
 const coursesRef = collection(db, "courses");
 
 type Props = {
@@ -84,25 +84,24 @@ const currentDate = new Date().toLocaleDateString("en-IN", {
 });
 
 let courseTeacher = "";
-const checkDistance = (
-  lat1: number,
-  lon1: number,
-  lat2: number,
-  lon2: number
-) => {
-  const earthRadius = 6371000; // meters
-  const dLat = (lat2 - lat1) * (Math.PI / 180);
-  const dLon = (lon2 - lon1) * (Math.PI / 180);
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(lat1 * (Math.PI / 180)) *
-      Math.cos(lat2 * (Math.PI / 180)) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  const distance = earthRadius * c;
-  return distance <= 100;
-};
+const checkDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+	console.log(lat1, lon1, lat2, lon2)
+	const earthRadius = 6371000; // meters
+	const dLat = deg2rad(lat2 - lat1);
+	const dLon = deg2rad(lon2 - lon1);
+	const a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+			+ Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2))
+			* Math.sin(dLon / 2) * Math.sin(dLon / 2);
+	const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+	console.log(c)
+	const distance = earthRadius * c;
+	console.log(distance)
+	return distance <= 100;
+  }
+  
+  const deg2rad = (deg: number) => {
+	return deg * (Math.PI/180)
+  }
 
 const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
   const { rollno, course } = route.params;
@@ -182,87 +181,77 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
       const studentLocation = await getStudentLocation();
       const teacherLocation = await getTeacherLocation();
 
-      const distance = checkDistance(
-        studentLocation.latitude,
-        studentLocation.longitude,
-        teacherLocation.latitude,
-        teacherLocation.longitude
-      );
+			console.log("studentLocation",studentLocation)
+			console.log("teacherLocation", teacherLocation)
 
-      if (!distance) {
-        Alert.alert("Attendance not granted", "You are not in the class");
-        setAttendanceDenied(true);
-        useEffect(() => {
-          // Add Doc
-          async () => {
-            await addDoc(attendanceRef, {
-              studentName: stuName,
-              courseCode: course.code,
-              date: currentDate,
-              status: "Absent",
-            });
-          };
-        });
-        return;
-      } else {
-        Alert.alert("Attendance granted", "You have been marked present");
-        useEffect(() => {
-          async () => {
-            await addDoc(attendanceRef, {
-              studentName: stuName,
-              courseCode: course.code,
-              date: currentDate,
-              status: "Present",
-            });
-          };
-        });
-        setAttendanceMarked(true);
-      }
-    } else {
-      // Code is incorrect, show error
-      Alert.alert("Incorrect code", "Please try again");
-    }
-  };
 
-  const renderAttendanceButton = () => {
-    if (attendanceDenied) {
-      return (
-        <Text style={styles.attendancePeriodInactive}>Attendance denied</Text>
-      );
-    }
+			const distance = checkDistance(studentLocation.coords.latitude, studentLocation.coords.longitude, teacherLocation.coords.latitude, teacherLocation.coords.longitude);
 
-    if (attendanceMarked) {
-      return (
-        <Text style={styles.attendancePeriodInactive}>
-          Attendance marked successfully
-        </Text>
-      );
-    }
+			if (!distance) {
+				Alert.alert('Attendance not granted', 'You are not in the class');
+				setAttendanceDenied(true);
+				useEffect(() => {
+					// Add Doc
+					async() => {
+					await addDoc(attendanceRef, {
+						studentName: stuName,
+						courseCode: course.code,
+						date: currentDate,
+						status: "Absent",
+					});}
+				});
+				return;
+			}
+			else{
+				Alert.alert('Attendance granted', 'You have been marked present');
+				setAttendanceMarked(true);
+				useEffect(() => {
+					async() => {
+					await addDoc(attendanceRef, {
+						studentName: stuName,
+						courseCode: course.code,
+						date: currentDate,
+						status: "Present",
+					});}
+				});
+			}
+		} else {
+		  // Code is incorrect, show error
+		  Alert.alert('Incorrect code', 'Please try again');
+		}
+	  }
 
-    if (attendanceCode != "") {
-      return (
-        <View style={styles.attendanceContainer}>
-          <TextInput
-            style={styles.attendanceCodeInput}
-            placeholder="Enter attendance code"
-            onChangeText={setEnteredCode}
-          />
-          <TouchableOpacity
-            style={styles.otherButton}
-            onPress={handleSubmitCode}
-          >
-            <Text style={styles.otherText}>Submit</Text>
-          </TouchableOpacity>
-        </View>
-      );
-    }
+	const renderAttendanceButton = () => {
 
-    return (
-      <Text style={styles.attendancePeriodInactive}>
-        Attendance period not active
-      </Text>
-    );
-  };
+		if(attendanceDenied){
+			return (
+				<Text style={styles.attendancePeriodInactive}>Attendance denied</Text>
+			);
+		}
+	
+		else if (attendanceMarked) {
+			return (
+			  <Text style={styles.attendancePeriodInactive}>Attendance marked successfully</Text>
+			);
+		  }
+	  
+		if (attendanceCode === '') {
+		  return (
+			<View style={styles.attendanceContainer}>
+			  <TextInput
+				style={styles.attendanceCodeInput}
+				placeholder="Enter attendance code"
+				onChangeText={setEnteredCode}
+			  />
+			  <TouchableOpacity style={styles.otherButton} onPress={handleSubmitCode}>
+				<Text style={styles.otherText}>Submit</Text>
+			  </TouchableOpacity>
+			</View>
+		  );
+		}
+	  
+		return <Text style={styles.attendancePeriodInactive}>Attendance period not active</Text>;
+	  };
 
   return (
     <View style={styles.container}>
