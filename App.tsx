@@ -1,7 +1,6 @@
 /// <reference path="app/globals.d.ts" />
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Provider } from 'react-redux';
 import store from './app/store/store';
 import React from "react";
 import { useState, useEffect, useCallback} from "react";
@@ -42,7 +41,6 @@ const setStackOptions = (title: string) => {
 export default function App() {
     
   return (
-      <Provider store={store}>
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="SHome" component={StudentHome} options={setStackOptions("Home")}/>
@@ -86,6 +84,5 @@ export default function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
-    </Provider>
   );
 }

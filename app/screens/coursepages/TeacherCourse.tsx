@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  ScrollView,
 } from "react-native";
 import { RouteProp } from "@react-navigation/native";
 import { useEffect } from "react";
@@ -195,6 +196,7 @@ const TeacherCourse: React.FC<Props> = ({ route, navigation }) => {
         <Text style={styles.courseName}>{course.title}</Text>
         <Text style={styles.courseCode}>{course.code}</Text>
       </View>
+	  <ScrollView>
       {renderAttendanceButton()}
       <View style={styles.attendanceRecord}>
         <Text style={styles.sectionTitle}>Attendance Record</Text>
@@ -214,6 +216,7 @@ const TeacherCourse: React.FC<Props> = ({ route, navigation }) => {
           )}
         </View>
       </View>
+	  </ScrollView>
     </View>
   );
 };

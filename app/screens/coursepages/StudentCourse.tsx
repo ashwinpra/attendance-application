@@ -26,7 +26,6 @@ import {
   updateDoc,
   addDoc,
 } from "firebase/firestore";
-import { current } from "@reduxjs/toolkit";
 // import {
 //   LineChart,
 //   BarChart,
@@ -125,8 +124,9 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 //   });
 
   const handleReport = async () => {
-	const attendanceQuery = query( attendanceRef, where("courseCode", "==", course.code), where("student", "==", rollno));
+	const attendanceQuery = query( attendanceRef, where("courseCode", "==", course.code), where("studentName", "==", ""));
 	const attendanceQuerySnapshot = await getDocs(attendanceQuery);
+	console.log("docs:", attendanceQuerySnapshot.docs)
 	for (const doc of attendanceQuerySnapshot.docs) {
 		let status_bool;
 		if (doc.data().status == "Present")
@@ -138,6 +138,7 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 			status: status_bool
 		})
 	}
+	console.log("attendanceData: ",attendanceData);
 	setAttendanceRecord(attendanceData);
   }
   const getAttendanceCode = async () => {
@@ -177,7 +178,7 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    const getAttendanceCode = async () => {
+    const getCode = async () => {
       const code = String(await getAttendanceCode());
       setAttendanceCode(code);
     };
@@ -189,8 +190,9 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
         setAttendanceMarked(true);
       }
     };
-    getAttendanceCode();
+    getCode();
     getAttendanceMarked();
+	handleReport();
   }, []);
 
   const handleSubmitCode = async () => {
@@ -216,6 +218,7 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 						date: currentDate,
 						status: "Absent",
 					});}
+					handleReport();
 				});
 				return;
 			}
@@ -230,6 +233,7 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 						date: currentDate,
 						status: "Present",
 					});}
+
 				});
 			}
 		} else {
@@ -252,7 +256,7 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 			);
 		  }
 	  
-		if (attendanceCode != '') {
+		if (attendanceCode !== '') {
 		  return (
 			<View style={styles.attendanceContainer}>
 			  <TextInput
