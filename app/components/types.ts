@@ -16,5 +16,5 @@ export type RootStackParamList = {
 	Login: { userType: string };
 	Register: undefined;
 	Courses: undefined;
-	Settings: undefined;
+	Settings: { userType: string };
 };
