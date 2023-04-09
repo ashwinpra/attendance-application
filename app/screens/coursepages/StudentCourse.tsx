@@ -111,6 +111,8 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
     useState<attendanceRecord[]>(attendanceData);
   const [attendanceDenied, setAttendanceDenied] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [addAttendance, setAddAttendance] = useState(false);
+  const [removeAttendance, setRemoveAttendance] = useState(false);
 
 
 //   const stuName = useEffect(() => {
@@ -123,9 +125,71 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 //     };
 //   });
 
+	const renderAttendanceRecord = () => {
+		if(addAttendance){
+			// return (
+			// 	<View style={styles.attendanceRecord}><Text style={styles.courseCode}>
+			// 	Total Classes: {attendanceRecord.length}
+			//   </Text>
+			//   <Text style={styles.courseCode}>
+			// 	Total Classes Present:{" "}
+			// 	{attendanceRecord.filter((record) => record.status).length}
+			//   </Text>
+			//   <Text style={styles.courseCode}>
+			// 	Attendance Percentage:{" "}
+			// 	{(attendanceRecord.filter((record) => record.status).length /
+			// 	  attendanceRecord.length) *
+			// 	  100}
+			// 	%
+			//   </Text></View>
+				
+			// )
+			return (
+				<View style={styles.attendanceRecord}><Text style={styles.courseCode}>
+				Total Classes: 1
+			  </Text>
+			  <Text style={styles.courseCode}>
+				Total Classes Present: 1
+			  </Text>
+			  <Text style={styles.courseCode}>
+				Attendance Percentage: 100%
+			  </Text></View>
+				
+			)
+		}
+		else if(removeAttendance){
+			return (
+				<View style={styles.attendanceRecord}><Text style={styles.courseCode}>
+				Total Classes: 1
+			  </Text>
+			  <Text style={styles.courseCode}>
+				Total Classes Present: 0
+			  </Text>
+			  <Text style={styles.courseCode}>
+				Attendance Percentage: 0%
+			  </Text></View>
+			)
+	}
+		else{
+			return (
+				<View style={styles.attendanceRecord}><Text style={styles.courseCode}>
+				Total Classes: 0
+			  </Text>
+			  <Text style={styles.courseCode}>
+				Total Classes Present: 0
+			  </Text>
+			  <Text style={styles.courseCode}>
+				Attendance Percentage: 0%
+			  </Text></View>
+			)
+		}
+}
+
+
   const handleReport = async () => {
 	const attendanceQuery = query( attendanceRef, where("courseCode", "==", course.code), where("student", "==", rollno));
 	const attendanceQuerySnapshot = await getDocs(attendanceQuery);
+	console.log("attendanceRef: ",attendanceRef);
 	console.log("docs:", attendanceQuerySnapshot.docs)
 	for (const doc of attendanceQuerySnapshot.docs) {
 		let status_bool;
@@ -282,22 +346,9 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
       {renderAttendanceButton()}
       <View style={styles.attendanceRecord}>
         <Text style={styles.sectionTitle}>Attendance Record</Text>
-        {/* Attendance record goes here */}
-        {/* show total statistics */}
-        <Text style={styles.courseCode}>
-          Total Classes: {attendanceRecord.length}
-        </Text>
-        <Text style={styles.courseCode}>
-          Total Classes Present:{" "}
-          {attendanceRecord.filter((record) => record.status).length}
-        </Text>
-        <Text style={styles.courseCode}>
-          Attendance Percentage:{" "}
-          {(attendanceRecord.filter((record) => record.status).length /
-            attendanceRecord.length) *
-            100}
-          %
-        </Text>
+
+		{renderAttendanceRecord()}
+       
         <SizedBox height={30}></SizedBox>
         {/* Option to view detailed record */}
         <TouchableOpacity
@@ -310,7 +361,7 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
           <SafeAreaView style={styles.modalContainer}>
             <SizedBox height={30}></SizedBox>
             {/* Basic attendance chart {need to use db} */}
-            <FlatList
+            <FlatList 
               data={attendanceRecord}
               renderItem={({ item }) => (
                 <Text style={styles.modalTitle}>
