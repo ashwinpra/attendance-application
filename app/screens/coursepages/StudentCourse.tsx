@@ -38,11 +38,25 @@ const attendanceData: attendanceRecord[] = [
 	},
 ];
 
+const checkDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+	const earthRadius = 6371000; // meters
+	const dLat = (lat2 - lat1)*(Math.PI/180);
+	const dLon = (lon2 - lon1)*(Math.PI/180);
+	const a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+			+ Math.cos((lat1)*(Math.PI/180)) * Math.cos((lat2)*(Math.PI/180))
+			* Math.sin(dLon / 2) * Math.sin(dLon / 2);
+	const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+	const distance = earthRadius * c;
+	return distance <= 100;
+  }
+
 const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 	const {rollno, course} = route.params;
 	const [enteredCode, setEnteredCode] = useState('');
 	const [attendanceMarked, setAttendanceMarked] = useState(false);
+	const [attendanceCode, setAttendanceCode] = useState<string>('');
 	const [attendanceRecord, setAttendanceRecord] = useState<attendanceRecord[]>(attendanceData);
+	const [attendanceDenied, setAttendanceDenied] = useState(false);
 	const [showModal, setShowModal] = useState(false);
 
 	const getAttendanceCode = async () => {
@@ -53,7 +67,7 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 		return courseDoc.data().attendanceCode;
 	}
 
-	const getUserLocation = async () => {
+	const getStudentLocation = async () => {
 		const studentQuery = query(userRef, where("userID", "==", rollno));
 		const studentQuerySnapshot = await getDocs(studentQuery);
 		const studentDoc = (await studentQuerySnapshot).docs[0];
@@ -76,26 +90,44 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 	}
 
 	useEffect(() => {
+		const getAttendanceCode = async () => {
+			const code = String(await getAttendanceCode());
+			setAttendanceCode(code);
+		}
+
 		const getAttendanceMarked = async () => {
-		  const attendanceMarked = await AsyncStorage.getItem('attendanceMarked');
+		//   const attendanceMarked = await AsyncStorage.getItem('attendanceMarked');
+		// TODO: check if attendance is marked in DB by checking status
 		  if (attendanceMarked) {
 			setAttendanceMarked(true);
 		  }
 		};
+		getAttendanceCode();
 		getAttendanceMarked();
 	  }, []);
 
 	const handleSubmitCode = async () => {
 		const attendanceCode = await getAttendanceCode();
 		if (enteredCode === attendanceCode) {
-			// check location 
-			// if location is correct, mark attendance
-			// else show error
+			
+			const studentLocation = await getStudentLocation();
+			const teacherLocation = await getTeacherLocation();
 
-			// TODO: update attendance in DB
-		  	Alert.alert('Attendance granted', 'You have been marked present');
-			// await AsyncStorage.setItem('attendanceMarked', 'true');
-			setAttendanceMarked(true)
+			const distance = checkDistance(studentLocation.latitude, studentLocation.longitude, teacherLocation.latitude, teacherLocation.longitude);
+
+			if (!distance) {
+				Alert.alert('Attendance not granted', 'You are not in the class');
+				setAttendanceDenied(true);
+				return;
+				// TODO: mark absent in DB
+			}
+			else{
+				// TODO: update attendance in DB
+				Alert.alert('Attendance granted', 'You have been marked present');
+				// await AsyncStorage.setItem('attendanceMarked', 'true');
+				setAttendanceMarked(true)
+			}
+		
 		} else {
 		  // Code is incorrect, show error
 		  Alert.alert('Incorrect code', 'Please try again');
@@ -103,13 +135,20 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 	  }
 
 	const renderAttendanceButton = () => {
+
+		if(attendanceDenied){
+			return (
+				<Text style={styles.attendancePeriodInactive}>Attendance denied</Text>
+			);
+		}
+	
 		if (attendanceMarked) {
 			return (
 			  <Text style={styles.attendancePeriodInactive}>Attendance marked successfully</Text>
 			);
 		  }
 	  
-		if (attendanceCode) {
+		if (attendanceCode != '') {
 		  return (
 			<View style={styles.attendanceContainer}>
 			  <TextInput
