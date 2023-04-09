@@ -126,5 +126,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     flex: 1,
     justifyContent: "flex-end",
+    paddingBottom: 30,
   },
 });

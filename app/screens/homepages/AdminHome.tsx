@@ -246,8 +246,8 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
     // TODO: search for student in database using rollNo and set student state
     setStudent({
       rollNo: rollNo,
-      name: "John Doe",
-      email: "john.doe@example.com",
+      name: "HO",
+      email: "def@gmail.com",
     });
     setTeacher(null);
   };

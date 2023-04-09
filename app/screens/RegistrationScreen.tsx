@@ -171,7 +171,7 @@ const RegistrationScreen = () => {
         secureTextEntry={true}
       />
       <TouchableOpacity style={Styles.button} onPress={handleVerification}>
-        <Text>Send verification message</Text>
+        <Text>Register</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={switchButtonStyles.button}

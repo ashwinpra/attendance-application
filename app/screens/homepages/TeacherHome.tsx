@@ -315,6 +315,7 @@ const styles = StyleSheet.create({
 		fontWeight: "bold",
 		marginBottom: 20,
 		marginLeft: 20,
+		alignSelf:'center'
 	},
 
 	currentCourseCard: {

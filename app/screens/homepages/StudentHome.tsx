@@ -361,6 +361,7 @@ const styles = StyleSheet.create({
 	sectionTitle: {
 		fontSize: 24,
 		fontWeight: "bold",
+		alignSelf: "center",
 		marginBottom: 20,
 		marginLeft: 20,
 	},
