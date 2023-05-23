@@ -9,13 +9,12 @@ Team Project for Software Engineering Laboratory Course (CS29202) 2023
 - Ashwin Prasanth (21CS30009)
 
 ## TODO: 
-- [ ] Logic for enrollment of student in course - easier after backend integration
-- [ ] Proxy checking - check distance - easier after backend integration
-- [ ] Display attendance record - easier after backend integration
-- [ ] Store attendance code in backend
-- [ ] Backend for getting courses of student and teacher
-- [ ] Backend for getting student attendance record
-- [ ] Backend for authentication
+- [ ] Prevent going back after login/save the state
+- [ ] Dont allow giving/taking attendance if location is not on - optional
+- [ ] Store attendance in record
+- [ ] Fetch student attendance record and display
+- [ ] Admin Home glitch - ios only 
+- [ ] Settings - reset password, logout 
 - [ ] Clean up code!
 
 ## Assignment 1

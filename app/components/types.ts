@@ -2,20 +2,19 @@
 
 export type RootStackParamList = {
 	Home: undefined;
-	SHome: undefined;
-	THome: undefined;
+	SHome: { rollno: string};
+	THome: { enrollmentID: string};
 	AHome: undefined;
 	SCourse: {
+		rollno: string,
 		course: Course,
-		isCurrentCourse: boolean
 	};
 	TCourse: {
 		course: Course,
-		isCurrentCourse: boolean
 	};
 	ACourse: { course: Course };
 	Login: { userType: string };
 	Register: undefined;
 	Courses: undefined;
-	Settings: undefined;
+	Settings: { userType: string };
 };

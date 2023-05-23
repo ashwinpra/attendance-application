@@ -1,8 +1,6 @@
 /// <reference path="app/globals.d.ts" />
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Provider } from 'react-redux';
-import store from './app/store/store';
 import React from "react";
 import { useState, useEffect, useCallback} from "react";
 import {Alert, Platform, BackHandler, AppState} from "react-native";
@@ -21,6 +19,7 @@ import * as Location from 'expo-location'
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+
 const setStackOptions = (title: string) => {
   return {
     // options to be passed to the navigator
@@ -34,56 +33,15 @@ const setStackOptions = (title: string) => {
     },
     headerTitle: title,
     headerTitleAlign: "center",
+    headerLeft: () => null
   };
 }
 
 export default function App() {
-
-  const [location, setLocation] = useState<Location.LocationObject | null>(null);
-
-  const checkLocationPermission = async () => {
-    const { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') {
-      Alert.alert(
-        'Location permission denied',
-        'To use this app, please go to your device settings and enable location permission for the app',
-        [{ text: 'OK' }],
-        { cancelable: false }
-      );
-      return false;
-    }
-    return true;
-  };
-
-  useEffect(() => {
-    const getLocation = async () => {
-      const hasLocationPermission = await checkLocationPermission();
-      if (!hasLocationPermission) {
-        return;
-      }
-      const locationSubscriber = await Location.watchPositionAsync(
-        {
-          accuracy: Location.Accuracy.Highest,
-          timeInterval: 5000, // adjust as needed
-          distanceInterval: 100, // adjust as needed
-        },
-        (position) => {
-          setLocation(position);
-        }
-      );
-      return () => {
-        locationSubscriber.remove();
-      };
-    };
-    getLocation();
-  }, []);
-  //TODO: send this location to the DB
-
-
+    
   return (
-      <Provider store={store}>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="SHome">
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="SHome" component={StudentHome} options={setStackOptions("Home")}/>
         <Stack.Screen name="THome" component={TeacherHome} options={setStackOptions("Home")}/>
         <Stack.Screen name="AHome" component={AdminHome} options={setStackOptions("Home")}/>
@@ -125,6 +83,5 @@ export default function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
-    </Provider>
   );
 }

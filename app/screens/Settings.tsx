@@ -1,3 +1,4 @@
+/// <reference path="../../app/globals.d.ts" />
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -7,14 +8,23 @@ import {
   View,
   Alert,
 } from "react-native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RouteProp } from "@react-navigation/native";
+import { RootStackParamList } from "../components/types";
+import { auth, db } from "../config/firebase";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
-interface Props {
-  navigation: any;
-}
+const userRef = collection(db, "users");
 
-const Settings: React.FC<Props> = ({ navigation }) => {
+type Props = {
+  route: RouteProp<RootStackParamList, "Login">;
+  navigation: NativeStackNavigationProp<RootStackParamList, "Settings">;
+};
+
+const Settings: React.FC<Props> = ({ navigation, route }) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const { userType } = route.params;
 
   const handleChangePassword = () => {
     // TODO: Implement password change functionality
