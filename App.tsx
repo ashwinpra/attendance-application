@@ -2,8 +2,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-import { useState, useEffect, useCallback} from "react";
-import {Alert, Platform, BackHandler, AppState} from "react-native";
 import HomeScreen from "./app/screens/HomeScreen";
 import LoginScreen from "./app/screens/LoginScreen";
 import RegistrationScreen from "./app/screens/RegistrationScreen";
@@ -15,7 +13,6 @@ import TeacherCourse from "./app/screens/coursepages/TeacherCourse";
 import AdminCourse from "./app/screens/coursepages/AdminCourse";
 import Settings from "./app/screens/Settings";
 import { RootStackParamList } from "./app/components/types";
-import * as Location from 'expo-location'
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 

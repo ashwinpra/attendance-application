@@ -30,9 +30,6 @@ const Settings: React.FC<Props> = ({ navigation, route }) => {
     // TODO: Implement password change functionality
     if (currentPassword === "1234") {
       // Change this to the correct password check logic
-      console.log(
-        `Changing password from ${currentPassword} to ${newPassword}`
-      );
       setCurrentPassword("");
       setNewPassword("");
       Alert.alert(
@@ -49,7 +46,6 @@ const Settings: React.FC<Props> = ({ navigation, route }) => {
 
   const handleLogout = () => {
     // TODO: Implement logout functionality
-    console.log("Logging out");
     navigation.reset({
       index: 0,
       routes: [{ name: "Home" }],

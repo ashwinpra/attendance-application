@@ -22,10 +22,8 @@ import {
 	where,
 	getDocs,
 	updateDoc,
-	doc,
-	addDoc,
-	deleteDoc,
-} from "firebase/firestore";
+}from "firebase/firestore";
+
 import { db } from "../../config/firebase";
 import * as Location from "expo-location";
 
@@ -36,34 +34,6 @@ type Props = {
 
 const studentRef = collection(db, "users");
 const coursesRef = collection(db, "courses");
-
-// function getCurrentCourse(courses: Course[]): Course | undefined {
-//   const currentDate = new Date();
-//   console.log(currentDate.getDay());
-//   for (const course of courses) {
-//     if (course.timing && course.timing.length > 0) {
-//       for (const timing of course.timing) {
-//         if (timing.day === currentDate.getDay()) {
-//           const [startHours, startMinutes] = timing.startTime
-//             .split(":")
-//             .map(Number);
-//           const [endHours, endMinutes] = timing.endTime.split(":").map(Number);
-//           const startTime = new Date();
-//           startTime.setHours(startHours);
-//           startTime.setMinutes(startMinutes);
-//           const endTime = new Date();
-//           endTime.setHours(endHours);
-//           endTime.setMinutes(endMinutes);
-//           if (currentDate >= startTime && currentDate <= endTime) {
-//             return course;
-//           }
-//         }
-//       }
-//     }
-//   }
-//   return undefined;
-// }
-
 
 interface CourseCardProps {
 	course: Course;
@@ -172,7 +142,6 @@ const StudentHome: React.FC<Props> = ({ navigation, route }) => {
 				counter++;
 			}
 			setCourses(coursesData);
-			console.log("coursesData", coursesData);
 			return;
 		}
 		)();
@@ -211,7 +180,6 @@ const StudentHome: React.FC<Props> = ({ navigation, route }) => {
 
 			// add this course to the student's courses
 			let userCourses = studentDoc.data().courses;
-			console.log(userCourses);
 
 			if (userCourses == undefined) {
 				await updateDoc(studentDoc.ref, { courses: [courseDoc.data().courseCode] });

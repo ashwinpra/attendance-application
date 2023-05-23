@@ -40,33 +40,6 @@ interface CourseCardProps {
 	onPress: () => void;
 }
 
-//  function getCurrentCourse(courses: Course[]): Course | undefined {
-//    const currentDate = new Date();
-//    console.log(currentDate.getDay());
-//    for (const course of courses) {
-//      if (course.timing && course.timing.length > 0) {
-//        for (const timing of course.timing) {
-//          if (timing.day === currentDate.getDay()) {
-//            const [startHours, startMinutes] = timing.startTime
-//              .split(":")
-//              .map(Number);
-//            const [endHours, endMinutes] = timing.endTime.split(":").map(Number);
-//            const startTime = new Date();
-//            startTime.setHours(startHours);
-//            startTime.setMinutes(startMinutes);
-//            const endTime = new Date();
-//            endTime.setHours(endHours);
-//            endTime.setMinutes(endMinutes);
-//            if (currentDate >= startTime && currentDate <= endTime) {
-//              return course;
-//            }
-//          }
-//        }
-//      }
-//    }
-//    return undefined;
-//  }
-
 const CourseCard = ({ course, isCurrentCourse, onPress }: CourseCardProps) => {
 	const cardStyle = isCurrentCourse
 		? styles.currentCourseCard
@@ -108,9 +81,6 @@ const TeacherHome: React.FC<Props> = ({ navigation, route }) => {
 	const [courses, setCourses] = useState<Course[]>(coursesData);
 	const [teacher, setTeacher] = useState<Teacher>(teacherData);
 	const [location, setLocation] = useState<Location.LocationObject | null>(null);
-
-	//const currentCourse = getCurrentCourse(courses);
-	//const otherCourses = courses.filter((course) => course !== currentCourse);
 
 	const checkLocationPermission = async () => {
 		const { status } = await Location.requestForegroundPermissionsAsync();

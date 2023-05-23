@@ -8,15 +8,6 @@ Team Project for Software Engineering Laboratory Course (CS29202) 2023
 - Yash Sirvi (21CS10083)
 - Ashwin Prasanth (21CS30009)
 
-## TODO: 
-- [ ] Prevent going back after login/save the state
-- [ ] Dont allow giving/taking attendance if location is not on - optional
-- [ ] Store attendance in record
-- [ ] Fetch student attendance record and display
-- [ ] Admin Home glitch - ios only 
-- [ ] Settings - reset password, logout 
-- [ ] Clean up code!
-
 ## Assignment 1
 
 - Deadline: **27th March 2023**

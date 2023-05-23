@@ -11,7 +11,6 @@ import {
 	ActionSheetIOS,
 	Platform,
 	Modal,
-	Button,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { NavigationProp } from "@react-navigation/native";
@@ -23,7 +22,6 @@ import {
 	where,
 	getDocs,
 	updateDoc,
-	doc,
 	addDoc,
 	deleteDoc,
 } from "firebase/firestore";
@@ -178,7 +176,6 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
 			enrollmentKey: courseCode,
 		});
 		// (e.g., by calling an API endpoint or updating state)
-		console.log("New course added");
 		// Close the modal
 		setShowModal(false);
 	};
@@ -186,7 +183,6 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
 	const handleModifyCourse = async () => {
 		if (selectedCourse) {
 			const q = query(courseRef, where("courseCode", "==", modifyCourseCode));
-			console.log(modifyCourseCode);
 			const querySnapshot = await getDocs(q);
 			if (querySnapshot.size > 0) {
 				console.log("Course already exists");
@@ -201,9 +197,7 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
 				courseCode: modifyCourseCode,
 			});
 			// (e.g., by calling an API endpoint or updating state)
-			console.log(
-				`Modify course button pressed for course ${selectedCourse.title} (${selectedCourse.code})`
-			);
+
 			// Close the modal
 			setShowModifyModal(false);
 		}
@@ -223,9 +217,6 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
 						await deleteDoc(doc.ref);
 					});
 				}
-				console.log(
-					`Delete course button pressed for course ${selectedCourse.title} (${selectedCourse.code})`
-				);
 			} catch (e) {
 				console.log(e);
 			}
@@ -241,7 +232,6 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
 	};
 
 	const handleSearchStudent = () => {
-		console.log(`Search student button pressed for roll no ${rollNo}`);
 		// TODO: search for student in database using rollNo and set student state
 		setStudent({
 			rollNo: rollNo,
@@ -252,7 +242,6 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
 	};
 
 	const handleSearchTeacher = () => {
-		console.log(`Search teacher button pressed for ID ${teacherID}`);
 		// TODO: search for teacher in database using ID and set teacher state
 		setTeacher({
 			id: teacherID,

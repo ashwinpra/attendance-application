@@ -65,7 +65,6 @@ const RegistrationScreen = () => {
                 userID: userID,
                 type: "student",
               });
-              console.log("Document written with ID: ", docRef.id);
             } catch (e) {
               console.error("Error adding document: ", e);
             }
@@ -81,7 +80,6 @@ const RegistrationScreen = () => {
       } else {
         if (teacherRegex.test(userID)) {
           // search for teacher with this ID in collection "teachers"
-          console.log(userID);
           const teacherQuery = query(usersRef, where("userID", "==", userID));
           const teacherQuerySnapshot = await getDocs(teacherQuery);
           if (teacherQuerySnapshot.empty) {

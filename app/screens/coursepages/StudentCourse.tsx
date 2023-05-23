@@ -84,7 +84,6 @@ const currentDate = new Date().toLocaleDateString("en-IN", {
 
 let courseTeacher = "";
 const checkDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
-	console.log(lat1, lon1, lat2, lon2)
 	const earthRadius = 6371000; // meters
 	const dLat = deg2rad(lat2 - lat1);
 	const dLon = deg2rad(lon2 - lon1);
@@ -92,9 +91,7 @@ const checkDistance = (lat1: number, lon1: number, lat2: number, lon2: number) =
 			+ Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2))
 			* Math.sin(dLon / 2) * Math.sin(dLon / 2);
 	const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-	console.log(c)
 	const distance = earthRadius * c;
-	console.log(distance)
 	return distance <= 100;
   }
   
@@ -189,8 +186,6 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
   const handleReport = async () => {
 	const attendanceQuery = query( attendanceRef, where("courseCode", "==", course.code), where("student", "==", rollno));
 	const attendanceQuerySnapshot = await getDocs(attendanceQuery);
-	console.log("attendanceRef: ",attendanceRef);
-	console.log("docs:", attendanceQuerySnapshot.docs)
 	for (const doc of attendanceQuerySnapshot.docs) {
 		let status_bool;
 		if (doc.data().status == "Present")
@@ -202,7 +197,6 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 			status: status_bool
 		})
 	}
-	console.log("attendanceData: ",attendanceData);
 	setAttendanceRecord(attendanceData);
   }
   const getAttendanceCode = async () => {
@@ -265,8 +259,6 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
       const studentLocation = await getStudentLocation();
       const teacherLocation = await getTeacherLocation();
 
-			console.log("studentLocation",studentLocation)
-			console.log("teacherLocation", teacherLocation)
 
 			const distance = checkDistance(studentLocation.coords.latitude, studentLocation.coords.longitude, teacherLocation.coords.latitude, teacherLocation.coords.longitude);
 			// const distance = 0;
@@ -274,14 +266,12 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 				Alert.alert('Attendance not granted', 'You are not in the class');
 				setAttendanceDenied(true);
 				// Add Doc
-				console.log("absent code");
 				const docref = await addDoc(attendanceRef, {
 					student: rollno,
 					courseCode: course.code,
 					date: currentDate,
 					status: "Absent",
 				});
-				console.log("docref", docref.id);
 				handleReport();
 				return;
 			}

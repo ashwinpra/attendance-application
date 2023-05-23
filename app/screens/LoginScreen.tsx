@@ -39,18 +39,14 @@ const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
         const userData = querySnapshot.docs[0].data();
         if (userData.type !== userType) {
           Alert.alert("User is not authorized!");
-          console.log(userData, userType);
           return;
         }
         signInWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
             const user = userCredential.user;
-            console.log(user.email);
             if (userType === "student") {
-              console.log(userData.userID);
               navigation.navigate("SHome", { rollno: userData.userID });
             } else if (userType === "teacher") {
-              console.log(userData.userID);
               navigation.navigate("THome", {enrollmentID: userData.userID});
             }
           })
@@ -74,7 +70,6 @@ const LoginScreen: React.FC<Props> = ({ navigation, route }) => {
         signInWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
             const user = userCredential.user;
-            console.log(user.email);
             navigation.navigate("AHome");
           })
           .catch((error) => {
