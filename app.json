@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "attendance-application-v2",
-    "slug": "attendance-application-v2",
+    "name": "attendance-application",
+    "slug": "attendance-application",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
