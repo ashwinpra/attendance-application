@@ -8,6 +8,13 @@ Team Project for Software Engineering Laboratory Course (CS29202) 2023
 - Yash Sirvi (21CS10083)
 - Ashwin Prasanth (21CS30009)
 
+## Running Locally 
+- Clone the repository
+- Run `npm i`
+- Run `npx expo start` and follow the instructions on the terminal
+
+---
+
 ## Assignment 1
 
 - Deadline: **27th March 2023**

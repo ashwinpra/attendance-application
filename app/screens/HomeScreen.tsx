@@ -1,13 +1,15 @@
+/// <reference path="../globals.d.ts" />
 import React from "react";
-import { StyleSheet, View, Text, Pressable } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../components/types";
+import styles from "../styles";
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, "Home">;
 };
 
-export default function HomeScreen({ navigation }: Props) {
+const HomeScreen: React.FC<Props> = ({ navigation }) => {
   return (
     // make a container for the login page
     <View style={styles.background}>
@@ -48,84 +50,4 @@ export default function HomeScreen({ navigation }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    backgroundColor: "#f5f5f5",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 30,
-    paddingTop: 100,
-  },
-
-  welcomeText: {
-    color: "#212121",
-    fontSize: 40,
-    fontWeight: "bold",
-    marginBottom: 30,
-    textAlign: "center",
-  },
-
-  loginButton: {
-    backgroundColor: "#1e88e5",
-    width: "100%",
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#082e57",
-    marginVertical: 10,
-    shadowColor: "black",
-    shadowOffset: {
-      width: 1,
-      height: 5,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 5,
-    elevation: 10,
-  },
-
-  loginText: {
-    color: "#fff",
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-
-  registerButton: {
-    backgroundColor: "#1e88e5",
-    width: "80%",
-    height: 40,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 35,
-    borderWidth: 1,
-    borderColor: "#082e57",
-    marginVertical: 25,
-    shadowOffset: {
-      width: 1,
-      height: 5,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 5,
-    elevation: 10,
-  },
-  registerText: {
-    color: "#fff",
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-
-  separator: {
-    height: 20,
-  },
-
-  footer: {
-    color: "black",
-    fontSize: 15,
-    fontWeight: "bold",
-    flex: 1,
-    justifyContent: "flex-end",
-    paddingBottom: 30,
-  },
-});
+export default HomeScreen;
