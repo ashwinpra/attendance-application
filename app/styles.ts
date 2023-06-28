@@ -358,6 +358,11 @@ export default StyleSheet.create({
 		fontSize: 18,
 		marginBottom: 16,
 	},
+	courseTeacher: {
+		color: "gray",
+		textAlign: "center",
+		fontSize: 20,
+	},
 	teacherContainer: {
 		flexDirection: 'row',
 		alignItems: 'center',

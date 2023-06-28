@@ -1,14 +1,14 @@
 /// <reference path="../../globals.d.ts" />
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert, FlatList, Modal, SafeAreaView, Dimensions } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, Alert, FlatList, Modal, SafeAreaView, Dimensions } from "react-native";
 import { RouteProp } from "@react-navigation/native";
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../components/types";
 import { useState, useEffect } from "react";
 import SizedBox from "../../components/SizedBox";
 import { db } from "../../config/firebase";
-import { collection, query, where, getDocs, updateDoc, addDoc, } from "firebase/firestore";
 import styles from "../../styles";
+import { collection, query, where, getDocs, updateDoc, addDoc, } from "firebase/firestore";
 // import {
 //   LineChart,
 //   BarChart,
@@ -379,3 +379,4 @@ const StudentCourse: React.FC<Props> = ({ route, navigation }) => {
 };
 
 export default StudentCourse;
+
