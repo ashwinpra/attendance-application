@@ -1,31 +1,13 @@
 /// <reference path="../../globals.d.ts" />
-import React, { useState, useEffect, useTransition } from "react";
-import {
-	StyleSheet,
-	Text,
-	View,
-	Image,
-	TouchableOpacity,
-	ScrollView,
-	Alert,
-} from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import React, { useState, useEffect } from "react";
+import { Text, View, Image, TouchableOpacity, ScrollView, Alert } from "react-native";
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../components/types";
 import { RouteProp } from "@react-navigation/native";
-import {
-	collection,
-	query,
-	where,
-	getDocs,
-	updateDoc,
-	doc,
-	addDoc,
-	deleteDoc,
-} from "firebase/firestore";
+import { collection, query, where, getDocs, updateDoc, doc, addDoc, deleteDoc } from "firebase/firestore";
 import { db } from "../../config/firebase";
+import styles from "../../styles"
 import * as Location from "expo-location";
-
 
 type Props = {
 	route: RouteProp<RootStackParamList, "THome">;
@@ -227,129 +209,5 @@ const TeacherHome: React.FC<Props> = ({ navigation, route }) => {
 		</View>
 	);
 };
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "#FFFFFF",
-	},
-	userContainer: {
-		flexDirection: "row",
-		alignItems: "center",
-		justifyContent: "space-between",
-		padding: 20,
-	},
-	profileImage: {
-		width: 60,
-		height: 60,
-		borderRadius: 30,
-		marginRight: 10,
-	},
-	userInfoContainer: {
-		flex: 1,
-		marginLeft: 10,
-		marginRight: 10,
-	},
-	userName: {
-		fontSize: 18,
-		fontWeight: "bold",
-		marginBottom: 5,
-	},
-	userInfo: {
-		fontSize: 16,
-		color: "#555555",
-	},
-	settingsButton: {
-		paddingVertical: 10,
-		paddingHorizontal: 20,
-		borderRadius: 5,
-	},
-	settingsIcon: {
-		width: 30,
-		height: 30,
-	},
-	coursesSection: {
-		marginTop: 20,
-	},
-
-	currentCourse: {
-		marginBottom: 20,
-	},
-
-	otherCourses: {
-		marginBottom: 20,
-	},
-
-	sectionTitle: {
-		fontSize: 24,
-		fontWeight: "bold",
-		marginBottom: 20,
-		marginLeft: 20,
-		alignSelf:'center'
-	},
-
-	currentCourseCard: {
-		marginBottom: 15,
-		width: "95%",
-		height: 130,
-		alignSelf: "center",
-		borderRadius: 10,
-		padding: 20,
-		flexDirection: "row",
-		alignItems: "center",
-		backgroundColor: "#fff",
-		shadowColor: "#000",
-		shadowOffset: {
-			width: 0,
-			height: 2,
-		},
-		shadowOpacity: 0.29,
-		shadowRadius: 4.65,
-		elevation: 7,
-	},
-
-	courseCard: {
-		flexDirection: "row",
-		alignItems: "center",
-		marginBottom: 20,
-		backgroundColor: "#fff",
-		borderRadius: 5,
-		elevation: 3,
-		shadowColor: "#000",
-		shadowOffset: { width: 0, height: 2 },
-		shadowOpacity: 0.2,
-		shadowRadius: 2,
-		padding: 10,
-		width: "95%",
-		height: 90,
-		alignSelf: "center",
-	},
-
-	courseCardContent: {
-		paddingLeft: 15,
-	},
-
-	courseCardTitle: {
-		fontSize: 22,
-		fontWeight: "bold",
-		marginBottom: 5,
-	},
-
-	courseCardProfessor: {
-		fontSize: 15,
-		color: "#666",
-	},
-
-	courseCardCode: {
-		fontSize: 15,
-		color: "#666",
-	},
-
-	noCourseText: {
-		fontSize: 16,
-		fontStyle: "italic",
-		alignSelf: "center",
-	},
-});
 
 export default TeacherHome;

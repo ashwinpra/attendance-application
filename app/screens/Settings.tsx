@@ -1,12 +1,12 @@
 /// <reference path="../../app/globals.d.ts" />
 import React, { useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View, Alert } from "react-native";
+import { Text, TextInput, TouchableOpacity, View, Alert } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../components/types";
 import { auth, db } from "../config/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
-
+import styles from "../styles"
 const userRef = collection(db, "users");
 
 type Props = {
@@ -47,7 +47,7 @@ const Settings: React.FC<Props> = ({ navigation, route }) => {
 
 	return (
 		<View style={styles.container}>
-			<Text style={styles.title}>Change Password</Text>
+			<Text style={styles.passTitle}>Change Password</Text>
 			<TextInput
 				style={styles.input}
 				value={currentPassword}
@@ -72,31 +72,6 @@ const Settings: React.FC<Props> = ({ navigation, route }) => {
 	);
 };
 
-const styles = StyleSheet.create({
-	title: {
-		fontSize: 20,
-		fontWeight: "bold",
-		marginBottom: 20,
-	},
-	input: {
-		width: "80%",
-		height: 40,
-		padding: 10,
-		borderWidth: 1,
-		borderColor: "#ccc",
-		marginBottom: 20,
-	},
-	button: {
-		width: "80%",
-		padding: 10,
-		backgroundColor: "#3498db",
-		alignItems: "center",
-		marginBottom: 10,
-	},
-	buttonText: {
-		color: "#fff",
-		fontWeight: "bold",
-	},
-});
+
 
 export default Settings;

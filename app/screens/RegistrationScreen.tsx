@@ -3,6 +3,8 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-nativ
 import { auth, db } from "../config/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, addDoc, query, where, getDocs, updateDoc, doc } from "firebase/firestore";
+import styles from "../styles";
+
 
 const studentRegex = /^[0-9][0-9][A-Z][A-Z][0-9][0-9][0-9][0-9][0-9]$/;
 const teacherRegex = /^T[0-9]{4}$/;

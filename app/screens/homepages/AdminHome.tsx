@@ -1,31 +1,13 @@
 /// <reference path="../../globals.d.ts" />
 import React, { useState } from "react";
-import {
-	SafeAreaView,
-	StyleSheet,
-	Text,
-	View,
-	TouchableOpacity,
-	TextInput,
-	Image,
-	ActionSheetIOS,
-	Platform,
-	Modal,
-} from "react-native";
+import { SafeAreaView, Text, View, TouchableOpacity, TextInput, Image, ActionSheetIOS, Platform, Modal } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../components/types";
 import SizedBox from "../../components/SizedBox";
-import {
-	collection,
-	query,
-	where,
-	getDocs,
-	updateDoc,
-	addDoc,
-	deleteDoc,
-} from "firebase/firestore";
+import { collection, query, where, getDocs, updateDoc, addDoc, deleteDoc} from "firebase/firestore";
 import { db } from "../../config/firebase";
+import styles from "../../styles";
 type Props = {
 	navigation: NavigationProp<RootStackParamList, "AHome">;
 };
@@ -48,17 +30,6 @@ type Teacher = {
 	email: string;
 };
 
-const teacherData: Teacher = {
-	name: "John Doe",
-	id: "123456789",
-	email: "johndoe@example.com",
-};
-
-const studentData: Student = {
-	name: "John Doe",
-	rollNo: "21CS10088",
-	email: "johndoe@example.com",
-};
 
 const AdminHomepage: React.FC<Props> = ({ navigation }) => {
 	const [showModal, setShowModal] = useState(false);
@@ -273,7 +244,7 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
 			</View>
 			<View style={styles.buttonsContainer}>
 				<TouchableOpacity
-					style={styles.button}
+					style={styles.admButton}
 					onPress={() => setShowModal(true)}
 				>
 					<Text style={styles.buttonText}>Add course</Text>
@@ -297,12 +268,12 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
 							placeholder="Course Teacher"
 							onChangeText={(text) => setCourseTeacher(text)}
 						/>
-						<TouchableOpacity style={styles.button} onPress={handleAddCourse}>
+						<TouchableOpacity style={styles.admButton} onPress={handleAddCourse}>
 							<Text style={styles.buttonText}>Add</Text>
 						</TouchableOpacity>
 						<SizedBox height={10} />
 						<TouchableOpacity
-							style={styles.button}
+							style={styles.admButton}
 							onPress={() => setShowModal(false)}
 						>
 							<Text style={styles.buttonText}
@@ -340,14 +311,14 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
 							onChangeText={(text) => setModifyCourseCode(text)}
 						/>
 						<TouchableOpacity
-							style={styles.button}
+							style={styles.admButton}
 							onPress={handleModifyCourse}
 						>
 							<Text style={styles.buttonText}>Modify</Text>
 						</TouchableOpacity>
 						<SizedBox height={10} />
 						<TouchableOpacity
-							style={styles.button}
+							style={styles.admButton}
 							onPress={() => setShowModifyModal(false)}
 						>
 							<Text style={styles.buttonText}
@@ -386,10 +357,10 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
 					<TextInput style={styles.textInput} />
 				)}
 				<View style={styles.buttonsContainer}>
-					<TouchableOpacity style={styles.button} onPress={handleSearchStudent}>
+					<TouchableOpacity style={styles.admButton} onPress={handleSearchStudent}>
 						<Text style={styles.buttonText}>Search student</Text>
 					</TouchableOpacity>
-					<TouchableOpacity style={styles.button} onPress={handleSearchTeacher}>
+					<TouchableOpacity style={styles.admButton} onPress={handleSearchTeacher}>
 						<Text style={styles.buttonText}>Search teacher</Text>
 					</TouchableOpacity>
 				</View>
@@ -413,127 +384,4 @@ const AdminHomepage: React.FC<Props> = ({ navigation }) => {
 	);
 };
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		padding: 20,
-	},
-
-	header: {
-		flexDirection: "row",
-		justifyContent: "space-between",
-		alignItems: "center",
-		marginBottom: 20,
-	},
-	courseSelection: {
-		marginBottom: 20,
-	},
-	userInfoContainer: {
-		//flex: 1,
-		marginRight: 10,
-	},
-	userName: {
-		fontSize: 18,
-		fontWeight: "bold",
-		marginBottom: 5,
-	},
-	userInfo: {
-		fontSize: 16,
-		color: "#555555",
-	},
-	settingsButton: {
-		paddingVertical: 10,
-		paddingHorizontal: 20,
-		borderRadius: 5,
-	},
-	settingsIcon: {
-		width: 30,
-		height: 30,
-	},
-	label: {
-		fontSize: 18,
-		fontWeight: "bold",
-		marginBottom: 5,
-	},
-	picker: {
-		height: 50,
-		width: "100%",
-		backgroundColor: "#fff",
-		borderRadius: 5,
-		borderWidth: 1,
-		borderColor: "#ccc",
-		marginBottom: 10,
-		justifyContent: "center",
-	},
-	buttonsContainer: {
-		flexDirection: "row",
-		justifyContent: "space-between",
-		marginBottom: 20,
-	},
-	button: {
-		backgroundColor: "#007bff",
-		padding: 10,
-		borderRadius: 5,
-		width: "30%",
-	},
-	disabledButton: {
-		opacity: 0.5,
-	},
-	pickerText: {
-		fontSize: 24,
-		alignSelf: "center",
-		// align this text in the TouchableOpacity
-	},
-	buttonText: {
-		color: "#fff",
-		textAlign: "center",
-		fontWeight: "bold",
-	},
-	searchContainer: {
-		justifyContent: "space-between",
-		marginBottom: 20,
-	},
-	textInput: {
-		height: 50,
-		width: "100%",
-		backgroundColor: "#fff",
-		borderRadius: 5,
-		borderWidth: 1,
-		borderColor: "#ccc",
-		marginBottom: 10,
-		paddingHorizontal: 10,
-	},
-	Profile: {
-		borderWidth: 1,
-		borderColor: "#ccc",
-		padding: 10,
-		borderRadius: 5,
-		marginBottom: 20,
-	},
-	Info: {
-		fontSize: 16,
-		marginBottom: 5,
-	},
-	modalContainer: {
-		flex: 1,
-		justifyContent: "center",
-		alignItems: "center",
-	},
-	modalTitle: {
-		fontSize: 24,
-		fontWeight: "bold",
-		marginBottom: 10,
-		alignSelf: "center",
-	},
-	modalText: {
-		height: 50,
-		width: "90%",
-		backgroundColor: "#fff",
-		borderRadius: 5,
-		borderWidth: 1,
-		borderColor: "#ccc",
-		marginBottom: 10,
-		paddingHorizontal: 10,
-	},
-});
 export default AdminHomepage;

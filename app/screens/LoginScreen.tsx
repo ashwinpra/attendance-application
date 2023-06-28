@@ -1,5 +1,4 @@
-import React, { useCallback, useState } from "react";
-
+import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RouteProp } from "@react-navigation/native";
@@ -7,6 +6,8 @@ import { RootStackParamList } from "../components/types";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../config/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
+import styles from "../styles";
+
 
 const userRef = collection(db, "users");
 

@@ -1,7 +1,9 @@
+/// <reference path="../globals.d.ts" />
 import React from "react";
-import { StyleSheet, View, Text, Pressable } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../components/types";
+import styles from "../styles";
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, "Home">;
