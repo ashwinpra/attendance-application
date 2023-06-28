@@ -331,6 +331,7 @@ export default StyleSheet.create({
 		flex: 1,
 		justifyContent: "center",
 		alignItems: "center",
+		margin: 20,
 	},
 	modalTitle: {
 		fontSize: 24,
@@ -347,6 +348,131 @@ export default StyleSheet.create({
 		borderColor: "#ccc",
 		marginBottom: 10,
 		paddingHorizontal: 10,
+	},
+	courseName: {
+		fontSize: 24,
+		fontWeight: 'bold',
+		marginBottom: 8,
+	},
+	courseCode: {
+		fontSize: 18,
+		marginBottom: 16,
+	},
+	teacherContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		marginBottom: 16,
+	},
+	admLabel: {
+		fontSize: 18,
+		marginRight: 16,
+	},
+	teacherSelect: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	teacherInput: {
+		flex: 1,
+		fontSize: 18,
+		marginRight: 8,
+		padding: 8,
+		borderWidth: 1
+	},
+	studentContainer: {
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'space-between',
+	},
+	studentList: {
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'space-between',
+	},
+	studentItem: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+	},
+	studentInput: {
+		flex: 1,
+		fontSize: 18,
+		marginRight: 8,
+		padding: 8,
+		borderWidth: 1
+	},
+	attButton: {
+		backgroundColor: "#007bff",
+		padding: 10,
+		borderRadius: 5,
+		width: "90%",
+		alignSelf: "center",
+	},
+	otherButton: {
+		backgroundColor: "#1e88e5",
+		borderRadius: 5,
+		padding: 10,
+		alignSelf: "center",
+		marginTop: 10,
+	},
+	otherText: {
+		color: "#FFF",
+		fontSize: 20,
+	},
+	attendanceContainer: {
+		alignItems: "center",
+		paddingVertical: 50,
+	},
+	attendanceButton: {
+		backgroundColor: "#1e88e5",
+		borderRadius: 5,
+		padding: 20,
+		alignSelf: "center",
+	},
+	attendanceButtonText: {
+		color: "#FFF",
+		fontSize: 24,
+		alignSelf: "center",
+	},
+	attendancePeriodInactive: {
+		fontSize: 16,
+		color: "#666",
+		alignSelf: "center",
+	},
+	attendanceCode: {
+		fontSize: 20,
+		fontWeight: "bold",
+		width: "90%",
+		textAlign: "center",
+		backgroundColor: "#f2f2f2",
+		// paddingVertical: 10,
+		// paddingHorizontal: 20,
+		padding: 10,
+		borderRadius: 5,
+		marginTop: 20,
+	},
+	attendanceCodeInput: {
+		fontSize: 20,
+		fontWeight: "bold",
+		textAlign: "center",
+		backgroundColor: "#f2f2f2",
+		padding: 10,
+		borderRadius: 5,
+		marginTop: 20,
+	},
+	attendanceError: {
+		fontSize: 16,
+		color: "red",
+		alignSelf: "center",
+		marginTop: 10,
+	},
+	attendanceRecord: {
+		backgroundColor: "#FFF",
+		borderRadius: 10,
+		paddingTop: 100,
+		paddingBottom: 20,
+	},
+	subtitleText: {
+		fontSize: 20,
+		alignSelf: "center",
 	},
 });
 
